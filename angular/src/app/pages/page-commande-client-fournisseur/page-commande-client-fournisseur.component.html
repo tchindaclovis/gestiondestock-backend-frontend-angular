@@ -1,0 +1,59 @@
+<div class="col">
+  <div class="row m-3">
+    <div class="col-md-8 p-0">
+      <h1>Commande {{origin}}s</h1>
+    </div>
+    <div class="col-md-4 text-end">
+      <app-boutton-action (clickEvent)="nouvelleCommande()"  [isImporterVisible] = "false">
+
+      </app-boutton-action>
+    </div>
+  </div>
+
+  <!--  detail mouvement de stock 1-->
+  <div class="col m-3" *ngFor="let cmd of listeCommandes">
+    <div class="accordion" id="accordionExample1{{cmd.id}}">
+      <div class="accordion-item mb-2">
+        <div lass="accordion-header" id="headingOne1">
+            <button class="btn w-100 text-start" type="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapseOne1' + cmd.id"
+                    aria-expanded="true"
+                    aria-controls="collapseOne1">
+              <app-detail-commande-client-fournisseur
+                [commande]="cmd"
+                [origin]="origin"
+              ></app-detail-commande-client-fournisseur>
+            </button>
+        </div>
+        <div id="collapseOne1{{cmd.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne1"
+             [attr.data-bs-parent]="'#accordionExample1' + cmd.id" style="max-height: 300px; overflow-y: scroll;">
+          <div class="accordion-body">
+            <app-detail-commande
+              *ngFor="let ligne of mapLignesCommande.get(cmd.id)"
+              [ligneCommande]="ligne"
+            ></app-detail-commande>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-md-6 text-left">
+              <h5>{{mapLignesCommande.get(cmd.id).length}} lignes de commande</h5>
+            </div>
+            <div class="col-md-6 text-end">
+              <h5>Total commande: {{ calculerTotalCommande(cmd.id) }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="text-center">
+      <app-pagination></app-pagination>
+    </div>
+  </div>
+</div>
+
+

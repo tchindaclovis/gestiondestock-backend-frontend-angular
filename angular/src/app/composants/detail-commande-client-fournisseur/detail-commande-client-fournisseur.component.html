@@ -1,0 +1,62 @@
+<!--photo article-->
+<div class="row mb-1 mr-0 custom-border">
+  <div class="col-md-1 border-end p-1 text-center mb-1 mt-1">
+    <img src="assets/pruduct.png" width="100px" height="100px">
+  </div>
+
+  <!--  details client ou fournisseur-->
+  <div class="col-md-5 border-end mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
+        <div class="col-md-11">{{ clientFournisseur?.nom }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
+        <div class="col-md-11">{{ clientFournisseur?.prenom }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
+        <div class="col-md-11">{{ clientFournisseur?.numTel }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!--  details commandes-->
+  <div class="col-md-3 border-end mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
+        <div class="col-md-11">{{ commande.code }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
+        <div class="col-md-11">{{ commande.dateCommande }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
+        <div class="col-md-11">{{ commande.etatCommande }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!--  boutons action-->
+  <div class="col-md-3 mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol">
+          <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;
+          Modifier
+        </button>
+      </div>
+      <div class="col-md-6 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol">
+          <i class="fa-solid fa-trash-alt blue-color"></i>&nbsp;
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

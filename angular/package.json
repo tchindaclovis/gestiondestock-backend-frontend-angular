@@ -1,0 +1,66 @@
+{
+  "name": "mon-premier-projet",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "start:local": "npm run gs-api:full && ng serve -- --proxyConfig=proxy.conf.json",
+    "gs-api:clean": "rimraf src/gs-api",
+    "gs-api": "npm run gs-api:create-dist && npm run gs-api:download && npm run gs-api:extract && npm run gs-api:swagger-gen",
+    "gs-api:create-dist": "shx mkdir -p tools/swagger/dist && shx mkdir -p tools/swagger/src",
+    "gs-api:download": "shx cp \"C:/Users/CLOVIS TCHINDA/Desktop/gestiondestock/target/gestiondestock-0.0.1-SNAPSHOT.jar\" ./tools/swagger/dist && shx cp \"C:/Users/CLOVIS TCHINDA/Desktop/gestiondestock/target/swagger.json\" ./tools/swagger/src",
+    "gs-api:extract": "node ./tools/swagger/src/swagger.json 0.0.1-SNAPSHOT",
+    "gs-api:swagger-gen": "openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -p ngVersion=13 -o src/gs-api/src --skip-validate-spec",
+    "gs-api:generate": "openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -o src/gs-api --skip-validate-spec",
+    "gs-api:full": "npm run gs-api:clean && npm run gs-api:create-dist && npm run gs-api:download && npm run gs-api:extract && npm run gs-api:swagger-gen"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~13.0.0-next.0",
+    "@angular/common": "~13.0.0-next.0",
+    "@angular/compiler": "~13.0.0-next.0",
+    "@angular/core": "~13.0.0-next.0",
+    "@angular/forms": "~13.0.0-next.0",
+    "@angular/platform-browser": "~13.0.0-next.0",
+    "@angular/platform-browser-dynamic": "~13.0.0-next.0",
+    "@angular/router": "~13.0.0-next.0",
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "rxjs": "~7.4.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^13.0.3",
+    "@angular/cli": "^13.3.11",
+    "@angular/compiler-cli": "~13.0.0-next.0",
+    "@types/jasmine": "~3.10.0",
+    "@types/node": "^12.11.1",
+    "jasmine-core": "~3.10.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "ng-packagr": "^13.3.1",
+    "ng-swagger-gen": "^1.7.0-b",
+    "typescript": "~4.4.3"
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.0.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tchindaclovis/gestiondestock-angular.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tchindaclovis/gestiondestock-angular/issues"
+  },
+  "homepage": "https://github.com/tchindaclovis/gestiondestock-angular#readme"
+}

@@ -1,0 +1,111 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  background-color:#eff2f5;
+}
+
+.background-grey{
+  background-color:#eff2f5;
+}
+
+.border-none{
+  border: none;
+}
+
+.min-height-80{
+  min-height: 80px;
+}
+
+.border-end{
+  border-right: 3px solid #9ca1a6 !important;
+}
+
+.obj-height{
+  height: 39px;
+}
+
+.custom-border{
+  border:solid #9ca1a6;
+  border-radius: 5px;
+}
+
+.blue-color{
+  color: #837bfe;
+}
+
+.souligner-au-survol {
+  /* Étape 1 : Assurez-vous que le texte n'est PAS souligné par défaut */
+  text-decoration: none;
+}
+
+.souligner-au-survol:hover {
+  /* Étape 2 : Soulignez le texte UNIQUEMENT au passage de la souris */
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+.loader-overlay {
+  position: absolute;
+  width: 100%;
+  z-index: 500000;
+  top: 0;
+}
+
+.loader {
+  height: 10px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #FFF;
+}
+
+.loader:before {
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 10px;
+  background-color: #007bff;
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+  from {
+    left: -200px;
+    width: 30%;
+  }
+  50% {
+    width: 30%;
+  }
+  70% {
+    width: 70%;
+  }
+  80% {
+    left: 50%;
+  }
+  95% {
+    left: 120%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+#posts {
+  margin: 20px 0;
+  list-style-type: none;
+}
+
+#about {
+  margin: 20px;
+}
+
+.alerts {
+  margin: 20px 0;
+  color: red;
+}
+

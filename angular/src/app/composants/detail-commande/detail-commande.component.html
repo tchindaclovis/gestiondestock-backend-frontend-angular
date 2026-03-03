@@ -1,0 +1,51 @@
+<div class="row mb-1 mr-0 custom-border">
+
+  <!--  details code article-->
+  <div class="col-md-3 border-end mb-1 mt-1">
+    <div class="row text-center">
+      <div class="col-md-11">
+        {{ ligneCommande.article?.codeArticle }}
+      </div>
+    </div>
+  </div>
+
+  <!--  details designation-->
+  <div class="col-md-3 border-end mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        {{ ligneCommande.article?.designation }}
+      </div>
+    </div>
+  </div>
+
+  <!--  details quantite-->
+  <div class="col-md-2 border-end mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        {{ ligneCommande.quantite }}
+      </div>
+    </div>
+  </div>
+
+  <!--  prix unitaire-->
+  <div class="col-md-2 border-end mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        {{ ligneCommande.prixUnitaire}}
+      </div>
+    </div>
+  </div>
+
+  <!--  prix total-->
+  <div class="col-md-2 border-end mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        {{ ligneCommande.prixUnitaire && ligneCommande.quantite ?
+        +ligneCommande.prixUnitaire * +ligneCommande.quantite : ''}}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

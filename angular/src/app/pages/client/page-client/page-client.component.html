@@ -1,0 +1,32 @@
+<div class="col">
+  <div class="row m-3">
+    <div class="col-md-8 p-0">
+      <h1>Liste des clients</h1>
+    </div>
+    <div class="col-md-4 text-end">
+      <app-boutton-action
+        (clickEvent)="nouveauClient()">
+      </app-boutton-action>
+    </div>
+  </div>
+
+  <div class="col m-3">
+    <div class="alert alert-danger" *ngIf="errorMsg">
+      {{ errorMsg }}
+    </div>
+    <app-detail-client-fournisseur
+      *ngFor="let client of listClient"
+      [clientFournisseur]="client"
+      [origin]="'client'"
+      (suppressionResult)="handleSuppression($event)">
+    </app-detail-client-fournisseur>
+  </div>
+
+  <div class="row mb-3">
+    <div class="text-center">
+      <app-pagination></app-pagination>
+    </div>
+  </div>
+
+</div>
+

@@ -1,0 +1,75 @@
+<div class="col pt-3 pb-3 p-5">
+  <div class="col-md-12 mb-3">
+    <button (click)="fileInput.click()" style="background-color: transparent; border: none">
+      <img [src]="imgUrl" class="rounded-circle" width="200px" height="200px" />
+      <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)">
+    </button>
+  </div>
+  <hr>
+  <div class="col-md-12">
+    <div class="col-md-12">
+      <h2><i class="fa-solid fa-circle-info blue-color"></i>&nbsp;Information de l'article</h2>
+    </div>
+
+    <div class="col-md-12">
+      <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
+        <div *ngFor="let msg of errorMsg">
+          <span >{{msg}}</span>
+        </div>
+      </div>
+      <form action="">
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" class="form-control" name="codearticle" placeholder="Code article"
+                   aria-label="Code article" [(ngModel)]="articleDto.codeArticle">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" name="designation" placeholder="Designation"
+                   aria-label="Designation" [(ngModel)]="articleDto.designation">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" class="form-control" name="prixunitht" placeholder="Prix unitaire HT"
+                   aria-label="Prix unitaire HT" (input)="calculerTTC()" [(ngModel)]="articleDto.prixUnitaireHt">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" name="tauxtva" placeholder="Taux TVA"
+                   aria-label="Taux TVA" (input)="calculerTTC()" [(ngModel)]="articleDto.tauxTva">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" class="form-control" name="prixunitttc" placeholder="Prix unitaire TTC"
+                   aria-label="Prix unitaire TTC" [(ngModel)]="articleDto.prixUnitaireTtc">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" name="description" placeholder="Description"
+                   aria-label="Description" [(ngModel)]="articleDto.description">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <select class="form-select form-select-sm" name="cat" placeholder="Type catégorie"
+                    aria-label="choix categorie" [(ngModel)]="categorieDto.id">
+              <option selected>Selectionner une categorie</option>
+              <option *ngFor="let cat of listeCategorie" [value]="cat.id">{{cat.code}} - {{cat.designation}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-12 text-end">
+    <button class="btn btn-danger me-3" (click)="cancelClick()">
+      <i class="fa-solid fa-ban"></i>&nbsp;
+      Annuler
+    </button>
+    <button class="btn btn-primary" (click)="enregistrerArticle()">
+      <i class="fa-solid fa-save"></i>&nbsp;
+      Enregistrer
+    </button>
+  </div>
+</div>
+

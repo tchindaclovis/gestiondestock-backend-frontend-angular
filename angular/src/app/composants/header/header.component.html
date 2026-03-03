@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="input-group flex-nowrap">
+      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+      <div class="input-group-prepend">
+        <span class="input-group-text col-md-12 obj-height" id="addon-wrapping">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-9 text-end">
+        <span *ngIf="connectedUser !== null">
+          Bonjour {{connectedUser.nom}}&nbsp;
+        </span>
+      </div>
+
+      <div class="col-md-3">
+        <a href="javascript:void(0);" [routerLink]="['/profil']">
+          <img src="favicon.ico" class="rounded-circle" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<div class="row">-->
+<!--  <div class="col-md-8">-->
+<!--    <div class="input-group flex-nowrap">-->
+<!--      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-md-4">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-9 text-right">-->
+<!--        <span>Bonjour {{connectedUser.nom}}&nbsp;</span>-->
+<!--      </div>-->
+
+<!--      <div class="col-md-3">-->
+<!--        <a href="javascript:void(0);" [routerLink]="['/profil']">-->
+<!--          <img src="favicon.ico" class="rounded-circle" />-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+
+
+
+
+
+
+<!--<div class="row">-->
+<!--  <div class="col-md-8">-->
+<!--    <div class="input-group flex-nowrap">-->
+<!--      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-magnifying-glass"></i></span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-md-4">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-9 text-end">-->
+<!--        <span>Bonjour {{connectedUser?.nom}}&nbsp;{{connectedUser?.prenom}}</span>-->
+<!--      </div>-->
+
+<!--      <div class="col-md-3">-->
+<!--        <a href="javascript:void(0);" [routerLink]="['/profil']">-->
+<!--          <img src="favicon.ico" class="rounded-circle" />-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

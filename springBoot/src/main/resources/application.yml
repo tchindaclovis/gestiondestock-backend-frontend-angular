@@ -1,0 +1,138 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gestionstock?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+#   url: jdbc:postgresql://localhost:5432/gestionstock
+    username: postgres
+    password: JESUSglory
+    driver-class-name: org.postgresql.Driver
+
+
+    #pour exécuter les script sql
+  sql:
+    init:
+      mode: always
+
+    ## Tolérer les reférences circulaires
+#  main:
+#    allow-circular-references : true
+
+
+  ## Configurer la taille des fichiers
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      file-size-threshold: 2KB
+
+
+      ## Specify DBMS
+  jpa:
+    database: POSTGRESQL
+      ## Exposer les requête sql lorsqu'on les envoi à notre API(true or false)
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        ejb:
+          interceptor: com.tchindaClovis.gestiondestock.interceptor.Interceptor
+        session_factory:
+          statement_inspector: com.tchindaClovis.gestiondestock.interceptor.Interceptor
+    open-in-view: false
+
+      ## Hibernate DDL Auto (create, create-drop, update, none, validate)
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+      ## Port du serveur
+server:
+  port: 8081
+
+
+      ##Activation de Spring Doc
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+
+      ## Logs de debug pour voir ce qui se passe
+logging:
+  level:
+    org:
+      springdoc: DEBUG
+      springframework:
+        web: DEBUG
+    com:
+      votrepackage: DEBUG
+
+
+      ## Configuration MinIO
+minio:
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: imagephoto
+  endpoint: http://localhost:9000
+  secure: false
+  default-folder: uploads/
+  url: http://127.0.0.1:9000
+
+      ##Temps d'expiration des URLs signées (en secondes)
+  presigned-url-expiry: 3600
+
+  public-url: false
+  presigned-expiry: 604800
+
+
+      ## activer le mode debug
+#debug: true
+
+
+jwt:
+  secret: mySuperSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm
+  expiration: 36000000
+
+      ##Configuration Docker (optionnel)
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - 'minio_data:/data'
+    command: 'server /data --console-address ":9001"'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+    restart: unless-stopped
+
+volumes:
+  minio_data:
+    driver: local
+
+
+# spring.main.allow-circular-references = true
+#springdoc:
+#  api-docs:
+#    enabled: true
+#    path: /docs/test-api
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger-ui.html
+#    tags-sorter: alpha
+#    operations-sorter: alpha
+#    display-request-duration: true
+#  packages-to-scan: com.tchindaClovis.gestiondestock.controller
+#  paths-to-match: /v1/**
+##  paths-to-match: /api/**
