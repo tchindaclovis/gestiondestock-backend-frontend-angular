@@ -20,16 +20,7 @@ public class PhotoController implements PhotoApi {
         this.minioService = minioService;
         this.strategyPhotoContext = strategyPhotoContext;
     }
-//    @Override
-//    public String uploadPhoto(MultipartFile file, String title) {
-//        try {
-//            // Utilisation équivalente à l'ancien service Flickr
-//            return minioService.savePhoto(file.getInputStream(),
-//                    title != null ? title : file.getOriginalFilename());
-//        } catch (IOException e) {
-//            throw new RuntimeException("Erreur lecture fichier: " + e.getMessage(), e);
-//        }
-//    }
+
 
     @Override
     @PreAuthorize("hasAnyRole('minioadmin','minioadmin')")

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LigneCommandeClientDto, MvtStockDto} from "../../../../gs-api/src";
 
 @Component({
   selector: 'app-page-mvtstock',
@@ -7,6 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageMvtstockComponent implements OnInit {
 
+  listeMouvements: Array<any> = [];
+  mouvementsStock: Array<MvtStockDto> = [];
+
+  mapMouvementsStock = new Map();
   constructor() { }
 
   ngOnInit(): void {

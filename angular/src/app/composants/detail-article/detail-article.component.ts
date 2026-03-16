@@ -40,4 +40,8 @@ export class DetailArticleComponent implements OnInit {
        });
     }
   }
+
+  appercuArticle(): void {
+    this.router.navigate(['appercuarticle', this.articleDto.id]);
+  }
 }

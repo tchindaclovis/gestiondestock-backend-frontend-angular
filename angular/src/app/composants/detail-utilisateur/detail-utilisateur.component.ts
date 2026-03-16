@@ -53,4 +53,8 @@ export class DetailUtilisateurComponent implements OnInit {
       });
     }
   }
+
+  appercuUtilisateur(): void {
+    this.router.navigate(['appercuutilisateur', this.utilisateurDto.id]);
+  }
 }

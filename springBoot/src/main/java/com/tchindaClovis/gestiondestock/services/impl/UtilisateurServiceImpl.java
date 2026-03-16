@@ -16,12 +16,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-
 
 @Service
 @Slf4j
@@ -40,26 +37,44 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDto save(UtilisateurDto dto) {
+
+        // Validation des champs
         List<String> errors = UtilisateurValidator.validate(dto);
         if (!errors.isEmpty()) {
             log.error("Utilisateur is not valid {}", dto);
-            throw new InvalidEntityException("L'utilisateur n'est pas valide",
-                    ErrorCodes.UTILISATEUR_NOT_VALID, errors);
+            throw new InvalidEntityException(
+                    "L'utilisateur n'est pas valide",
+                    ErrorCodes.UTILISATEUR_NOT_VALID,
+                    errors
+            );
         }
 
-        if(userAlreadyExists(dto.getEmail())) {
-            throw new InvalidEntityException("Un autre utilisateur avec le meme email existe deja",
+        // Vérification de l'unicité de l'email
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findUtilisateurByEmail(dto.getEmail());
+
+        if (utilisateur.isPresent() && !utilisateur.get().getId().equals(dto.getId())) {
+            throw new InvalidEntityException(
+                    "Un autre utilisateur avec le meme email existe deja",
                     ErrorCodes.UTILISATEUR_ALREADY_EXISTS,
-                    Collections.singletonList("Un autre utilisateur avec le meme email existe deja dans la BDD"));
+                    Collections.singletonList("Un autre utilisateur avec le meme email existe deja dans la BDD")
+            );
         }
 
-        dto.setMotDePasse(passwordEncoder.encode(dto.getMotDePasse()));
+        // Encodage du mot de passe seulement si il existe
+        if (dto.getMotDePasse() != null && !dto.getMotDePasse().isEmpty()
+                && !dto.getMotDePasse().startsWith("$2a$")) {  //Encoder uniquement si le mot de passe n’est pas déjà encodé.
 
-        return UtilisateurDto.fromEntity(
-                utilisateurRepository.save(
-                        UtilisateurDto.toEntity(dto)
-                )
-        );
+            dto.setMotDePasse(passwordEncoder.encode(dto.getMotDePasse()));
+        }
+
+//        if (dto.getMotDePasse() != null && !dto.getMotDePasse().isEmpty()) {
+//            dto.setMotDePasse(passwordEncoder.encode(dto.getMotDePasse())); //double encodage et rejet du mot de passe
+//        }
+
+        // Sauvegarde
+        Utilisateur savedUser = utilisateurRepository.save(UtilisateurDto.toEntity(dto));
+
+        return UtilisateurDto.fromEntity(savedUser);
     }
 
 
@@ -67,7 +82,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Optional<Utilisateur> user = utilisateurRepository.findUtilisateurByEmail(email);
         return user.isPresent();
     }
-
 
     @Override
     public UtilisateurDto findById(Integer id) {
@@ -78,43 +92,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.findById(id)
                 .map(UtilisateurDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Aucun utilisateur avec l'ID = " + id + " n' ete trouve dans la BDD",
+                        "Aucun utilisateur avec l'ID = " + id + " n'a ete trouve dans la BDD",
                         ErrorCodes.UTILISATEUR_NOT_FOUND)
                 );
     }
-
-
-
-//        @Override
-//    public UtilisateurDto findByNom(String nom) {
-//        if(!StringUtils.hasLength(nom)){
-//            log.error("Utilisateur NOM is null");
-//            return null;
-//        }
-//        Optional<Utilisateur> utilisateur = utilisateurRepository.findByNom(nom);
-//        return Optional.of(UtilisateurDto.fromEntity(utilisateur.get())).orElseThrow(() ->
-//                new EntityNotFoundException(
-//                        "Aucun utilisateur avec le NOM = " + nom + "n'a ete trouve dans la BDD",
-//                        ErrorCodes.UTILISATEUR_NOT_FOUND)
-//        );
-//    }
-
-
-
-//    @Override
-//    public UtilisateurDto findByPrenom(String prenom) {
-//        if(!StringUtils.hasLength(prenom)){
-//            log.error("Utilisateur PRENOM is null");
-//            return null;
-//        }
-//        Optional<Utilisateur> utilisateur = utilisateurRepository.findByPrenom(prenom);
-//        return Optional.of(UtilisateurDto.fromEntity(utilisateur.get())).orElseThrow(() ->
-//                new EntityNotFoundException(
-//                        "Aucun utilisateur avec le PRENOM = " + prenom + "n'a ete trouve dans la BDD",
-//                        ErrorCodes.UTILISATEUR_NOT_FOUND)
-//        );
-//    }
-
 
     @Override
     public List<UtilisateurDto> findAll() {
@@ -122,7 +103,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 .map(UtilisateurDto::fromEntity)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public void delete(Integer id) {
@@ -133,17 +113,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
-
     @Override
     public UtilisateurDto findByEmail(String email) {
         return utilisateurRepository.findUtilisateurByEmail(email)
                 .map(UtilisateurDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
-                   "Aucun utilisateur avec l'email = " + email + " n' ete trouve dans la BDD",
+                   "Aucun utilisateur avec l'email = " + email + " n'a été trouvé dans la BDD",
                    ErrorCodes.UTILISATEUR_NOT_FOUND)
                 );
     }
-
 
     @Override
     public UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto) {
@@ -162,7 +140,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 utilisateurRepository.save(utilisateur)
         );
     }
-
 
     private void validate(ChangerMotDePasseUtilisateurDto dto) {
         if (dto == null) {
@@ -313,56 +290,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 //}
 
 
-
-
-
-
-
-
-
-//    @Override
-//    @Transactional
-//    public void updatePassword(String email, String newPassword) {
-//        log.info("Mise à jour du mot de passe pour l'utilisateur: {}", email);
-//
-//        if (!StringUtils.hasLength(email) || !StringUtils.hasLength(newPassword)) {
-//            throw new InvalidEntityException("L'email et le nouveau mot de passe sont obligatoires",
-//                    ErrorCodes.UTILISATEUR_NOT_VALID);
-//        }
-//
-//        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
-//                .orElseThrow(() -> new EntityNotFoundException(
-//                        "Aucun utilisateur avec l'email = " + email + " n'a été trouvé",
-//                        ErrorCodes.UTILISATEUR_NOT_FOUND)
-//                );
-//
-//        // Validation du nouveau mot de passe
-//        if (newPassword.length() < 8) {
-//            throw new InvalidEntityException("Le mot de passe doit contenir au moins 8 caractères",
-//                    ErrorCodes.UTILISATEUR_PASSWORD_INVALID);
-//        }
-//
-//        utilisateur.setMotDePasse(passwordEncoder.encode(newPassword));
-//        utilisateurRepository.save(utilisateur);
-//
-//        log.info("Mot de passe mis à jour avec succès pour l'utilisateur: {}", email);
-//    }
-
-
-
-
-//    @Override
-//    @Transactional
-//    public void updatePassword(String email, String newPassword) {
-//        Optional<Utilisateur> utilisateurOpt = utilisateurRepository.findByEmail(email);
-//        if (utilisateurOpt.isPresent()) {
-//            Utilisateur utilisateur = utilisateurOpt.get();
-//            utilisateur.setMotDePasse(passwordEncoder.encode(newPassword));
-//            utilisateurRepository.save(utilisateur);
-//        } else {
-//            throw new EntityNotFoundException("Utilisateur non trouvé avec l'email: " + email);
-//        }
-//    }
 
 
 

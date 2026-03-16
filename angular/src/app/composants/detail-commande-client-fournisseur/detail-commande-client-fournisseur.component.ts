@@ -14,7 +14,6 @@ export class DetailCommandeClientFournisseurComponent implements OnInit {
   @Input()
   origin = '';
   @Input()
-
   commande: any = {};
 
   // clientFournisseur: ClientDto | undefined = {};

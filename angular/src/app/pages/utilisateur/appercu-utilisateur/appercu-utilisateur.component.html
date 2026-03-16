@@ -1,0 +1,74 @@
+<div class="row p-3">
+  <div class="col-md-5">
+    <button  style="background-color: transparent; border: none">
+      <img [src]="utilisateurDto.photo ? utilisateurDto.photo : 'assets/product.png'" [src]="imgUrl"
+           width="550px" height="480px"/>
+      <input hidden type="file">
+    </button>
+  </div>
+
+  <div class="col-md-7">
+    <div class="col-md-12 text-center pb-3">
+      <h2><i class="fa-solid  fa-magnifying-glass blue-color"></i>&nbsp;Apperçue de l'utilisateur</h2>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Nom:</label>
+          <div class="appercu-form">{{ utilisateurDto.nom }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Adresse1:</label>
+          <div class="appercu-form">{{ utilisateurDto.adresse!.adresse1 }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Prénom:</label>
+          <div class="appercu-form">{{ utilisateurDto.prenom }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Adresse2:</label>
+          <div class="appercu-form">{{ utilisateurDto.adresse!.adresse2 }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Email:</label>
+          <div class="appercu-form">{{ utilisateurDto.email }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Ville:</label>
+          <div class="appercu-form">{{ utilisateurDto.adresse!.ville }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Numéro téléphone:</label>
+          <div class="appercu-form">{{ utilisateurDto.numTel }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Code postale:</label>
+          <div class="appercu-form">{{ utilisateurDto.adresse!.codePostale }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Pays:</label>
+          <div class="appercu-form">{{ utilisateurDto.adresse!.pays }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 text-center mt-3">
+      <button class="btn btn-danger me-3" (click)="cancelClick()">
+        <i class="fa-solid fa-ban"></i>&nbsp;
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>

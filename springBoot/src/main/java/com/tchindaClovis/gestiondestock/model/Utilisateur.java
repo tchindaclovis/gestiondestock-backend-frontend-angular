@@ -39,7 +39,7 @@ public class Utilisateur extends AbstractEntity{
     @Embedded //champ embarqué qui peut être utilisé dan plusieurs autres classes
     private Adresse adresse;
 
-    @Column(name = "photo",columnDefinition = "TEXT")
+    @Column(name = "photo",columnDefinition = "TEXT",length = 1024)
     private String photo;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "utilisateur")

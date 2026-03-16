@@ -1,0 +1,74 @@
+<div class="row p-3">
+  <div class="col-md-5">
+    <button (click)="fileInput.click()" style="background-color: transparent; border: none">
+      <img [src]="clientFournisseur.photo ? clientFournisseur.photo : 'assets/product.png'"[src]="imgUrl"
+            width="550px" height="480px" />
+      <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)">
+    </button>
+  </div>
+
+  <div class="col-md-7">
+    <div class="col-md-12 text-center pb-3">
+      <h2><i class="fa-solid fa-circle-info blue-color"></i>&nbsp;Apperçu du {{origin}}</h2>
+    </div>
+    <div class="col-md-12">
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Nom du {{origin}}:</label>
+          <div class="appercu-form">{{ clientFournisseur.nom }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Adresse1 du {{origin}}:</label>
+          <div class="appercu-form">{{ adresseDto.adresse1 }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Prénom du {{origin}}:</label>
+          <div class="appercu-form">{{ clientFournisseur.prenom }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Adresse2 du {{origin}}:</label>
+          <div class="appercu-form">{{ adresseDto.adresse2 }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Email du {{origin}}:</label>
+          <div class="appercu-form">{{ clientFournisseur.email }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Ville du {{origin}}:</label>
+          <div class="appercu-form">{{ adresseDto.ville }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Téléphone du {{origin}}:</label>
+          <div class="appercu-form">{{ clientFournisseur.numTel }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Code postale du {{origin}}:</label>
+          <div class="appercu-form">{{ adresseDto.codePostale }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Pays du {{origin}}:</label>
+          <div class="appercu-form">{{ adresseDto.pays }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 text-center mt-3">
+      <button class="btn btn-danger me-3" (click)="cancelClick()">
+        <i class="fa-solid fa-ban"></i>&nbsp;
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>

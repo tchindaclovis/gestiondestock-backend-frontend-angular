@@ -11,21 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Photo", description = "API de gestion des photos")
 public interface PhotoApi {
 
-//    @PostMapping(value = "/save/{context}/{id}/{title}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<?> savePhoto(
-//            @PathVariable String context,
-//            @PathVariable Integer id,
-//            @PathVariable String title,
-//            @RequestParam("photo") MultipartFile photo) throws IOException,
-//            MinioException;
-
-    @PostMapping(value=APP_ROOT + "/save/{id}/{title}/{context}",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value=APP_ROOT + "/save/{id}/{title}/{context}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     Object savePhoto(@PathVariable("context") String context,
                      @PathVariable("id") Integer id,
                      @RequestPart("file") MultipartFile photo,
-                     @PathVariable("title") String title) throws IOException,
-            MinioException;
+                     @PathVariable("title") String title) throws IOException, MinioException;
 
     @DeleteMapping(APP_ROOT + "/delete/{photoUrl}")
     public void deletePhoto(@RequestParam String photoUrl);

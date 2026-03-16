@@ -1,41 +1,163 @@
+<!--
+  Composant Accordion de Bootstrap
+  Permet de créer un menu déroulant (menu principal + sous-menus)
+  id="accordionExample" → utilisé par Bootstrap pour gérer l’ouverture/fermeture
+-->
 <div class="accordion" id="accordionExample">
+
+  <!--
+    *ngFor → directive Angular permettant de parcourir
+    le tableau menuProperties
+
+    Chaque élément "menu" représente un menu principal
+  -->
   <div class="accordion-item" *ngFor="let menu of menuProperties">
+
+    <!--
+      Header du menu principal
+      L'id est dynamique pour éviter les conflits
+    -->
     <div class="card-header" id="menu{{menu.id}}">
+
       <h2 class="mb-0">
-        <button class="accordion-button btn btn-link w-100 text-start souligner-au-survol bg-body-secondary" type="button"
-                data-bs-toggle="collapse"
-                [attr.data-bs-target]="'#collapse' + menu.id" aria-expanded="true" aria-controls="collapseOne">
+
+        <!--
+          Bouton qui ouvre / ferme le menu accordion
+          accordion-button → style Bootstrap
+
+          data-bs-toggle="collapse"
+          → indique que ce bouton déclenche un collapse
+
+          data-bs-target
+          → cible la section à ouvrir
+          binding Angular pour générer un id dynamique
+        -->
+        <button
+          class="accordion-button btn btn-link w-100 text-start souligner-au-survol bg-body-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#collapse' + menu.id"
+          aria-expanded="true"
+          aria-controls="collapseOne">
+
+          <!--
+            Icône du menu
+            La classe provient de l'objet menu.icon
+            (ex: FontAwesome)
+          -->
           <i class="{{menu.icon}}"></i>&nbsp;
+
+          <!--
+            Titre du menu principal
+          -->
           {{menu.titre}}
+
         </button>
+
       </h2>
     </div>
 
-    <div id="collapse{{menu.id}}"
-         class="accordion-collapse collapse"
-         [attr.aria-labelledby]="'heading' + menu.id"
-         data-bs-parent="#accordionExample">
+
+    <!--
+      Zone collapsible (contenu du menu)
+      id dynamique pour correspondre au bouton
+    -->
+    <div
+      id="collapse{{menu.id}}"
+      class="accordion-collapse collapse"
+      [attr.aria-labelledby]="'heading' + menu.id"
+      data-bs-parent="#accordionExample">
+
+      <!--
+        Corps du menu
+        p-0 → suppression du padding
+      -->
       <div class="accordion-body p-0">
+
+        <!--
+          Liste des sous-menus
+          list-group → composant Bootstrap
+        -->
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"
-              *ngFor="let sousMenu of menu.sousMenu"
-              [ngClass]="{'bg-primary-subtle': sousMenu.active, '': !sousMenu.active}">
-            <a href="javascript:void(0);" (click)="navigate(sousMenu)" class="d-block text-success souligner-au-survol">
-              <i class="{{sousMenu.icon}}"></i>&nbsp;
-              {{sousMenu.titre}}
-            </a>
+
+          <!--
+            *ngFor → parcourt les sous-menus du menu principal
+          -->
+          <!--
+            ngClass → permet d’ajouter une classe CSS conditionnellement
+            Si le sous-menu est actif → couleur de fond
+          -->
+          <li
+            class="list-group-item"
+            *ngFor="let sousMenu of menu.sousMenu"
+
+
+          [ngClass]="{
+          'bg-primary-subtle': sousMenu.active,
+          '': !sousMenu.active
+          }">
+
+          <!--
+            Lien du sous-menu
+            javascript:void(0) empêche le rechargement de page
+
+            (click) → appelle la méthode navigate()
+            avec le sous-menu sélectionné
+          -->
+          <a
+            href="javascript:void(0);"
+            (click)="navigate(sousMenu)"
+            class="d-block text-success souligner-au-survol">
+
+            <!--
+              Icône du sous-menu
+            -->
+            <i class="{{sousMenu.icon}}"></i>&nbsp;
+
+            <!--
+              Titre du sous-menu
+            -->
+            {{sousMenu.titre}}
+
+          </a>
+
           </li>
+
         </ul>
       </div>
     </div>
 
-<!--    <div id="collapse{{menu.id}}" class="collapse" [attr.aria-labelledby]="'#menu' + menu.id"-->
+  </div>
+</div>
+
+
+
+
+
+
+<!--<div class="accordion" id="accordionExample">-->
+<!--  <div class="accordion-item" *ngFor="let menu of menuProperties">-->
+<!--    <div class="card-header" id="menu{{menu.id}}">-->
+<!--      <h2 class="mb-0">-->
+<!--        <button class="accordion-button btn btn-link w-100 text-start souligner-au-survol bg-body-secondary" type="button"-->
+<!--                data-bs-toggle="collapse"-->
+<!--                [attr.data-bs-target]="'#collapse' + menu.id" aria-expanded="true" aria-controls="collapseOne">-->
+<!--          <i class="{{menu.icon}}"></i>&nbsp;-->
+<!--          {{menu.titre}}-->
+<!--        </button>-->
+<!--      </h2>-->
+<!--    </div>-->
+
+<!--    <div id="collapse{{menu.id}}"-->
+<!--         class="accordion-collapse collapse"-->
+<!--         [attr.aria-labelledby]="'heading' + menu.id"-->
 <!--         data-bs-parent="#accordionExample">-->
-<!--      <div class="card">-->
+<!--      <div class="accordion-body p-0">-->
 <!--        <ul class="list-group list-group-flush">-->
-<!--          <li class="list-group-item" *ngFor="let sousMenu of menu.sousMenu"-->
-<!--              [ngClass] ="{'text-white bg-info': sousMenu.active, '': !sousMenu.active}">-->
-<!--            <a href="javascript:void(0);" (click)="navigate(sousMenu)">-->
+<!--          <li class="list-group-item"-->
+<!--              *ngFor="let sousMenu of menu.sousMenu"-->
+<!--              [ngClass]="{'bg-primary-subtle': sousMenu.active, '': !sousMenu.active}">-->
+<!--            <a href="javascript:void(0);" (click)="navigate(sousMenu)" class="d-block text-success souligner-au-survol">-->
 <!--              <i class="{{sousMenu.icon}}"></i>&nbsp;-->
 <!--              {{sousMenu.titre}}-->
 <!--            </a>-->
@@ -44,5 +166,5 @@
 <!--      </div>-->
 <!--    </div>-->
 
-  </div>
-</div>
+<!--  </div>-->
+<!--</div>-->

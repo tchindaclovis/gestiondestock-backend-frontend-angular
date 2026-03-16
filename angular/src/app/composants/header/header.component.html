@@ -1,26 +1,90 @@
+<!--Container principal organisé en ligne Bootstrap
+  row → permet de structurer le contenu en colonnes-->
 <div class="row">
-  <div class="col-md-8">
+  <!--Colonne gauche (8/12) Contient la barre de recherche-->
+  <div class="col-md-6">
+    <!--input-group → composant Bootstrap pour associer
+      un champ input avec un élément (icône, bouton, etc.)
+      flex-nowrap → empêche le retour à la ligne-->
     <div class="input-group flex-nowrap">
-      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+      <!--Champ de saisie texte form-control → style Bootstrap
+        placeholder → texte indicatif
+        aria-* → accessibilité (lecture par lecteurs d’écran)-->
+      <input
+        type="text" class="form-control" placeholder="Username"
+        aria-label="Username" aria-describedby="addon-wrapping">
+      <!--input-group-prepend → ajoute un élément AVANT ou APRÈS l’input
+        Ici on ajoute une icône de recherche-->
       <div class="input-group-prepend">
-        <span class="input-group-text col-md-12 obj-height" id="addon-wrapping">
+        <!--input-group-text → style Bootstrap pour icône/texte
+          obj-height → classe CSS personnalisée (probablement hauteur personnalisée)-->
+        <span
+          class="input-group-text col-md-12 obj-height"
+          id="addon-wrapping">
+          <!--Icône FontAwesome (loupe)fa-solid → style plein
+            fa-magnifying-glass → icône recherche-->
           <i class="fa-solid fa-magnifying-glass"></i>
         </span>
       </div>
     </div>
   </div>
+  <!--Colonne droite (4/12) Contient les informations utilisateur connecté-->
   <div class="col-md-4">
     <div class="row">
+      <!--Partie texte (9/12)text-end → aligne le texte à droite-->
       <div class="col-md-9 text-end">
+        <!--*ngIf → directive structurelle Angular
+          Affiche le contenu uniquement si connectedUser n’est pas null
+          (donc si un utilisateur est connecté)-->
         <span *ngIf="connectedUser !== null">
-          Bonjour {{connectedUser.nom}}&nbsp;
+          <!--Interpolation Angular {{ }}
+            Affiche dynamiquement le nom de l’utilisateur connecté-->
+          Bonjour {{ connectedUser.nom }}&nbsp;
         </span>
       </div>
-
+      <!--Partie image profil (3/12)-->
       <div class="col-md-3">
+        <!--routerLink → navigation Angular sans rechargement de page
+          Redirige vers la route /profil-->
         <a href="javascript:void(0);" [routerLink]="['/profil']">
-          <img src="favicon.ico" class="rounded-circle" />
+          <!--Image utilisateur rounded-circle → rend l’image circulaire (Bootstrap)
+            favicon.ico → image temporaire (à remplacer par photo utilisateur)-->
+          <img [src]="connectedUser?.photo || 'assets/profil.png'"
+               class="rounded-circle" width="50px" height="50px"/>
+<!--          <img src="favicon.ico" class="rounded-circle"/>-->
         </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2 text-end logout-card">
+      <button type="button" class="btn btn-link souligner-au-survol text-danger" data-bs-toggle="modal"
+              [attr.data-bs-target]="'#modalLogoutUser' + connectedUser?.id">
+        <i class="fa-solid fa-right-from-bracket"></i>&nbsp;Deconnexion
+      </button>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalLogoutUser{{ connectedUser?.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Etes-vous sûr de vouloir vous déconnecter?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-ban"></i>Annuler</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i>Oui</button>
+        </div>
       </div>
     </div>
   </div>
@@ -29,35 +93,6 @@
 
 
 
-<!--<div class="row">-->
-<!--  <div class="col-md-8">-->
-<!--    <div class="input-group flex-nowrap">-->
-<!--      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">-->
-<!--      <div class="input-group-prepend">-->
-<!--        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-md-4">-->
-<!--    <div class="row">-->
-<!--      <div class="col-md-9 text-right">-->
-<!--        <span>Bonjour {{connectedUser.nom}}&nbsp;</span>-->
-<!--      </div>-->
-
-<!--      <div class="col-md-3">-->
-<!--        <a href="javascript:void(0);" [routerLink]="['/profil']">-->
-<!--          <img src="favicon.ico" class="rounded-circle" />-->
-<!--        </a>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-
-
-
-
 
 
 <!--<div class="row">-->
@@ -65,14 +100,18 @@
 <!--    <div class="input-group flex-nowrap">-->
 <!--      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">-->
 <!--      <div class="input-group-prepend">-->
-<!--        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-magnifying-glass"></i></span>-->
+<!--        <span class="input-group-text col-md-12 obj-height" id="addon-wrapping">-->
+<!--          <i class="fa-solid fa-magnifying-glass"></i>-->
+<!--        </span>-->
 <!--      </div>-->
 <!--    </div>-->
 <!--  </div>-->
 <!--  <div class="col-md-4">-->
 <!--    <div class="row">-->
 <!--      <div class="col-md-9 text-end">-->
-<!--        <span>Bonjour {{connectedUser?.nom}}&nbsp;{{connectedUser?.prenom}}</span>-->
+<!--        <span *ngIf="connectedUser !== null">-->
+<!--          Bonjour {{connectedUser.nom}}&nbsp;-->
+<!--        </span>-->
 <!--      </div>-->
 
 <!--      <div class="col-md-3">-->
@@ -83,3 +122,5 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
+
+

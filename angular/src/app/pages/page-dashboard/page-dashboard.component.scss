@@ -1,11 +1,23 @@
 .main-container{
-  margin: 50px;
+  margin: 10px;
 }
 
-.min-height-600{
-  min-height: 600px;
+.min-height-800{
+  min-height: 735px;
 }
 
+.min-height-80{
+  min-height: 50px;
+  span{
+    font-weight: bold;
+    font-size: 20px;
+    color: #007bff;
+  }
+}
+
+.max-height-80{
+  max-height: 70px;
+}
 .no-flex-wrap{
   flex-wrap: inherit !important;
 }

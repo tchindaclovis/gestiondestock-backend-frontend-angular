@@ -1,0 +1,69 @@
+<div class="row p-3">
+  <div class="col-md-5">
+    <button  style="background-color: transparent; border: none">
+      <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'" [src]="imgUrl"
+           class="fa-square-full"  width="550px" height="480px"/>
+      <input hidden type="file">
+    </button>
+  </div>
+
+  <div class="col-md-7">
+    <div class="col-md-12 text-center pb-3">
+      <h2><i class="fa-solid  fa-magnifying-glass blue-color"></i>&nbsp;Apperçue de l'article</h2>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Code article:</label>
+          <div class="appercu-form">{{ articleDto.codeArticle }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Designation:</label>
+          <div class="appercu-form">{{ articleDto.designation }}</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Prix unitaire HT:</label>
+          <div class="appercu-form">{{ articleDto.prixUnitaireHt }} FCFA</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Taux TVA:</label>
+          <div class="appercu-form">{{ articleDto.tauxTva }} %</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Prix unitaire TTC:</label>
+          <div class="appercu-form">{{ articleDto.prixUnitaireTtc }} FCFA</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Désignation catégorie:</label>
+          <div class="appercu-form">{{ articleDto.category?.designation }}</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Code Catégorie:</label>
+          <div class="appercu-form">{{ articleDto.category?.code }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 text-center">
+        <label>Description:</label>
+        <div class="appercu-form">{{ articleDto.description }}</div>
+    </div>
+
+    <div class="col-md-12 text-center mt-3">
+      <button class="btn btn-danger me-3" (click)="cancelClick()">
+        <i class="fa-solid fa-ban"></i>&nbsp;
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>
+
+

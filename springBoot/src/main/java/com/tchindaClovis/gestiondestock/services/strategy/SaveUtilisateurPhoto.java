@@ -30,7 +30,8 @@ public class SaveUtilisateurPhoto implements Strategy<UtilisateurDto> {
     UtilisateurDto utilisateur = utilisateurService.findById(id);
     String urlPhoto = minioService.savePhoto(photo, titre);
     if (!StringUtils.hasLength(urlPhoto)) {
-      throw new InvalidOperationException("Erreur lors de l'enregistrement de photo de l'utilisateur", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
+      throw new InvalidOperationException("Erreur lors de l'enregistrement de la photo de l'utilisateur",
+              ErrorCodes.UPDATE_PHOTO_EXCEPTION);
     }
     utilisateur.setPhoto(urlPhoto);
     return utilisateurService.save(utilisateur);

@@ -1,5 +1,5 @@
-<div class="col">
-  <div class="row m-3">
+<div class="col p-lg-2">
+  <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
       <h1>Liste des clients</h1>
     </div>
@@ -8,12 +8,12 @@
         (clickEvent)="nouveauClient()">
       </app-boutton-action>
     </div>
-  </div>
-
-  <div class="col m-3">
     <div class="alert alert-danger" *ngIf="errorMsg">
       {{ errorMsg }}
     </div>
+  </div>
+
+  <div class="col mt-1 mb-1 ms-3 me-3 ps-4 pe-1 article_list">
     <app-detail-client-fournisseur
       *ngFor="let client of listClient"
       [clientFournisseur]="client"
@@ -22,11 +22,10 @@
     </app-detail-client-fournisseur>
   </div>
 
-  <div class="row mb-3">
+  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">
     <div class="text-center">
       <app-pagination></app-pagination>
     </div>
   </div>
-
 </div>
 

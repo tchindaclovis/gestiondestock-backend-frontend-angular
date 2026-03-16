@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LigneCommandeClientDto} from "../../../gs-api/src";
 
 @Component({
   selector: 'app-detail-mvtstock',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailMvtstockComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  origin = '';
+  @Input()
+  commande: any = {};
+  clientFournisseur: any | undefined = {};
+  @Input()
+  ligneCommande: any = {};
+
+  constructor() {}
 
   ngOnInit(): void {
   }

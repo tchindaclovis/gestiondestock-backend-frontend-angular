@@ -36,7 +36,10 @@ import {FormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HttpInterceptorService} from "./services/interceptor/http-interceptor.service";
 import { LoaderComponent } from './composants/loader/loader.component';
-// import {HttpErrorInterceptorService} from "./services/error-interceptor/http-error-interceptor.service";
+import { AppercuArticleComponent } from './pages/articles/appercu-article/appercu-article.component';
+import { TextFieldModule } from '@angular/cdk/text-field'; //pour cela, Installe Angular CDK version identique à ton angular de base :
+import { AppercuUtilisateurComponent } from './pages/utilisateur/appercu-utilisateur/appercu-utilisateur.component';
+import { AppercuClientFournisseurComponent } from './composants/appercu-client-fournisseur/appercu-client-fournisseur.component';
 
 
 @NgModule({
@@ -71,13 +74,17 @@ import { LoaderComponent } from './composants/loader/loader.component';
     NouvelUtilisateurComponent,
     PageProfilComponent,
     ChangerMotDePasseComponent,
-    LoaderComponent
+    LoaderComponent,
+    AppercuArticleComponent,
+    AppercuUtilisateurComponent,
+    AppercuClientFournisseurComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        TextFieldModule
     ],
   providers: [
     { provide: HTTP_INTERCEPTORS,

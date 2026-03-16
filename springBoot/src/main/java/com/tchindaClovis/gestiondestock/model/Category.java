@@ -22,6 +22,9 @@ public class Category extends AbstractEntity{
     @Column(name = "designation")
     private String designation;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
     private Integer idEntreprise;  //rien à voir avec les règle UML
 

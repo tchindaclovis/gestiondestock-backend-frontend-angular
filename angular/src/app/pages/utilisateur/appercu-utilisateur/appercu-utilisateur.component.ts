@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
 import {PhotoService, UtilisateurDto} from "../../../../gs-api/src";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UtilisateurService} from "../../../services/utilisateur/utilisateur.service";
 
 @Component({
-  selector: 'app-nouvel-utilisateur',
-  templateUrl: './nouvel-utilisateur.component.html',
-  styleUrls: ['./nouvel-utilisateur.component.scss']
+  selector: 'app-appercu-utilisateur',
+  templateUrl: './appercu-utilisateur.component.html',
+  styleUrls: ['./appercu-utilisateur.component.scss']
 })
-export class NouvelUtilisateurComponent implements OnInit {
+export class AppercuUtilisateurComponent implements OnInit {
 
   utilisateurDto: UtilisateurDto = {
     adresse: {}
@@ -62,8 +62,9 @@ export class NouvelUtilisateurComponent implements OnInit {
     }
   }
 
+
   savePhoto(idUtilisateur?: number, titre?: string): void {
-    if (idUtilisateur && titre && this.file) {  //si j'ai mon idUtilisateur et un fichier sélectionné
+    if (idUtilisateur && titre && this.file) {  //si j'ai mon idArticle et un fichier sélectionné
 
       this.photoService.savePhoto(
         'utilisateur',        // context
@@ -87,4 +88,5 @@ export class NouvelUtilisateurComponent implements OnInit {
     event.target.style.height = 'auto';
     event.target.style.height = event.target.scrollHeight + 'px';
   }
+
 }

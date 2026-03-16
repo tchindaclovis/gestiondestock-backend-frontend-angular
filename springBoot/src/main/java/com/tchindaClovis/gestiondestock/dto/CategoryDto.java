@@ -16,6 +16,8 @@ public class CategoryDto {
 
     private String designation;
 
+    private String description;
+
     private Integer idEntreprise;
 
     @JsonIgnore
@@ -31,6 +33,7 @@ public class CategoryDto {
                 .id(category.getId())
                 .code(category.getCode())
                 .designation(category.getDesignation())
+                .description(category.getDescription())
                 .idEntreprise(category.getIdEntreprise())
                 .build();
     }
@@ -45,6 +48,7 @@ public class CategoryDto {
         category.setId(categoryDto.getId());
         category.setCode(categoryDto.getCode());
         category.setDesignation(categoryDto.getDesignation());
+        category.setDescription(categoryDto.getDescription());
         category.setIdEntreprise(categoryDto.getIdEntreprise());
 
         return category;

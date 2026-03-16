@@ -46,27 +46,6 @@ public class MinioServiceImpl implements MinioService {
         }
     }
 
-//    private void initializeBucket() {
-//        try {
-//            boolean found = minioClient.bucketExists(
-//                    io.minio.BucketExistsArgs.builder()
-//                            .bucket(bucketName)
-//                            .build()
-//            );
-//            if (!found) {
-//                minioClient.makeBucket(
-//                        io.minio.MakeBucketArgs.builder()
-//                                .bucket(bucketName)
-//                                .build()
-//                );
-//                log.info("Bucket MinIO créé: {}", bucketName);
-//            }
-//        } catch (Exception e) {
-//            log.error("Erreur lors de l'initialisation du bucket MinIO: {}", e.getMessage());
-//            throw new RuntimeException("Erreur initialisation bucket MinIO: " + e.getMessage(), e);
-//        }
-//    }
-
 
     @Override
     public String savePhoto(InputStream photo, String title) {
@@ -224,25 +203,3 @@ public class MinioServiceImpl implements MinioService {
 
 }
 
-
-
-//    private String generatePhotoUrl(String filename) {
-//        try {
-//            if (usePublicUrl) {
-//                // URL publique directe (nécessite que le bucket soit public)
-//                return minioClient.getObjectUrl(bucketName, filename);
-//            } else {
-//                // URL pré-signée avec expiration
-//                return minioClient.getPresignedObjectUrl(
-//                        io.minio.GetPresignedObjectUrlArgs.builder()
-//                                .bucket(bucketName)
-//                                .object(filename)
-//                                .expiry(presignedExpiry)
-//                                .build()
-//                );
-//            }
-//        } catch (Exception e) {
-//            log.error("Erreur lors de la génération de l'URL: {}", e.getMessage());
-//            throw new RuntimeException("Erreur génération URL MinIO: " + e.getMessage(), e);
-//        }
-//    }

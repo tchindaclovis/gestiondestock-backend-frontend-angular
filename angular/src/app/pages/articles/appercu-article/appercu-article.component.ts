@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import {ArticleDto, CategoryDto, PhotoService} from "../../../../gs-api/src";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ArticleService} from "../../../services/article/article.service";
-import {ArticleDto, CategoryDto, PhotoService} from "../../../../gs-api/src";
 import {CategoryService} from "../../../services/category/category.service";
 
 @Component({
-  selector: 'app-nouvel-article',
-  templateUrl: './nouvel-article.component.html',
-  styleUrls: ['./nouvel-article.component.scss']
+  selector: 'app-appercu-article',
+  templateUrl: './appercu-article.component.html',
+  styleUrls: ['./appercu-article.component.scss']
 })
-export class NouvelArticleComponent implements OnInit {
+export class AppercuArticleComponent implements OnInit {
 
   articleDto: ArticleDto = {}; //objet ou variable initialisé à vide
   categorieDto: CategoryDto = {};
@@ -47,23 +47,13 @@ export class NouvelArticleComponent implements OnInit {
   }
 
 
-  enregistrerArticle(): void {
-    this.articleDto.category = this.categorieDto;
-    this.articleService.enregistrerArticle(this.articleDto)
-      .subscribe(art =>{
-        this.savePhoto(art.id, art.codeArticle)
-      }, error =>{
-        this.errorMsg = error.error.errors;
-      });
-  }
-
-
   calculerTTC(): void {
     if (this.articleDto.prixUnitaireHt && this.articleDto.tauxTva){
       this.articleDto.prixUnitaireTtc =
         +this.articleDto.prixUnitaireHt + (+(this.articleDto.prixUnitaireHt*this.articleDto.tauxTva))/100
     }
   }
+
 
 
   onFileInput(files: FileList | null): void {
@@ -80,6 +70,7 @@ export class NouvelArticleComponent implements OnInit {
       }
     }
   }
+
 
   savePhoto(idArticle?: number, titre?: string): void {
     if (idArticle && titre && this.file) {  //si j'ai mon idArticle et un fichier sélectionné
@@ -102,9 +93,4 @@ export class NouvelArticleComponent implements OnInit {
     }
   }
 
-  autoResize(event: any) {
-    event.target.style.height = 'auto';
-    event.target.style.height = event.target.scrollHeight + 'px';
-  }
 }
-

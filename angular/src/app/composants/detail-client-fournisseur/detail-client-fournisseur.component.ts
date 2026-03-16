@@ -52,4 +52,12 @@ clientFournisseur: any = {}; //soit client soit fournisseur
         });
     }
   }
+
+  appercuArticle(): void {
+    if(this.origin === 'client'){
+      this.router.navigate(['appercuclient', this.clientFournisseur.id]);
+    } else if(this.origin === 'fournisseur'){
+      this.router.navigate(['appercufournisseur', this.clientFournisseur.id]);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 <!--photo utilisateur-->
-<div class="row mb-1 mr-0 custom-border">
-  <div class="col-md-1 border-end p-1 text-center mb-1 mt-1">
+<div class="row mb-1 custom-border">
+  <div class="col-md-1 border-end p-1 text-center">
     <img [src]="utilisateurDto.photo ? utilisateurDto.photo : 'assets/product.png'" width="100px" height="100px">
   </div>
 
@@ -60,8 +60,8 @@
       </div>
       <div class="col-md-4">
         <!--btn-outline-info-->
-        <button type="button" class="btn  btn-link souligner-au-survol">
-          <i class="fa-solid fa-list"></i>&nbsp;Details
+        <button type="button" class="btn  btn-link souligner-au-survol" (click)="appercuUtilisateur()">
+          <i class="fa-solid fa-list"></i>&nbsp;Appercu
         </button>
       </div>
     </div>

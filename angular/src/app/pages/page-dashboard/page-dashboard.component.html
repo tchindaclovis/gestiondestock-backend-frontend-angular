@@ -1,29 +1,120 @@
+<!--Conteneur principal de l'application
+  main-container → classe CSS personnalisée qui gère probablement
+  la largeur globale et le layout général-->
 <div class="main-container">
-  <div class="row min-height-600 no-flex-wrap">
+  <!--row Bootstrap → structure la page en colonnes
+    min-height-800 → hauteur minimale personnalisée
+    no-flex-wrap → empêche les colonnes de passer à la ligne-->
+  <div class="row min-height-800 no-flex-wrap">
+    <!-- ====================== -->
+    <!-- SIDEBAR / MENU GAUCHE -->
+    <!-- ====================== -->
+    <!--col-md-2 → sidebar occupant 2 colonnes sur 12
+      card → style Bootstrap carte mr-2 → marge à droite-->
     <div class="card col-md-2 mr-2">
       <div class="col pl-0 pr-0">
+        <!--Carte contenant le titre de l'application-->
         <div class="card mt-3 mb-2 border-none">
+          <!-- Nom de l'application -->
           <h4>Gestion de stock V2.0</h4>
-          <small class="form-text text-auted">By Clovis Tchinda</small>
+          <!-- Auteur / signature -->
+          <small class="form-text text-auted">
+            By Clovis Tchinda
+          </small>
         </div>
+        <!--Composant Angular du menu
+          Ce composant contient la navigation latérale-->
         <div>
           <app-menu></app-menu>
         </div>
       </div>
     </div>
+
+    <!-- ====================== -->
+    <!-- CONTENU PRINCIPAL -->
+    <!-- ====================== -->
+    <!--col-md-10 → zone principale occupant 10 colonnes
+      background-grey → couleur de fond personnalisée
+      border-none → suppression des bordures-->
     <div class="card col-md-10 pl-0 pr-0 background-grey border-none">
-     <div class="col pl-0 pr-0 d-flex flex-column justify-content-between">
-       <div class="card p-3 min-height-80 mb-2">
-         <app-header></app-header>
-       </div>
-       <div class="card mb-2" style="min-height:480px">
-         <app-loader></app-loader>
-         <router-outlet></router-outlet>
-       </div>
-       <div class="card min-height-80">
-         footer
-       </div>
-     </div>
+      <!--Organisation verticale avec Flexbox
+        flex-column → empile les éléments verticalement
+        justify-content-between → espace entre header / contenu / footer-->
+      <div class="col pl-0 pr-0 d-flex flex-column justify-content-between">
+        <!-- ====================== -->
+        <!-- HEADER -->
+        <!-- ====================== -->
+        <!--Carte contenant le header de l'application
+          min-height-60 → hauteur minimale personnalisée-->
+        <div class="card p-3 max-height-80 mb-2">
+          <!--Composant Angular du header Contient généralement :
+            - utilisateur connecté - recherche - notifications-->
+          <app-header></app-header>
+        </div>
+        <!-- ====================== -->
+        <!-- CONTENU DYNAMIQUE -->
+        <!-- ====================== -->
+        <!--Zone centrale où s'affichent les pages
+          via le système de routing Angular-->
+        <div class="card mb-2" style="min-height:280px">
+          <!--Composant Loader Permet d'afficher un indicateur de chargement
+            pendant les appels API-->
+          <app-loader></app-loader>
+          <!--router-outlet C'est ici que Angular injecte les composants
+            correspondant à la route active-->
+          <router-outlet></router-outlet>
+        </div>
+        <!-- ====================== -->
+        <!-- FOOTER -->
+        <!-- ====================== -->
+        <!--Footer de l'application min-height-80 → hauteur minimale-->
+        <div class="card min-height-80 text-center">
+          <span>
+            <!-- Nom de l'organisation -->
+            Elitepro Dev | All Right Reserved
+            <!-- Affichage dynamique de l'année -->
+            &copy; {{ currentYear }}
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+<!--<div class="main-container">-->
+<!--  <div class="row min-height-800 no-flex-wrap">-->
+<!--    <div class="card col-md-2 mr-2">-->
+<!--      <div class="col pl-0 pr-0">-->
+<!--        <div class="card mt-3 mb-2 border-none">-->
+<!--          <h4>Gestion de stock V2.0</h4>-->
+<!--          <small class="form-text text-auted">By Clovis Tchinda</small>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <app-menu></app-menu>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="card col-md-10 pl-0 pr-0 background-grey border-none">-->
+<!--     <div class="col pl-0 pr-0 d-flex flex-column justify-content-between">-->
+<!--       <div class="card p-3 min-height-60 mb-2">-->
+<!--         <app-header></app-header>-->
+<!--       </div>-->
+<!--       <div class="card mb-2" style="min-height:480px">-->
+<!--         <app-loader></app-loader>-->
+<!--         <router-outlet></router-outlet>-->
+<!--       </div>-->
+<!--       <div class="card min-height-60">-->
+<!--         <span>-->
+<!--           Elitepro Dev | All Right Reserved &copy; {{ currentYear }}-->
+<!--         </span>-->
+<!--       </div>-->
+<!--     </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
