@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -150,12 +150,12 @@ export class CategoriesService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findByCode3(codeCategory: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CategoryDto>;
-    public findByCode3(codeCategory: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CategoryDto>>;
-    public findByCode3(codeCategory: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CategoryDto>>;
-    public findByCode3(codeCategory: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findByCode1(codeCategory: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CategoryDto>;
+    public findByCode1(codeCategory: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CategoryDto>>;
+    public findByCode1(codeCategory: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CategoryDto>>;
+    public findByCode1(codeCategory: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (codeCategory === null || codeCategory === undefined) {
-            throw new Error('Required parameter codeCategory was null or undefined when calling findByCode3.');
+            throw new Error('Required parameter codeCategory was null or undefined when calling findByCode1.');
         }
 
         let localVarHeaders = this.defaultHeaders;

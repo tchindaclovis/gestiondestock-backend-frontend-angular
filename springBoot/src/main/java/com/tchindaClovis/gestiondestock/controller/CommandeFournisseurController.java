@@ -53,10 +53,10 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
         return commandeFournisseurService.findById(id);
     }
 
-    @Override
-    public CommandeFournisseurDto findByCode(String code) {
-        return commandeFournisseurService.findByCode(code);
-    }
+//    @Override
+//    public CommandeFournisseurDto findByCode(String code) {
+//        return commandeFournisseurService.findByCode(code);
+//    }
 
     @Override
     public List<CommandeFournisseurDto> findAll() {

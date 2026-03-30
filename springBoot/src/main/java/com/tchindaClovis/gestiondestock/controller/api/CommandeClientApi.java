@@ -39,11 +39,20 @@ public interface CommandeClientApi {
                                                     @PathVariable("idLigneCommande") Integer idLigneCommande);
 
     @GetMapping(value = APP_ROOT + "/commandeClients/{idCommandeClient}")
-    ResponseEntity<CommandeClientDto> findById(@PathVariable Integer id);
+    ResponseEntity<CommandeClientDto> findById(@PathVariable("idCommandeClient") Integer id);
 
-    @GetMapping(value = APP_ROOT + "/commandeClients/{codeCommandeClient}")
-    ResponseEntity<CommandeClientDto> findByCode(@PathVariable("codeCommandeClient") String code);
+//    @GetMapping("/id/{id}") // Ajoutez /id/
+//    public ResponseEntity<CommandeClientDto> findById(@PathVariable("id") Integer id) {
+//        return ResponseEntity.ok(service.findById(id));
+//    }
 
+//    @GetMapping(value = APP_ROOT + "/commandeClients/{codeCommandeClient}")
+//    ResponseEntity<CommandeClientDto> findByCode(@PathVariable("codeCommandeClient") String code);
+
+//    @GetMapping("/filter/{code}") // Ajoutez /filter/ ou /code/
+//    public ResponseEntity<CommandeClientDto> findByCode(@PathVariable("code") String code) {
+//        return ResponseEntity.ok(service.findByCode(code));
+//    }
     @GetMapping(value = APP_ROOT + "/commandeClients/all")
     ResponseEntity<List<CommandeClientDto>> findAll();
 

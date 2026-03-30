@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -13,6 +13,7 @@ import { AdresseDto } from './adresseDto';
 export interface FournisseurDto { 
     id?: number;
     nom?: string;
+    prenom?: string;
     photo?: string;
     email?: string;
     numTel?: string;

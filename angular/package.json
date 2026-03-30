@@ -1,22 +1,21 @@
 {
-  "name": "mon-premier-projet",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "start:local": "npm run gs-api:full && ng serve -- --proxyConfig=proxy.conf.json",
-    "gs-api:clean": "rimraf src/gs-api",
-    "gs-api": "npm run gs-api:create-dist && npm run gs-api:download && npm run gs-api:extract && npm run gs-api:swagger-gen",
-    "gs-api:create-dist": "shx mkdir -p tools/swagger/dist && shx mkdir -p tools/swagger/src",
-    "gs-api:download": "shx cp \"C:/Users/CLOVIS TCHINDA/Desktop/gestiondestock/target/gestiondestock-0.0.1-SNAPSHOT.jar\" ./tools/swagger/dist && shx cp \"C:/Users/CLOVIS TCHINDA/Desktop/gestiondestock/target/swagger.json\" ./tools/swagger/src",
-    "gs-api:extract": "node ./tools/swagger/src/swagger.json 0.0.1-SNAPSHOT",
-    "gs-api:swagger-gen": "openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -p ngVersion=13 -o src/gs-api/src --skip-validate-spec",
-    "gs-api:generate": "openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -o src/gs-api --skip-validate-spec",
-    "gs-api:full": "npm run gs-api:clean && npm run gs-api:create-dist && npm run gs-api:download && npm run gs-api:extract && npm run gs-api:swagger-gen"
-  },
+"name": "mon-premier-projet",
+"version": "0.0.0",
+"scripts": {
+"ng": "ng",
+"start": "ng serve",
+"build": "ng build",
+"watch": "ng build --watch --configuration development",
+"test": "ng test",
+"start:local": "npm run gs-api && ng serve -- --proxyConfig=proxy.conf.json",
+"gs-api:clean": "rimraf src/gs-api",
+"gs-api:create-folders": "shx mkdir -p tools/swagger/src",
+"gs-api:download": "curl http://localhost:8081/v3/api-docs -o ./tools/swagger/src/swagger.json",
+"gs-api:swagger-gen": "openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -p ngVersion=13 -o src/gs-api/src --skip-validate-spec",
+"gs-api": "npm run gs-api:clean && npm run gs-api:create-folders && npm run gs-api:download && npm run gs-api:swagger-gen",
+"gs-api:full": "npm run gs-api"
+},
+
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.0.0-next.0",
@@ -39,6 +38,7 @@
     "@angular-devkit/build-angular": "^13.0.3",
     "@angular/cli": "^13.3.11",
     "@angular/compiler-cli": "~13.0.0-next.0",
+    "@openapitools/openapi-generator-cli": "^2.30.2",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~3.10.0",
@@ -49,6 +49,7 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^13.3.1",
     "ng-swagger-gen": "^1.7.0-b",
+    "shx": "^0.4.0",
     "typescript": "~4.4.3"
   },
   "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.0.",

@@ -26,7 +26,7 @@
       <div class="row mb-3">
         <div class="col-md-6 text-center">
           <label>Prix unitaire HT:</label>
-          <div class="appercu-form">{{ articleDto.prixUnitaireHt }} FCFA</div>
+          <div class="appercu-form">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
         <div class="col-md-6 text-center">
           <label>Taux TVA:</label>
@@ -36,7 +36,7 @@
       <div class="row mb-3">
         <div class="col-md-6 text-center">
           <label>Prix unitaire TTC:</label>
-          <div class="appercu-form">{{ articleDto.prixUnitaireTtc }} FCFA</div>
+          <div class="appercu-form">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
         <div class="col-md-6 text-center">
           <label>Désignation catégorie:</label>

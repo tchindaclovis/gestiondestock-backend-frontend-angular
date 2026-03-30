@@ -61,10 +61,10 @@ public class CommandeClientController implements CommandeClientApi {
         return ResponseEntity.ok(commandeClientService.findById(id));
     }
 
-    @Override
-    public ResponseEntity<CommandeClientDto> findByCode(String code) {
-        return ResponseEntity.ok(commandeClientService.findByCode(code));
-    }
+//    @Override
+//    public ResponseEntity<CommandeClientDto> findByCode(String code) {
+//        return ResponseEntity.ok(commandeClientService.findByCode(code));
+//    }
 
     @Override
     public ResponseEntity<List<CommandeClientDto>> findAll() {

@@ -31,10 +31,10 @@ public interface CommandeFournisseurApi {
                                          @PathVariable("idLigneCommande") Integer idLigneCommande, @PathVariable("idArticle") Integer idArticle);
 
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/{idCommandeFournisseur}")
-    CommandeFournisseurDto findById(@PathVariable Integer id);
+    CommandeFournisseurDto findById(@PathVariable("idCommandeFournisseur") Integer id);
 
-    @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/{codeCommandeFournisseur}")
-    CommandeFournisseurDto findByCode(@PathVariable("codeCommandeFournisseur") String code);
+//    @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/{codeCommandeFournisseur}")
+//    CommandeFournisseurDto findByCode(@PathVariable("codeCommandeFournisseur") String code);
 
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/all")
     List<CommandeFournisseurDto> findAll();

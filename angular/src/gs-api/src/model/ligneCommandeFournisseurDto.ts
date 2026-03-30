@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CommandeFournisseurDto } from './commandeFournisseurDto';
 import { ArticleDto } from './articleDto';
 
 
@@ -17,6 +16,5 @@ export interface LigneCommandeFournisseurDto {
     prixUnitaire?: number;
     idEntreprise?: number;
     article?: ArticleDto;
-    commandeFournisseur?: CommandeFournisseurDto;
 }
 

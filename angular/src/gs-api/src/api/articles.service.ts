@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *

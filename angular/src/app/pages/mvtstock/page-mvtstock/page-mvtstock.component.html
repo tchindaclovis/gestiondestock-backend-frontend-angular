@@ -1,7 +1,7 @@
 <div class="col">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Mouvement de stock</h1>
+      <h1>Mouvements de stock par article</h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action
@@ -11,20 +11,112 @@
     </div>
   </div>
 
+  <div class="col ms-3 me-3 mt-1 mb-1 scroll-commandes">
+    <div class="col ms-1 me-1 mt-1 mb-1"
+         *ngFor="let article of listArticle">
+      <div class="accordion" id="accordionArt{{article.id}}">
+        <div class="col accordion-item mb-2 custom-border">
+
+          <div class="accordion-header" id="heading{{article.id}}">
+            <button class="btn w-100 text-start" type="button"
+                    data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapseArt' + article.id"
+                    aria-expanded="false"
+                    [attr.aria-controls]="'collapseArt' + article.id">
+              <app-detail-mvtstock-article
+                [articleDto]="article">
+              </app-detail-mvtstock-article>
+            </button>
+          </div>
+
+          <div [id]="'collapseArt' + article.id"
+               class="accordion-collapse collapse"
+               [attr.aria-labelledby]="'heading' + article.id"
+               [attr.data-bs-parent]="'#accordionArt' + article.id"
+               style="max-height: 300px; overflow-y: scroll;">
+            <div class="accordion-body">
+
+              <div class="row mb-1 mr-0 border">
+
+                <div class="col-md-3 border-end mb-1 mt-1 text-center">
+                  <h5>Date mouvement</h5>
+                </div>
+                <div class="col-md-3 border-end mb-1 mt-1 text-center">
+                  <h5>Quantité mouvement</h5>
+                </div>
+                <div class="col-md-3 border-end mb-1 mt-1 text-center">
+                  <h5>Type mouvement</h5>
+                </div>
+                <div class="col-md-3 mb-1 mt-1 text-center">
+                  <h5>Source mouvement</h5>
+                </div>
+              </div>
+
+              <ng-container *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
+                <app-detail-mvtstock
+                  *ngFor="let mouvement of listeMvts"
+                  [mvtStock]="mouvement">
+                </app-detail-mvtstock>
+                <div *ngIf="listeMvts.length === 0" class="p-3 text-center text-muted">
+                  Aucun mouvement de stock pour cet article.
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="card-footer" *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
+            <div class="row">
+              <div class="col-md-12 text-start">
+                <h5 class="text-muted">{{ listeMvts.length | number:'1.0-0':'fr'}} mouvements enregistrés</h5>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">
+    <div class="text-center">
+      <app-pagination></app-pagination>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!--<div class="col">-->
+<!--  <div class="row ms-3 me-3 page_title">-->
+<!--    <div class="col-md-8 p-0">-->
+<!--      <h1>Mouvement de stock</h1>-->
+<!--    </div>-->
+<!--    <div class="col-md-4 text-end">-->
+<!--      <app-boutton-action-->
+<!--        [isImporterVisible] = "false"-->
+<!--        [isNouveauVisible] = "false">-->
+<!--      </app-boutton-action>-->
+<!--    </div>-->
+<!--  </div>-->
+
 <!--&lt;!&ndash;  detail mouvement de stock 1&ndash;&gt;-->
 <!--  <div class="col ms-3 me-3 mt-1 mb-1 scroll-commandes">-->
 <!--    <div class="col ms-1 me-1 mt-1 mb-1 custom-border"-->
-<!--         *ngFor="let mvta of listeMouvements">-->
+<!--         *ngFor="let mvta of listeCommandes">-->
 <!--      <div class="accordion" id="accordionExample1{{mvta.id}}">-->
 <!--        <div class="accordion-item mb-2">-->
-<!--          <div lass="accordion-header" id="headingOne1">-->
+<!--          <div class="accordion-header" id="headingOne1">-->
 <!--            <h2 class="mb-0">-->
 <!--              <button class="btn w-100 text-start" type="button" data-bs-toggle="collapse"-->
 <!--                      [attr.data-bs-target]="'#collapseOne1' + mvta.id"-->
 <!--                      aria-expanded="true"-->
 <!--                      aria-controls="collapseOne1">-->
 <!--                <app-detail-mvtstock-article-->
-<!--                  [mouvementstockArt]="mvta"-->
+<!--                  *ngFor="let article of listArticle"-->
+<!--                  [articleDto]="article"-->
 <!--                ></app-detail-mvtstock-article>-->
 <!--              </button>-->
 <!--            </h2>-->
@@ -34,7 +126,7 @@
 <!--            <div class="accordion-body">-->
 <!--              <app-detail-mvtstock-->
 <!--                *ngFor="let mouvement of mapMouvementsStock.get(mvta.id)"-->
-<!--                [mouvementStock]="mouvement"-->
+<!--                [mvtStock]="mouvement"-->
 <!--              ></app-detail-mvtstock>-->
 <!--            </div>-->
 <!--          </div>-->
@@ -44,37 +136,10 @@
 <!--  </div>-->
 
 
-  <!--  detail mouvement de stock 2-->
-  <div class="col m-3 custom-border">
-    <div class="accordion" id="accordionExample2">
-      <div class="accordion-item">
-        <div lass="accordion-header" id="headingOne2">
-          <h2 class="mb-0">
-            <button class="btn w-100 text-start" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
-              <app-detail-mvtstock-article>
-
-              </app-detail-mvtstock-article>
-            </button>
-          </h2>
-        </div>
-        <div id="collapseOne2" class="accordion-collapse collapse" aria-labelledby="headingOne2"
-             data-bs-parent="#accordionExample2" style="max-height: 300px; overflow-y: scroll;">
-          <div class="accordion-body">
-            <app-detail-mvtstock></app-detail-mvtstock>
-            <app-detail-mvtstock></app-detail-mvtstock>
-            <app-detail-mvtstock></app-detail-mvtstock>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">
-    <div class="text-center">
-      <app-pagination></app-pagination>
-    </div>
-  </div>
-</div>
+<!--  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">-->
+<!--    <div class="text-center">-->
+<!--      <app-pagination></app-pagination>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 

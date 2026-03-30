@@ -34,10 +34,15 @@ export class NouvelArticleComponent implements OnInit {
     const idArticle = this.activatedRoute.snapshot.params['idArticle'];
     if(idArticle){
       this.articleService.findArticleById(idArticle)
-        .subscribe(article =>{
-          this.articleDto = article;
-          this.categorieDto = this.articleDto.category ? this.articleDto.category : {};
-        });
+      .subscribe(article =>{
+        this.articleDto = article;
+        this.categorieDto = this.articleDto.category ? this.articleDto.category : {};
+
+        // CORRECTION : Si l'article a une photo (URL MinIO), on l'assigne à imgUrl
+        if (this.articleDto.photo && this.articleDto.photo.startsWith('http')) {
+          this.imgUrl = this.articleDto.photo;
+        }
+      });
     }
   }
 
@@ -74,6 +79,7 @@ export class NouvelArticleComponent implements OnInit {
         fileReader.readAsDataURL(this.file)  //pour afficher le fichier avant de l'enregistrer
         fileReader.onload = (event) => {
           if(fileReader.result){
+            // Mise à jour de la prévisualisation avec le nouveau fichier sélectionné
             this.imgUrl = fileReader.result; //je peux changer ou mettre à jour le fichier
           }
         };
@@ -101,6 +107,26 @@ export class NouvelArticleComponent implements OnInit {
       this.router.navigate(['articles']);
     }
   }
+
+
+  /**
+   * Retourne l'URL de la photo.
+   * Si la photo commence par 'http', on l'utilise directement.
+   * Sinon, on affiche l'image par défaut.
+   */
+// Gardez cette méthode pour la sécurité, mais nous allons simplifier le HTML
+  getPhotoUrl(): string | ArrayBuffer {
+    return this.imgUrl;
+  }
+
+  // getPhotoUrl(photoName: string | undefined): string {
+  //   if (!photoName) {
+  //     // Chemin vers votre image par défaut dans le dossier assets d'Angular
+  //     return 'assets/product.png';
+  //   }
+  //   // Utilisation du port API (9000) et du bucket 'imagephoto'
+  //   return `http://localhost:9000/imagephoto/${photoName}`;
+  // }
 
   autoResize(event: any) {
     event.target.style.height = 'auto';

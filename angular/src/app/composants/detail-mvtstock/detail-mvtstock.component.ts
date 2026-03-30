@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LigneCommandeClientDto} from "../../../gs-api/src";
+import {MvtStockDto} from "../../../gs-api/src";
 
 @Component({
   selector: 'app-detail-mvtstock',
@@ -9,16 +9,58 @@ import {LigneCommandeClientDto} from "../../../gs-api/src";
 export class DetailMvtstockComponent implements OnInit {
 
   @Input()
-  origin = '';
-  @Input()
-  commande: any = {};
-  clientFournisseur: any | undefined = {};
-  @Input()
-  ligneCommande: any = {};
+  mvtStock: MvtStockDto = {}; // Utilisation directe du DTO de mouvement
 
-  constructor() {}
+  constructor(
+  ) {}
 
   ngOnInit(): void {
+    console.log('Données reçues dans le détail :', this.mvtStock);
   }
 
+  // Détermine si le mouvement est une Entrée ou une Sortie
+  get isEntree(): boolean {
+    return this.mvtStock.typeMvt === 'ENTREE' || this.mvtStock.typeMvt === 'CORRECTION_POS';
+  }
+
+  // Retourne un libellé propre selon le type enum
+  get typeMvtLabel(): string {
+    switch (this.mvtStock.typeMvt) {
+      case 'ENTREE': return 'ACHAT FOURNISSEUR';
+      case 'SORTIE': return 'VENTE CLIENT';
+      case 'CORRECTION_POS': return 'CORRECTION (+)';
+      case 'CORRECTION_NEG': return 'CORRECTION (-)';
+      default: return this.mvtStock.typeMvt || 'INCONNU';
+    }
+  }
 }
+
+
+
+
+
+
+
+
+// import {Component, Input, OnInit} from '@angular/core';
+//
+// @Component({
+//   selector: 'app-detail-mvtstock',
+//   templateUrl: './detail-mvtstock.component.html',
+//   styleUrls: ['./detail-mvtstock.component.scss']
+// })
+// export class DetailMvtstockComponent implements OnInit {
+//
+//   @Input()
+//   origin = '';
+//   @Input()
+//   commande: any = {};
+//   clientFournisseur: any | undefined = {};
+//   @Input()
+//   ligneCommande: any = {};
+//
+//   constructor() {}
+//
+//   ngOnInit(): void {
+//   }
+// }

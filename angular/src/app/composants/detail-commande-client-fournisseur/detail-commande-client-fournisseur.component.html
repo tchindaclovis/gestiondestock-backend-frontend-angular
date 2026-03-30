@@ -1,7 +1,8 @@
 <!--photo article-->
 <div class="row mb-1 mr-0 border">
   <div class="col-md-1 border-end p-1 text-center mb-1 mt-1">
-    <img src="assets/pruduct.png" width="100px" height="100px">
+    <img [src]="clientFournisseur.photo ? clientFournisseur.photo: 'assets/product.png'"
+          width="100px" height="100px">
   </div>
 
   <!--  details client ou fournisseur-->
@@ -31,7 +32,7 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11">{{ commande.dateCommande }}</div>
+        <div class="col-md-11">{{ commande.dateCommande | date:'dd/MM/yyyy HH:mm'}}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
@@ -44,19 +45,46 @@
   <div class="col-md-3 mb-1 mt-1">
     <div class="row">
       <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol">
+        <button type="button" class="btn btn-link souligner-au-survol" (click)="modifierCommandeClientFournisseur()">
           <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;
           Modifier
         </button>
       </div>
       <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol">
+        <button type="button" class="btn btn-link souligner-au-survol" data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id">
           <i class="fa-solid fa-trash-alt blue-color"></i>&nbsp;
           Supprimer
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalDelete{{ clientFournisseur.id }}"
+       data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Etes-vous sûr de vouloir supprimer ce {{ origin }}?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-ban"></i>Annuler</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
+            <i class="fa-solid fa-trash-can"></i>Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 

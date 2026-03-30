@@ -18,7 +18,6 @@ export class NouveauClientFournisseurComponent implements OnInit {
   file: File| null = null;  // objet file qui peut être null et qui va être initialisé à null
   imgUrl: string | ArrayBuffer = 'assets/product.png';
 
-
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -30,7 +29,7 @@ export class NouveauClientFournisseurComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data => {
       this.origin = data['origin'];
-      console.log('ORIGIN =', this.origin);
+      // console.log('ORIGIN =', this.origin);
       // this.findClientFournisseur();
     });
     this.findClientFournisseur();

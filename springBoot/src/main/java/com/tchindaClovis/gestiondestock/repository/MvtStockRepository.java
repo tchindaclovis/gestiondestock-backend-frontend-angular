@@ -10,8 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MvtStockRepository extends JpaRepository<MvtStock, Integer> {
-    @Query("select sum(m.quantite) from MvtStock m where m.article.id = :idArticle")
+
+    @Query("select coalesce(sum(m.quantite), 0) from MvtStock m where m.article.id = :idArticle")
     BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
+
+//    @Query("select sum(m.quantite) from MvtStock m where m.article.id = :idArticle")
+//    BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
 
     List<MvtStock> findAllByArticleId(Integer idArticle);
 }

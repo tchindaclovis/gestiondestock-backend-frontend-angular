@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -40,7 +40,12 @@ import { AppercuArticleComponent } from './pages/articles/appercu-article/apperc
 import { TextFieldModule } from '@angular/cdk/text-field'; //pour cela, Installe Angular CDK version identique à ton angular de base :
 import { AppercuUtilisateurComponent } from './pages/utilisateur/appercu-utilisateur/appercu-utilisateur.component';
 import { AppercuClientFournisseurComponent } from './composants/appercu-client-fournisseur/appercu-client-fournisseur.component';
+import {registerLocaleData} from "@angular/common";
+import localeFr from '@angular/common/locales/fr';
 
+
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -91,6 +96,8 @@ import { AppercuClientFournisseurComponent } from './composants/appercu-client-f
       useClass: HttpInterceptorService,
       multi: true
     },
+
+    { provide: LOCALE_ID, useValue: 'fr-FR' }
     // { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]

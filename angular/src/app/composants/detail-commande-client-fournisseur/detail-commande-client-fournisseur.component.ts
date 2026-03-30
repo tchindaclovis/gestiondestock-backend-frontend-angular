@@ -1,41 +1,176 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ClientDto, CommandeClientDto, LigneCommandeClientDto} from "../../../gs-api/src";
-import {
-  CommandeclientfournisseurService
-} from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
+import { Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Router, ActivatedRoute } from "@angular/router";
+import { ClientfournisseurService } from "../../services/clientfournisseurs/clientfournisseur.service";
+import { CommandeclientfournisseurService } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
 
 @Component({
   selector: 'app-detail-commande-client-fournisseur',
   templateUrl: './detail-commande-client-fournisseur.component.html',
   styleUrls: ['./detail-commande-client-fournisseur.component.scss']
 })
-export class DetailCommandeClientFournisseurComponent implements OnInit {
+export class DetailCommandeClientFournisseurComponent implements OnInit, OnChanges {
 
-  @Input()
-  origin = '';
-  @Input()
-  commande: any = {};
+  @Input() origin = '';
+  @Input() commande: any = {};
 
-  // clientFournisseur: ClientDto | undefined = {};
-  clientFournisseur: any | undefined = {};
+  clientFournisseur: any = {};
 
-  constructor() { }
+  @Output()
+  suppressionResult = new EventEmitter<string>();
 
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private clientFournisseurService: ClientfournisseurService,
+    private commandeClientFournisseurService: CommandeclientfournisseurService
+  ) { }
 
   ngOnInit(): void {
-    this.extractClientFournisseur();
+    // On s'abonne aux data de la route pour connaître l'origine (client ou fournisseur)
+    this.activatedRoute.data.subscribe(data => {
+      this.origin = data['origin'];
+      this.extractClientFournisseur();
+    });
   }
 
-
-  modifierClick(): void{
-
+  // Crucial : Détecter quand l'objet 'commande' arrive du composant parent
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['commande']) {
+      this.extractClientFournisseur();
+    }
   }
 
   extractClientFournisseur(): void {
-    if(this.origin === 'client'){
-      this.clientFournisseur = this.commande?.client;
-    } else if(this.origin === 'fournisseur'){
-      this.clientFournisseur = this.commande?.fournisseur;
+    if (this.commande) {
+      this.clientFournisseur = (this.origin === 'client')
+        ? this.commande.client
+        : this.commande.fournisseur;
+    }
+  }
+
+  modifierCommandeClientFournisseur(): void {
+    const route = this.origin === 'client' ? 'nouvellecommandeclient' : 'nouvellecommandefournisseur';
+    // On navigue vers la page de modification avec l'ID de la commande
+    this.router.navigate([route, this.commande.id]);
+  }
+
+  confirmerEtSupprimer(): void {
+    if (this.origin === 'client') {
+      // ATTENTION : On supprime la COMMANDE (commande.id), pas le client !
+      this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
+        .subscribe({
+          next: () => this.suppressionResult.emit('success'),
+          error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
+        });
+    } else {
+      this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
+        .subscribe({
+          next: () => this.suppressionResult.emit('success'),
+          error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
+        });
     }
   }
 }
+
+
+
+
+
+
+
+// import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+// import {ClientDto, CommandeClientDto, LigneCommandeClientDto} from "../../../gs-api/src";
+// import {
+//   CommandeclientfournisseurService
+// } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
+// import {ActivatedRoute, Router} from "@angular/router";
+// import {ClientfournisseurService} from "../../services/clientfournisseurs/clientfournisseur.service";
+// import {ArticleService} from "../../services/article/article.service";
+//
+// @Component({
+//   selector: 'app-detail-commande-client-fournisseur',
+//   templateUrl: './detail-commande-client-fournisseur.component.html',
+//   styleUrls: ['./detail-commande-client-fournisseur.component.scss']
+// })
+// export class DetailCommandeClientFournisseurComponent implements OnInit {
+//
+//   @Input()
+//   origin = '';
+//   @Input()
+//   commande: any = {};
+//
+//   clientFournisseur: any = {}; //soit client soit fournisseur
+//
+//   @Output()
+//   suppressionResult = new EventEmitter();
+//
+//   listClientsFournisseurs: Array<any> = [];
+//
+//   constructor(
+//     private router: Router,
+//     private activatedRoute: ActivatedRoute,
+//     private clientFournisseurService:ClientfournisseurService,
+//     private commandeClientFournisseurService:CommandeclientfournisseurService
+//   ) { }
+//
+//
+//   ngOnInit(): void {
+//     this.extractClientFournisseur();
+//     this.activatedRoute.data.subscribe(data =>{
+//       this.origin = data['origin'];
+//     });
+//     this.findAllClientsFournisseurs();
+//
+//   }
+//
+//
+//   findAllClientsFournisseurs(): void {
+//     if (this.origin === 'client') {
+//       this.clientFournisseurService.findAllClients()
+//         .subscribe(clients => {
+//           this.listClientsFournisseurs = clients;
+//         });
+//     } else if (this.origin === 'fournisseur' ) {
+//       this.clientFournisseurService.findAllFournisseurs()
+//         .subscribe(fournisseurs => {
+//           this.listClientsFournisseurs = fournisseurs;
+//         });
+//     }
+//   }
+//
+//
+//   extractClientFournisseur(): void {
+//     if(this.origin === 'client'){
+//       this.clientFournisseur = this.commande?.client;
+//     } else if(this.origin === 'fournisseur'){
+//       this.clientFournisseur = this.commande?.fournisseur;
+//     }
+//   }
+//
+//   modifierCommandeClientFournisseur() {
+//     if(this.origin === 'client'){
+//       this.router.navigate(['nouvellecommandeclient', this.clientFournisseur.id]);
+//     } else if(this.origin === 'fournisseur'){
+//       this.router.navigate(['nouvellecommandefournisseur', this.clientFournisseur.id]);
+//     }
+//   }
+//
+//   confirmerEtSupprimer(): void {
+//     if(this.origin === 'client'){
+//       this.commandeClientFournisseurService.deleteCommandeClient(this.clientFournisseur.id)
+//         .subscribe(res =>{  //subscribe parle d'une action par l'opérateur (suppression)
+//           this.suppressionResult.emit('success');
+//         }, error => {
+//           this.suppressionResult.emit(error.error.error);
+//         });
+//
+//     } else if(this.origin === 'fournisseur'){
+//       this.commandeClientFournisseurService.deleteCommandeFournisseur(this.clientFournisseur.id)
+//         .subscribe(res =>{  //subscribe parle d'une action par l'opérateur (suppression)
+//           this.suppressionResult.emit('success');
+//         }, error => {
+//           this.suppressionResult.emit(error.error.error);
+//         });
+//     }
+//   }
+// }

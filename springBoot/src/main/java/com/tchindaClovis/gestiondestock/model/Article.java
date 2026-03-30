@@ -25,11 +25,20 @@ public class Article extends AbstractEntity{
     @Column(name = "prixunitaire")
     private BigDecimal prixUnitaireHt;
 
+    @Column(name = "prixventeunitaire")
+    private BigDecimal prixVenteUnitaireHt;
+
     @Column(name = "tauxtva")
     private BigDecimal tauxTva;
 
     @Column(name = "prixunitairettc")
     private BigDecimal prixUnitaireTtc;
+
+    @Column(name = "prixventeunitairettc")
+    private BigDecimal prixVenteUnitaireTtc;
+
+    @Column(name = "marge")
+    private BigDecimal marge;
 
     @Column(name = "photo",length = 1024)
     private String photo;  //String parceque ça ne sera pas stocké dans la BDD mais dans le cloud

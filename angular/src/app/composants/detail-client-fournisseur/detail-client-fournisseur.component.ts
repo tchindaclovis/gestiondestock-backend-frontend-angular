@@ -13,7 +13,7 @@ export class DetailClientFournisseurComponent implements OnInit {
   origin = '';
 
   @Input()
-clientFournisseur: any = {}; //soit client soit fournisseur
+  clientFournisseur: any = {}; //soit client soit fournisseur
 
   @Output()
   suppressionResult = new EventEmitter();

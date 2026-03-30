@@ -1,7 +1,10 @@
 <!--photo article-->
 <div class="row mb-1 custom-border">
   <div class="col-md-1 border-end p-1 text-center">
-    <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'" width="100px" height="100px">
+    <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'"
+         width="100px" height="100px"
+         style="object-fit: cover; border-radius: 4px;"
+         alt="Photo article">
   </div>
 
 <!--  details article-->
@@ -17,11 +20,11 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireHt }} FCFA</div>
+        <div class="col-md-11">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireTtc }} FCFA</div>
+        <div class="col-md-11">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
       </div>
     </div>
   </div>
@@ -97,6 +100,5 @@
       </div>
     </div>
   </div>
-
 </div>
 

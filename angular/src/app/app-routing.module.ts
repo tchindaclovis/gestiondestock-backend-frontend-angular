@@ -167,10 +167,11 @@ const routes: Routes = [
       // ==============================
 
       {
-        path: 'mvtstock',
+        path: 'mvtstock', // Chemin unique
         component: PageMvtstockComponent,
-        canActivate: [ApplicationGuardService]
+        canActivate: [ApplicationGuardService],
       },
+
 
 
       // ==============================
@@ -235,6 +236,15 @@ const routes: Routes = [
         }
       },
 
+      {
+        path: 'nouvellecommandeclient/:idCommande',
+        component: NouvelleCommandeClientFournisseurComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client'
+        }
+      },
+
 
       // ==============================
       // FOURNISSEURS
@@ -289,6 +299,15 @@ const routes: Routes = [
 
       {
         path: 'nouvellecommandefournisseur',
+        component: NouvelleCommandeClientFournisseurComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'fournisseur'
+        }
+      },
+
+      {
+        path: 'nouvellecommandefournisseur/:idCommande',
         component: NouvelleCommandeClientFournisseurComponent,
         canActivate: [ApplicationGuardService],
         data: {

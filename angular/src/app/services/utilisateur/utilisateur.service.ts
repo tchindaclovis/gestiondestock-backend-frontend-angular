@@ -14,7 +14,11 @@ export class UtilisateurService {
   ) { }
 
   enregistrerUtilisateur(utilisateurDto: UtilisateurDto): Observable<UtilisateurDto>{
-    utilisateurDto.idEntreprise = this.userService.getConnectedUser()?.entreprise?.id;
+    if (utilisateurDto) {
+      utilisateurDto.entreprise = {
+        id: this.userService.getConnectedUser()?.entreprise?.id
+      };
+    }
     return this.utilisateursService.save1(utilisateurDto);
   }
 

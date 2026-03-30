@@ -41,4 +41,11 @@ export class ArticleService {
   findArticleByCode(codeArticle: string): Observable<ArticleDto> {
     return this.articlesService.findByCodeArticle(codeArticle);
   }
+
+  findAllArticleByIdCategory(idCategory: number): Observable<ArticleDto[]> {
+    if (idCategory) {
+      return this.articlesService.findAllArticleByIdCategory(idCategory);
+    }
+    return of([]);
+  }
 }

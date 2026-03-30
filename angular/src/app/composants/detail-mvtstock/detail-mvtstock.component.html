@@ -1,36 +1,128 @@
-<div class="row mb-1 mr-0 custom-border">
+<div class="row mb-1 mr-0 border">
 
-  <!--  details date-->
   <div class="col-md-3 border-end mb-1 mt-1">
-      <div class="row text-center">
-        <div class="col-md-11">{{ commande.dateCommande }}</div>
-      </div>
-  </div>
-
-  <!--  details quantite-->
-  <div class="col-md-3 border-end mb-1 mt-1">
-    <div class="row">
-        <div class="col-md-12 text-center">
-          <h5>{{ ligneCommande.quantite }}</h5>
-        </div>
+    <div class="row text-center">
+      <div class="col-md-11">{{ mvtStock.dateMvt | date:'dd/MM/yyyy HH:mm' }}</div>
     </div>
   </div>
 
-  <!--  details sortie-->
   <div class="col-md-3 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
-        <h5>Sortie</h5>
+        <h5 [ngClass]="isEntree ? 'text-success' : 'text-danger'">
+          {{ mvtStock.quantite | number:'1.0-0':'fr' }}
+        </h5>
       </div>
     </div>
   </div>
 
-  <!--  boutons correction de stock-->
+  <div class="col-md-3 border-end mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h5 [ngClass]="isEntree ? 'text-success' : 'text-danger'">
+          {{ isEntree ? 'Entrée' : 'Sortie' }}
+        </h5>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-3 mb-1 mt-1">
     <div class="row text-center">
-      <h5>COMMANDE_CLIENT</h5>
+      <h5 class="text-primary">{{ typeMvtLabel }}</h5>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="row mb-1 mr-0 custom-border">-->
+
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <div class="col-md-11">{{ mvtStock.dateMvt }}</div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        <h5 [ngClass]="isEntree ? 'text-success' : 'text-danger'">-->
+<!--          {{ mvtStock.quantite }}-->
+<!--        </h5>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        <h5 [ngClass]="isEntree ? 'text-success' : 'text-danger'">-->
+<!--          {{ mvtStock.typeMvt }}-->
+<!--        </h5>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-3 mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <h5 class="text-primary">{{ mvtStock.sourceMvt }}</h5>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+
+
+
+
+
+<!--<div class="row mb-1 mr-0 custom-border">-->
+
+<!--  &lt;!&ndash;  details date&ndash;&gt;-->
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--      <div class="row text-center">-->
+<!--        <div class="col-md-11">{{ commande.dateCommande }}</div>-->
+<!--      </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  details quantite&ndash;&gt;-->
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-12 text-center">-->
+<!--          <h5>{{ ligneCommande.quantite }}</h5>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  details sortie&ndash;&gt;-->
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        <h5>Sortie</h5>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  boutons correction de stock&ndash;&gt;-->
+<!--  <div class="col-md-3 mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <h5>COMMANDE_CLIENT</h5>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 

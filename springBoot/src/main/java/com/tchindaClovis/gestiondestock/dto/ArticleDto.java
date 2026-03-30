@@ -20,9 +20,15 @@ public class ArticleDto {
 
     private BigDecimal prixUnitaireHt;
 
+    private BigDecimal prixVenteUnitaireHt;
+
     private BigDecimal tauxTva;
 
     private BigDecimal prixUnitaireTtc;
+
+    private BigDecimal prixVenteUnitaireTtc;
+
+    private BigDecimal marge;
 
     private String photo;
 
@@ -41,8 +47,11 @@ public class ArticleDto {
                 .designation(article.getDesignation())
                 .description(article.getDescription())
                 .prixUnitaireHt(article.getPrixUnitaireHt())
+                .prixVenteUnitaireHt(article.getPrixVenteUnitaireHt())
                 .tauxTva(article.getTauxTva())
                 .prixUnitaireTtc(article.getPrixUnitaireTtc())
+                .prixVenteUnitaireTtc(article.getPrixVenteUnitaireTtc())
+                .marge(article.getMarge())
                 .photo(article.getPhoto())
                 .idEntreprise(article.getIdEntreprise())
                 .category(CategoryDto.fromEntity(article.getCategory()))
@@ -59,8 +68,11 @@ public class ArticleDto {
         article.setDesignation(articleDto.getDesignation());
         article.setDescription(articleDto.getDescription());
         article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
+        article.setPrixVenteUnitaireHt(articleDto.getPrixVenteUnitaireHt());
         article.setTauxTva(articleDto.getTauxTva());
         article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
+        article.setPrixVenteUnitaireTtc(articleDto.getPrixVenteUnitaireTtc());
+        article.setMarge(articleDto.getMarge());
         article.setPhoto(articleDto.getPhoto());
         article.setIdEntreprise(articleDto.getIdEntreprise());
         article.setCategory(CategoryDto.toEntity(articleDto.getCategory()));

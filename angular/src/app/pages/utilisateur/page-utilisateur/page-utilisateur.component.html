@@ -4,14 +4,15 @@
       <h1>Liste des utilisateurs</h1>
     </div>
     <div class="col-md-4 text-end">
-      <app-boutton-action (clickEvent)="nouvelUtilisateur()"
+      <app-boutton-action
+        (clickEvent)="nouvelUtilisateur()"
       ></app-boutton-action>
     </div>
     <div class="alert alert-danger" *ngIf="errorMsg">
       {{ errorMsg }}
     </div>
   </div>
-  <div class="col mt-1 mb-1 ms-3 me-3 ps-4 pe-1 article_list">
+  <div class="col mt-1 mb-1 ms-3 me-3 ps-3 pe-3 article_list">
     <app-detail-utilisateur
       *ngFor="let utilisateur of listUtilisateur"
       [utilisateurDto]="utilisateur"

@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -258,17 +258,13 @@ export class EntreprisesService extends BaseService {
      * Rechercher une entreprise par nom
      * Cette méthode permet de rechercher une entreprise par son nom
      * @endpoint get /gestiondestock/v1/entreprises/{nom}
-     * @param nom 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findByNom2(nom: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<EntrepriseDto>;
-    public findByNom2(nom: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<EntrepriseDto>>;
-    public findByNom2(nom: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<EntrepriseDto>>;
-    public findByNom2(nom: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (nom === null || nom === undefined) {
-            throw new Error('Required parameter nom was null or undefined when calling findByNom2.');
-        }
+    public findByNom(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<EntrepriseDto>;
+    public findByNom(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<EntrepriseDto>>;
+    public findByNom(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<EntrepriseDto>>;
+    public findByNom(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -296,7 +292,7 @@ export class EntreprisesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/entreprises/${this.configuration.encodeParam({name: "nom", value: nom, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/entreprises/`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EntrepriseDto>('get', `${basePath}${localVarPath}`,
             {

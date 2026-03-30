@@ -77,7 +77,7 @@ export class CommandeclientfournisseurService {
   // }
   findAllLigneCommandesClient(idCmd?: number): Observable<LigneCommandeClientDto[]> {
     return this.commandeClientService
-      .findAllLignesCommandesClientByCommandeClientId(idCmd)
+      .findAllLignesCommandesClientByCommandeClientId(idCmd!)
       .pipe(
         switchMap((data: any) => {
           if (data instanceof Blob) {
@@ -100,7 +100,7 @@ export class CommandeclientfournisseurService {
   // }
   findAllLigneCommandesFournisseur(idCmd?: number): Observable<LigneCommandeFournisseurDto[]> {
     return this.commandeFournisseurService
-      .findAllLignesCommandesFournisseurByCommandeFournisseurId(idCmd)
+      .findAllLignesCommandesFournisseurByCommandeFournisseurId(idCmd!)
       .pipe(
         switchMap((data: any) => {
           if (data instanceof Blob) {
@@ -112,4 +112,29 @@ export class CommandeclientfournisseurService {
         })
       );
   }
+
+
+  findCommandeClientById(id: number): Observable<CommandeClientDto> {
+    return this.commandeClientService.findById5(id);
+  }
+
+  findCommandeFournisseurById(id: number): Observable<CommandeFournisseurDto> {
+    return this.commandeFournisseurService.findById4(id);
+  }
+
+
+  deleteCommandeClient(idClient: number): Observable<any>{
+    if(idClient){
+      return this.commandeClientService.delete5(idClient);
+    }
+    return of();
+  }
+
+  deleteCommandeFournisseur(idFournisseur: number): Observable<any>{
+    if(idFournisseur){
+      return this.commandeFournisseurService.delete4(idFournisseur);
+    }
+    return of();
+  }
 }
+

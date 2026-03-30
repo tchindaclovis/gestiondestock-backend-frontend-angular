@@ -14,7 +14,8 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
 
   origin = '';
   listeCommandes: Array<any> = [];
-  lignesCommande: Array<LigneCommandeClientDto> = [];
+  lignesCommande: Array<any> = [];
+  // lignesCommande: Array<LigneCommandeClientDto> = [];
 
   // lignesCommandeParCommande: { [key: number]: LigneCommandeClientDto[] } = {};
   mapLignesCommande = new Map();
@@ -86,7 +87,7 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
   }
 
 
-  calcTotalCmd(list: Array<LigneCommandeClientDto>): number {
+  calcTotalCmd(list: Array<any>): number {
     let total = 0;
     list.forEach(ligne => {
       if (ligne.prixUnitaire && ligne.quantite) {

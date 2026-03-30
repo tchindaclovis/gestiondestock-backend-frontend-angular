@@ -13,17 +13,27 @@
     </div>
   </div>
 
-  <div class="col mt-1 mb-1 ms-3 me-3 ps-4 pe-1 category_list">
+  <div class="col mt-1 mb-1 ms-3 me-3 ps-3 pe-3 category_list">
 
     <div class="row custom-border mb-1 p-1" *ngFor="let cat of listCategories">
-      <div class="col-md-3 border-end">
+      <div class="col-md-2 border-end">
         {{cat.code}}
       </div>
-      <div class="col-md-3 border-end">
+      <div class="col-md-2 border-end">
         {{cat.designation}}
       </div>
       <div class="col-md-3 border-end">
         {{cat.description}}
+      </div>
+      <div class="col-md-2 border-end">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <h5 class="text-muted">Nombre d'articles</h5>
+          </div>
+          <div class="col-md-12">
+            <h3 >{{ getNombreArticles(cat.id) | number:'1.0-0':'fr'}}</h3>
+          </div>
+        </div>
       </div>
       <div class="col-md-3">
         <div class="row">

@@ -19,29 +19,26 @@ export class NouvelleCategoryComponent implements OnInit {
     private categoryService: CategoryService
   ) { }
 
-
   ngOnInit(): void {
     const idCategory = this.activatedRoute.snapshot.params['idCategory'];
-        if(idCategory){
-          this.categoryService.findById(idCategory)
-            .subscribe(cat => {
-              this.categoryDto = cat;
-            });
-        }
+    if(idCategory){
+      this.categoryService.findById(idCategory)
+      .subscribe(cat => {
+        this.categoryDto = cat;
+      });
+    }
   }
-
 
   cancelClick(): void{
     this.router.navigate(['categories']);
   }
 
-
   enregistrerCategory(): void {
     this.categoryService.enregistrerCategory(this.categoryDto)
-      .subscribe(res => {
-        this.router.navigate(['categories']);
-      }, error => {
-        this.errorMsg = error.error.errors;
-      });
+    .subscribe(res => {
+      this.router.navigate(['categories']);
+    }, error => {
+      this.errorMsg = error.error.errors;
+    });
   }
 }

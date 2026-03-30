@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -17,7 +17,7 @@ export interface ClientDto {
     photo?: string;
     email?: string;
     numTel?: string;
-    adresse?: AdresseDto;
     idEntreprise?: number;
+    adresse?: AdresseDto;
 }
 

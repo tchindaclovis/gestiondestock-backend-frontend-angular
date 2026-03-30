@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -16,8 +16,11 @@ export interface ArticleDto {
     designation?: string;
     description?: string;
     prixUnitaireHt?: number;
+    prixVenteUnitaireHt?: number;
     tauxTva?: number;
     prixUnitaireTtc?: number;
+    prixVenteUnitaireTtc?: number;
+    marge?: number;
     photo?: string;
     category?: CategoryDto;
     idEntreprise?: number;

@@ -1,7 +1,7 @@
-<div class="row mb-1 mr-0 custom-border">
+<div class="row mb-1 mr-0 border">
 
   <!--  details code article-->
-  <div class="col-md-3 border-end mb-1 mt-1">
+  <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row text-center">
       <div class="col-md-11">
         {{ ligneCommande.article?.codeArticle }}
@@ -10,7 +10,7 @@
   </div>
 
   <!--  details designation-->
-  <div class="col-md-3 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
         {{ ligneCommande.article?.designation }}
@@ -22,7 +22,7 @@
   <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
-        {{ ligneCommande.quantite }}
+        {{ ligneCommande.quantite | number:'1.0-0':'fr'}}
       </div>
     </div>
   </div>
@@ -31,17 +31,17 @@
   <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
-        {{ ligneCommande.prixUnitaire}}
+        {{ ligneCommande.prixUnitaire | currency:'XAF':'symbol':'1.0-0':'fr' }}
       </div>
     </div>
   </div>
 
   <!--  prix total-->
-  <div class="col-md-2 border-end mb-1 mt-1">
+  <div class="col-md-2 mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
-        {{ ligneCommande.prixUnitaire && ligneCommande.quantite ?
-        +ligneCommande.prixUnitaire * +ligneCommande.quantite : ''}}
+        {{ (ligneCommande.prixUnitaire && ligneCommande.quantite ?
+        +ligneCommande.prixUnitaire * +ligneCommande.quantite : '') | currency:'XAF':'symbol':'1.0-0':'fr' }}
       </div>
     </div>
   </div>

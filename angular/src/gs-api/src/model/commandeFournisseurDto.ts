@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LigneCommandeFournisseurDto } from './ligneCommandeFournisseurDto';
 import { FournisseurDto } from './fournisseurDto';
 
 
@@ -17,6 +18,7 @@ export interface CommandeFournisseurDto {
     etatCommande?: CommandeFournisseurDto.EtatCommandeEnum;
     fournisseur?: FournisseurDto;
     idEntreprise?: number;
+    ligneCommandeFournisseurs?: Array<LigneCommandeFournisseurDto>;
     commandeLivree?: boolean;
 }
 export namespace CommandeFournisseurDto {

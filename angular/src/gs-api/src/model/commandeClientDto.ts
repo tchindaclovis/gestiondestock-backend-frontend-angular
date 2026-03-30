@@ -1,5 +1,5 @@
 /**
- * Gestion de stock REST API
+ * Gestion de stock REST API documentation
  *
  * 
  *
@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { ClientDto } from './clientDto';
+import { LigneCommandeClientDto } from './ligneCommandeClientDto';
 
 
 export interface CommandeClientDto { 
@@ -17,6 +18,7 @@ export interface CommandeClientDto {
     idEntreprise?: number;
     etatCommande?: CommandeClientDto.EtatCommandeEnum;
     client?: ClientDto;
+    ligneCommandeClients?: Array<LigneCommandeClientDto>;
     commandeLivree?: boolean;
 }
 export namespace CommandeClientDto {
