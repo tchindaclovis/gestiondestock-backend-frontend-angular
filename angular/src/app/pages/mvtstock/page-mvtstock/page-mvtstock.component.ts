@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { ArticleDto, MvtStockDto } from "../../../../gs-api/src";
+import {ArticleDto, MvtStockDto, UtilisateurDto} from "../../../../gs-api/src";
 import { ArticleService } from "../../../services/article/article.service";
 import { MvtstockService } from "../../../services/mvtstock/mvtstock.service";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
   selector: 'app-page-mvtstock',
@@ -10,17 +11,22 @@ import { MvtstockService } from "../../../services/mvtstock/mvtstock.service";
 })
 export class PageMvtstockComponent implements OnInit {
 
+  connectedUser: UtilisateurDto | null = null;
   listArticle: Array<ArticleDto> = [];
   // Map pour stocker les mouvements par ID d'article : Key = idArticle, Value = MvtStockDto[]
   mapMouvementsStock = new Map<number, Array<MvtStockDto>>();
   // mapMouvementsStock = new Map();
+  errorMsg = '';
 
   constructor(
+    private userService: UserService,
     private mvtStockService: MvtstockService,
     private articleService: ArticleService
   ) { }
 
   ngOnInit(): void {
+    // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
+    this.connectedUser = this.userService.getConnectedUser();
     this.findAllArticlesAndMvts();
     // this.findAllMvtStockArt()
   }
@@ -42,36 +48,42 @@ export class PageMvtstockComponent implements OnInit {
 
 
   findAllArticlesAndMvts(): void {
-    this.articleService.findAllArticle().subscribe(articles => {
-      this.listArticle = articles;
-      // Pour chaque article récupéré, on charge ses mouvements de stock
-      articles.forEach(art => {
-        if (art.id) {
-          this.findMvtsArticle(art.id);
-        }
+    // On récupère l'id de l'entreprise de l'utilisateur connecté
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
+      this.articleService.findAllArticlesByIdEntreprise(idEntreprise)
+        .subscribe(articles => {
+          this.listArticle = articles;
+          // Pour chaque article récupéré, on charge ses mouvements de stock
+          articles.forEach(art => {
+            if (art.id) {
+              this.findMvtsArticle(art.id);
+            }
+          });
       });
-    });
+    }
   }
 
 
 
   findMvtsArticle(idArticle: number): void {
-    this.mvtStockService.mvtStockArticle(idArticle).subscribe((res: any) => {
+    this.mvtStockService.mvtStockArticle(idArticle)
+      .subscribe((res: any) => {
 
-      // Testez si c'est un Blob
-      if (res instanceof Blob) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const jsonRes = JSON.parse(reader.result as string);
-          this.mapMouvementsStock.set(idArticle, jsonRes);
-        };
-        reader.readAsText(res);
-      } else {
-        // Si c'est déjà un tableau
-        this.mapMouvementsStock.set(idArticle, res);
-      }
+        // Testez si c'est un Blob
+        if (res instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const jsonRes = JSON.parse(reader.result as string);
+            this.mapMouvementsStock.set(idArticle, jsonRes);
+          };
+          reader.readAsText(res);
+        } else {
+          // Si c'est déjà un tableau
+          this.mapMouvementsStock.set(idArticle, res);
+        }
 
-    });
+      });
   }
 
 

@@ -23,6 +23,7 @@ export interface CommandeClientDto {
 }
 export namespace CommandeClientDto {
     export const EtatCommandeEnum = {
+        Brouillon: 'BROUILLON',
         EnPreparation: 'EN_PREPARATION',
         Validee: 'VALIDEE',
         Livree: 'LIVREE'

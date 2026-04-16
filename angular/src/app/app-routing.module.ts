@@ -78,6 +78,9 @@ import {AppercuUtilisateurComponent} from "./pages/utilisateur/appercu-utilisate
 import {
   AppercuClientFournisseurComponent
 } from "./composants/appercu-client-fournisseur/appercu-client-fournisseur.component";
+import {PageVenteComponent} from "./pages/vente/page-vente/page-vente.component";
+import {NouvelleVenteComponent} from "./pages/vente/nouvelle-vente/nouvelle-vente.component";
+import {AppercuVenteComponent} from "./pages/vente/appercu-vente/appercu-vente.component";
 
 
 // ==============================
@@ -242,6 +245,47 @@ const routes: Routes = [
         canActivate: [ApplicationGuardService],
         data: {
           origin: 'client'
+        }
+      },
+
+
+      // ==============================
+      // VENTES
+      // ==============================
+
+      {
+        path: 'ventes',
+        component: PageVenteComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client' // C'est ici que 'data' est défini
+        }
+      },
+
+      {
+        path: 'nouvellevente',
+        component: NouvelleVenteComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client' // C'est ici que 'data' est défini
+        }
+      },
+
+      {
+        path: 'nouvellevente/:idVente',
+        component: NouvelleVenteComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client' // C'est ici que 'data' est défini
+        }
+      },
+
+      {
+        path: 'appercuvente/:idVente',
+        component: AppercuVenteComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client' // C'est ici que 'data' est défini
         }
       },
 

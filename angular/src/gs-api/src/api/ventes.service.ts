@@ -17,6 +17,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { LigneVenteDto } from '../model/ligneVenteDto';
+// @ts-ignore
 import { VenteDto } from '../model/venteDto';
 
 // @ts-ignore
@@ -143,9 +145,63 @@ export class VentesService extends BaseService {
     }
 
     /**
+     * @endpoint get /gestiondestock/v1/ventes/lignesVente/{idVente}
+     * @param idVente 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findAllLignesVentesByVenteId(idVente: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<Array<LigneVenteDto>>;
+    public findAllLignesVentesByVenteId(idVente: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpResponse<Array<LigneVenteDto>>>;
+    public findAllLignesVentesByVenteId(idVente: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpEvent<Array<LigneVenteDto>>>;
+    public findAllLignesVentesByVenteId(idVente: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<any> {
+        if (idVente === null || idVente === undefined) {
+            throw new Error('Required parameter idVente was null or undefined when calling findAllLignesVentesByVenteId.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            '*/*'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/ventes/lignesVente/${this.configuration.encodeParam({name: "idVente", value: idVente, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<LigneVenteDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Rechercher une vente par code
      * Cette méthode permet de rechercher une vente par son code
-     * @endpoint get /gestiondestock/v1/ventes/{codeVente}
+     * @endpoint get /gestiondestock/v1/ventes/filter/{codeVente}
      * @param codeVente 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -184,7 +240,7 @@ export class VentesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/ventes/${this.configuration.encodeParam({name: "codeVente", value: codeVente, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/ventes/filter/${this.configuration.encodeParam({name: "codeVente", value: codeVente, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<VenteDto>('get', `${basePath}${localVarPath}`,
             {
@@ -201,7 +257,7 @@ export class VentesService extends BaseService {
     /**
      * Rechercher une vente par ID
      * Cette méthode permet de rechercher une vente par son ID
-     * @endpoint get /gestiondestock/v1/ventes/{idVente}
+     * @endpoint get /gestiondestock/v1/ventes/id/{idVente}
      * @param idVente 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -240,7 +296,7 @@ export class VentesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/ventes/${this.configuration.encodeParam({name: "idVente", value: idVente, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/ventes/id/${this.configuration.encodeParam({name: "idVente", value: idVente, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<VenteDto>('get', `${basePath}${localVarPath}`,
             {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, of, switchMap, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, of, switchMap, throwError} from 'rxjs';
 import {
   AuthenticationsService,
   ChangerMotDePasseUtilisateurDto,
@@ -14,6 +14,9 @@ import { Router } from "@angular/router";
   providedIn: 'root'
 })
 export class UserService {
+
+  private currentUserSubject = new BehaviorSubject<UtilisateurDto | null>(this.getConnectedUser());
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(
     private authenticationsService: AuthenticationsService,
@@ -70,7 +73,11 @@ export class UserService {
   /** CONNECTED USER STORAGE (CORRIGÉ) */
   setConnectedUser(utilisateur: UtilisateurDto): void {
     localStorage.setItem('connectedUser', JSON.stringify(utilisateur));
+    this.currentUserSubject.next(utilisateur); // On diffuse la mise à jour !
     console.log("Utilisateur chargé :", utilisateur);
+
+
+
   }
 
 

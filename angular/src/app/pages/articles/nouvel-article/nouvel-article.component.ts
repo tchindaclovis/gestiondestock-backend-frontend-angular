@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ArticleService} from "../../../services/article/article.service";
-import {ArticleDto, CategoryDto, PhotoService} from "../../../../gs-api/src";
+import {ArticleDto, CategoryDto, PhotoService, UtilisateurDto} from "../../../../gs-api/src";
 import {CategoryService} from "../../../services/category/category.service";
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-nouvel-article',
   templateUrl: './nouvel-article.component.html',
@@ -16,7 +16,8 @@ export class NouvelArticleComponent implements OnInit {
   listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
   errorMsg: Array<string> = [];   //ou alors errorMsg: string[] = [];
   file: File| null = null;  // objet file qui peut être null et qui va être initialisé à null
-  imgUrl: string | ArrayBuffer = 'assets/product.png';
+  imgUrl: string | ArrayBuffer = 'assets/new_product.png';
+
 
   constructor(
     private router: Router,
@@ -43,13 +44,105 @@ export class NouvelArticleComponent implements OnInit {
           this.imgUrl = this.articleDto.photo;
         }
       });
+
+    }else {
+
+      this.articleService.getLastCodeArticle().subscribe({
+        next: async (res: any) => { // Ajoutez 'async' ici
+          let rawValue = res;
+
+          // Si la réponse est un Blob, on extrait son contenu textuel
+          if (res instanceof Blob) {
+            rawValue = await res.text();
+          }
+
+          console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "ART0013"
+          this.articleDto.codeArticle = this.genererProchainCode(rawValue);
+        },
+        error: (err) => {
+          console.error('Erreur API :', err);
+          this.articleDto.codeArticle = 'ART0001';
+        }
+      });
+
+
+      // // MODE CRÉATION : On génère automatiquement le prochain code
+      // this.articleService.getLastCodeArticle().subscribe({
+      //   next: (lastCode) => {
+      //     // lastCode sera "ART0000" (si vide) ou le dernier en BDD (ex: "ART0012")
+      //     this.articleDto.codeArticle = this.genererProchainCode(lastCode);
+      //   },
+      //   error: (err) => {
+      //     console.error('Erreur récupération dernier code', err);
+      //     this.articleDto.codeArticle = 'ARTerror'; // Valeur de secours
+      //   }
+      // });
     }
   }
+
+
+  private genererProchainCode(lastCode: any): string {
+    console.log('Type de lastCode :', typeof lastCode);
+    console.log('Valeur brute de lastCode :', lastCode);
+    // 1. Conversion en string et nettoyage radical (supprime guillemets, espaces, retours à la ligne)
+    const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
+
+    // 2. Extraction de TOUS les chiffres présents dans la chaîne
+    // On cherche une suite de chiffres (\d+)
+    const match = cleanCode.match(/\d+/);
+
+    let nextNumber = 9999; // Valeur par défaut si aucun chiffre n'est trouvé
+
+    if (match && match[0]) {
+      // 3. Conversion de la partie trouvée (ex: "0013") en nombre et incrémentation
+      nextNumber = parseInt(match[0], 10) + 1;
+    }
+
+    // 4. Formatage : "ART" + nombre formaté sur 4 positions (Milliers, Centaines, Dizaines, Unités)
+    // padStart(4, '0') transforme 14 en "0014"
+    const formattedNumber = nextNumber.toString().padStart(4, '0');
+
+    return `ART${formattedNumber}`;
+  }
+
+  // private genererProchainCode(lastCode: any): string {
+  //   // 1. On force la conversion en string et on nettoie les éventuels guillemets
+  //   let codeStr = String(lastCode).replace(/"/g, '');
+  //
+  //   // 2. Extraction de la partie numérique
+  //   const numericPart = codeStr.replace('ART', '');
+  //
+  //   // 3. Conversion et incrémentation
+  //   const nextNumber = parseInt(numericPart, 10) + 1;
+  //
+  //   // 4. Formatage
+  //   return `ART${nextNumber.toString().padStart(4, '0')}`;
+  // }
+
 
 
   cancelClick(): void{
     this.router.navigate(['articles']);
   }
+
+
+  // verifierCodeArticle(): void {
+  //   let code = this.articleDto.codeArticle;
+  //   if (code) {
+  //     this.articleService.findArticleByCode(code)
+  //       .subscribe({
+  //         next: (art) => {
+  //           if (art && art.id) {
+  //             alert("Code article numéro: " + code + " existe déjà dans la BDD, définissez-en un autre");
+  //             this.articleDto.codeArticle = ''; // Optionnel : vide le champ
+  //           }
+  //         },
+  //         error: () => {
+  //           // Si erreur 404, c'est parfait, le code est libre
+  //         }
+  //       });
+  //   }
+  // }
 
 
   enregistrerArticle(): void {
@@ -64,6 +157,11 @@ export class NouvelArticleComponent implements OnInit {
 
 
   calculerTTC(): void {
+    if (this.articleDto.prixVenteUnitaireHt && this.articleDto.tauxTva){
+      this.articleDto.prixVenteUnitaireTtc =
+        +this.articleDto.prixVenteUnitaireHt + (+(this.articleDto.prixVenteUnitaireHt*this.articleDto.tauxTva))/100
+    }
+
     if (this.articleDto.prixUnitaireHt && this.articleDto.tauxTva){
       this.articleDto.prixUnitaireTtc =
         +this.articleDto.prixUnitaireHt + (+(this.articleDto.prixUnitaireHt*this.articleDto.tauxTva))/100
@@ -109,24 +207,30 @@ export class NouvelArticleComponent implements OnInit {
   }
 
 
-  /**
-   * Retourne l'URL de la photo.
-   * Si la photo commence par 'http', on l'utilise directement.
-   * Sinon, on affiche l'image par défaut.
-   */
-// Gardez cette méthode pour la sécurité, mais nous allons simplifier le HTML
-  getPhotoUrl(): string | ArrayBuffer {
-    return this.imgUrl;
+  extractMaxArticleCode(listeCodes: string[]): string | null {
+    if (!listeCodes || listeCodes.length === 0) {
+      return null;
+    }
+
+    // 1. Filtrer pour ne garder que les codes au bon format (ARTxxxx)
+    // 2. Extraire la partie numérique et la convertir en nombre
+    const numeros = listeCodes
+      .filter(code => /^ART\d+$/.test(code)) // Vérifie que c'est ART suivi de chiffres
+      .map(code => {
+        const partieNumerique = code.replace('ART', '');
+        return parseInt(partieNumerique, 10);
+      });
+
+    if (numeros.length === 0) return null;
+
+    // 3. Trouver le nombre maximum
+    const maxNumber = Math.max(...numeros);
+
+    // 4. Reformater le nombre en "ARTxxxx" avec les zéros devant (ex: 5 -> ART0005)
+    // On utilise padStart(4, '0') pour garder 4 chiffres après "ART"
+    return `ART${maxNumber.toString().padStart(4, '0')}`;
   }
 
-  // getPhotoUrl(photoName: string | undefined): string {
-  //   if (!photoName) {
-  //     // Chemin vers votre image par défaut dans le dossier assets d'Angular
-  //     return 'assets/product.png';
-  //   }
-  //   // Utilisation du port API (9000) et du bucket 'imagephoto'
-  //   return `http://localhost:9000/imagephoto/${photoName}`;
-  // }
 
   autoResize(event: any) {
     event.target.style.height = 'auto';

@@ -31,6 +31,9 @@ public class CommandeClient extends AbstractEntity{
     @JoinColumn(name = "idclient")
     private Client client;
 
-    @OneToMany(mappedBy = "commandeClient")
+
+    @OneToMany(mappedBy = "commandeClient", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude // <--- AJOUTEZ CECI
     private List<LigneCommandeClient> ligneCommandeClients;
 }

@@ -24,9 +24,13 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6 text-center">
-          <label>Prix unitaire HT:</label>
+        <div class="col-md-3 text-center">
+          <label>Prix achat unitaire HT:</label>
           <div class="appercu-form">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+        </div>
+        <div class="col-md-3 text-center">
+          <label>Prix vente unitaire HT:</label>
+          <div class="appercu-form">{{ articleDto.prixVenteUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
         <div class="col-md-6 text-center">
           <label>Taux TVA:</label>
@@ -34,9 +38,13 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6 text-center">
-          <label>Prix unitaire TTC:</label>
+        <div class="col-md-3 text-center">
+          <label>Prix achat unitaire TTC:</label>
           <div class="appercu-form">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+        </div>
+        <div class="col-md-3 text-center">
+          <label>Prix vente unitaire TTC:</label>
+          <div class="appercu-form">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
         <div class="col-md-6 text-center">
           <label>Désignation catégorie:</label>

@@ -1,9 +1,12 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.VenteApi;
+import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
+import com.tchindaClovis.gestiondestock.dto.LigneVenteDto;
 import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.services.VenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -37,8 +40,12 @@ public class VenteController implements VenteApi {
     }
 
     @Override
-    public void delete(Integer idVente) {
+    public ResponseEntity<List<LigneVenteDto>> findAllLignesVentesByVenteId(Integer idVente) {
+        return ResponseEntity.ok(venteService.findAllLignesVentesByVenteId(idVente));
+    }
 
+    @Override
+    public void delete(Integer idVente) {
         venteService.delete(idVente);
     }
 }

@@ -20,10 +20,10 @@ export class CommandeclientfournisseurService {
   ) { }
 
 
-  enregistrerCommandeClient(commandeClient: CommandeClientDto)
+  enregistrerCommandeClient(commandeClientDto: CommandeClientDto)
     : Observable<CommandeClientDto> {
-    commandeClient.idEntreprise = this.userService.getConnectedUser()?.entreprise?.id; //affecter l'idEntreprise à l'utilisateur
-    return this.commandeClientService.save5(commandeClient);
+    commandeClientDto.idEntreprise = this.userService.getConnectedUser()?.entreprise?.id; //affecter l'idEntreprise à l'utilisateur
+    return this.commandeClientService.save5(commandeClientDto);
   }
 
 

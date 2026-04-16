@@ -15,7 +15,7 @@ import {
   ArticleDto, CategoryDto, ClientDto,
   CommandeClientDto,
   CommandeFournisseurDto, FournisseurDto,
-  LigneCommandeClientDto
+  LigneCommandeClientDto, UtilisateurDto
 } from "../../../gs-api/src";
 
 
@@ -32,6 +32,8 @@ import { ArticleService } from "../../services/article/article.service";
 // Service gestion commandes
 import { CommandeclientfournisseurService } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
 import {CategoryService} from "../../services/category/category.service";
+import {UserService} from "../../services/user/user.service";
+import {Observable} from "rxjs";
 
 // ==============================
 // DECORATEUR COMPONENT
@@ -44,7 +46,8 @@ import {CategoryService} from "../../services/category/category.service";
 
 export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
-  origin = '';
+  @Input() origin = '';
+  connectedUser: UtilisateurDto | null = null;
   clientFournisseur: any = {}; //soit client soit fournisseur
 
   codeArticle = '';
@@ -63,12 +66,13 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   errorMsg : Array<string> = [];
   listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
 
-  lignesCommande: Array<any> = [];
+  listeLignesCommande: Array<any> = [];
   totalCommande = 0;
   articleNotYetSelected = false;
 
   constructor(
     private router: Router,
+    private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private clientFournisseurService: ClientfournisseurService,
     private articleService: ArticleService,   //injection du nouveau service article créé dans Angular
@@ -77,6 +81,8 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
+    this.connectedUser = this.userService.getConnectedUser();
 
     // 1. Déterminer l'origine
     this.activatedRoute.data.subscribe(data => {
@@ -97,15 +103,13 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     });
   }
 
-
-
   chargerDonneesPourModification(id: number): void {
     console.log("ID détecté :", id, " | Origine :", this.origin);
 
     // On définit l'appel dynamiquement
-    const serviceCall = this.origin === 'client'
-      ? this.commandeClientFournisseurService.findCommandeClientById(id)
-      : this.commandeClientFournisseurService.findCommandeFournisseurById(id);
+    const serviceCall = this.origin === 'client' ?
+      this.commandeClientFournisseurService.findCommandeClientById(id) :
+      this.commandeClientFournisseurService.findCommandeFournisseurById(id);
 
     // On force le type à 'any' pour le subscribe pour éviter l'erreur TS2349
     (serviceCall as any).subscribe((res: any) => {
@@ -133,75 +137,63 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
   private affecterDonnees(cmd: any): void {
     this.codeCommande = cmd.code || '';
+
     // On récupère soit le client soit le fournisseur selon l'origine
-    this.selectedClientFournisseur = (this.origin === 'client') ? cmd.client : cmd.fournisseur;
+    this.selectedClientFournisseur = (this.origin === 'client') ?
+      cmd.client :
+      cmd.fournisseur;
+
     console.log("Données affectées au formulaire :", this.codeCommande);
   }
 
-  // // Fusion des méthodes pour charger à la fois le client et les lignes
-  // chargerDonneesPourModification(id: number): void {
-  //   console.log("ID détecté :", id, " | Origine :", this.origin);
-  //   if (this.origin === 'client') {
-  //     this.commandeClientFournisseurService.findCommandeClientById(id)
-  //       .subscribe(cmd => {
-  //         console.log("Commande Client reçue :", cmd);
-  //         this.codeCommande = cmd.code || ''; // Affectation à la variable liée au ngModel
-  //         this.selectedClientFournisseur = cmd.client || {};
-  //         // On charge les lignes après avoir reçu la commande
-  //         this.chargerLignesCommande(id);
-  //       });
-  //   } else {
-  //     this.commandeClientFournisseurService.findCommandeFournisseurById(id)
-  //       .subscribe(cmd => {
-  //         console.log("Commande Fournisseur reçue :", cmd);
-  //         this.codeCommande = cmd.code || '';
-  //         this.selectedClientFournisseur = cmd.fournisseur || {}; // Affectation à la variable liée au ngModel
-  //         this.chargerLignesCommande(id);
-  //       });
-  //   }
-  // }
+
+  private chargerLignesCommande(idCommande: number): void {
+    // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
+    let serviceLignes: Observable<any>;
 
 
+      serviceLignes = (this.origin === 'client') ?
+        this.commandeClientFournisseurService.findAllLigneCommandesClient(idCommande) :
+        this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(idCommande);
 
-  private chargerLignesCommande(id: number): void {
-    const serviceLignes = this.origin === 'client'
-      ? this.commandeClientFournisseurService.findAllLigneCommandesClient(id)
-      : this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(id);
-
-    serviceLignes.subscribe((res: any) => {
-      if (res instanceof Blob) {
-        res.text().then(text => {
-          this.lignesCommande = JSON.parse(text);
+    // 2. Appel du subscribe
+    serviceLignes.subscribe({
+      next: (res) => {
+        if (res instanceof Blob) {
+          // Utilisation de async/await ou .then pour extraire le texte du Blob
+          res.text().then(text => {
+            try {
+              this.listeLignesCommande = JSON.parse(text);
+              this.calculerTotalCommande();
+            } catch (e) {
+              console.error('Erreur de parsing JSON du Blob', e);
+            }
+          });
+        } else {
+          this.listeLignesCommande = res;
           this.calculerTotalCommande();
-        });
-      } else {
-        this.lignesCommande = res;
-        this.calculerTotalCommande();
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des lignes', err);
       }
     });
   }
 
-  // private chargerLignesCommande(id: number): void {
-  //   if (this.origin === 'client') {
-  //     this.commandeClientFournisseurService.findAllLigneCommandesClient(id)
-  //       .subscribe(lignes => {
-  //         this.lignesCommande = lignes;
-  //         this.calculerTotalCommande();
-  //       });
-  //   } else {
-  //     this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(id)
-  //       .subscribe(lignes => {
-  //         this.lignesCommande = lignes;
-  //         this.calculerTotalCommande();
-  //       });
-  //   }
-  // }
-
 
   calculerTotalCommande(): void {
     this.totalCommande = 0;
-    this.lignesCommande.forEach(lig => {
-      this.totalCommande += (lig.prixUnitaire * lig.quantite);
+    this.listeLignesCommande.forEach(lig => {
+
+        const prix = (this.origin === 'client') ?
+          lig.prixVenteUnitaireTtc :
+          lig.prixUnitaireTtc;
+
+        this.totalCommande += (+prix * +lig.quantite);
+
+      // // On récupère le prix disponible
+      // const prix = lig.prixUnitaire || lig.prixVenteUnitaireTtc || lig.prixUnitaireTtc || 0;
+      // this.totalCommande += (+prix * +lig.quantite);
     });
   }
 
@@ -226,7 +218,12 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
 
   findAllArticles(): void {
-    this.articleService.findAllArticle().subscribe(res => this.listArticle = res);
+    // On récupère l'id de l'entreprise de l'utilisateur connecté
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
+      this.articleService.findAllArticlesByIdEntreprise(idEntreprise)
+        .subscribe(res => this.listArticle = res);
+    }
   }
 
   filtrerArticle(): void {
@@ -240,9 +237,9 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     );
   }
 
-  selectArticleClick(article: ArticleDto): void {
-    this.searchedArticle = article;
-    this.codeArticle = article.codeArticle || '';
+  selectArticleClick(articleDto: ArticleDto): void {
+    this.searchedArticle = articleDto;
+    this.codeArticle = articleDto.codeArticle || '';
     this.articleNotYetSelected = true;
   }
 
@@ -256,20 +253,30 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     this.articleNotYetSelected = false;
   }
 
+
   private checkLigneCommande(): void {
-    const ligneExistante = this.lignesCommande.find(lig =>
+    const ligneExistante = this.listeLignesCommande.find(lig =>
       lig.article?.codeArticle === this.searchedArticle.codeArticle
     );
 
     if (ligneExistante) {
       ligneExistante.quantite += +this.quantite;
     } else {
-      const ligneCmd = {
-        article: this.searchedArticle,
-        prixUnitaire: this.searchedArticle.prixUnitaireTtc,
-        quantite: +this.quantite
-      };
-      this.lignesCommande.push(ligneCmd);
+      if (this.origin === 'client') {
+        const ligneCmd = {
+          article: this.searchedArticle,
+          prixVenteUnitaireTtc: this.searchedArticle.prixVenteUnitaireTtc,
+          quantite: +this.quantite
+        };
+        this.listeLignesCommande.push(ligneCmd);
+      }else{
+        const ligneCmd = {
+          article: this.searchedArticle,
+          prixUnitaireTtc: this.searchedArticle.prixUnitaireTtc,
+          quantite: +this.quantite
+        };
+        this.listeLignesCommande.push(ligneCmd);
+      }
     }
   }
 
@@ -285,17 +292,39 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
   private preparerCommande(): any {
+    // On crée une copie des lignes pour ne pas modifier l'affichage en cours
+    const lignesPourBackend = this.listeLignesCommande.map(ligne => {
+      if (this.origin === 'client'){
+        return {
+          article: ligne.article,
+          quantite: ligne.quantite,
+          prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc,
+            // prixUnitaire: ligne.prixUnitaire || ligne.prixUnitaireTtc || ligne.prixVenteUnitaireTtc ||
+        };
+      }else {
+        return {
+          article: ligne.article,
+          quantite: ligne.quantite,
+          prixUnitaireTtc: ligne.prixUnitaireTtc,
+        };
+      }
+    });
+
     return {
       [this.origin]: this.selectedClientFournisseur, // clé dynamique 'client' ou 'fournisseur'
       code: this.codeCommande,
       dateCommande: new Date().getTime(),
       etatCommande: 'EN_PREPARATION',
-      [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: this.lignesCommande
+      [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
     };
   }
 
+
   cancelClick(): void {
-    this.router.navigate([this.origin === 'client' ? 'commandesclient' : 'commandesfournisseur']);
+    this.router.navigate([this.origin === 'client' ?
+      'commandesclient' :
+      'commandesfournisseur'
+    ]);
   }
 
   private handleError(error: any): void {

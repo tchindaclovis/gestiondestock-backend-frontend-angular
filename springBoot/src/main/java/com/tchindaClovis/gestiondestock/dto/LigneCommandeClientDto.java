@@ -1,6 +1,6 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tchindaClovis.gestiondestock.model.CommandeClient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,9 @@ public class LigneCommandeClientDto {
 
     private BigDecimal quantite;
 
-    private BigDecimal prixUnitaire;
+//    // Cette annotation permet de recevoir "prixUnitaire" OU "prixVenteUnitaireTtc" depuis Angular
+//    @JsonProperty("prixUnitaire")
+    private BigDecimal prixVenteUnitaireTtc;
 
     private Integer idEntreprise;
 
@@ -32,10 +34,9 @@ public class LigneCommandeClientDto {
         return LigneCommandeClientDto.builder()
                 .id(ligneCommandeClients.getId())
                 .quantite(ligneCommandeClients.getQuantite())
-                .prixUnitaire(ligneCommandeClients.getPrixUnitaire())
+                .prixVenteUnitaireTtc(ligneCommandeClients.getPrixVenteUnitaireTtc())
                 .idEntreprise(ligneCommandeClients.getIdEntreprise())
                 .article(ArticleDto.fromEntity(ligneCommandeClients.getArticle()))
-//                .commandeClient(CommandeClientDto.fromEntity(ligneCommandeClients.getCommandeClient()))
                 .build();
     }
 
@@ -46,10 +47,9 @@ public class LigneCommandeClientDto {
         LigneCommandeClient ligneCommandeClients = new LigneCommandeClient();
         ligneCommandeClients.setId(ligneCommandeClientDto.getId());
         ligneCommandeClients.setQuantite(ligneCommandeClientDto.getQuantite());
-        ligneCommandeClients.setPrixUnitaire(ligneCommandeClientDto.getPrixUnitaire());
+        ligneCommandeClients.setPrixVenteUnitaireTtc(ligneCommandeClientDto.getPrixVenteUnitaireTtc());
         ligneCommandeClients.setIdEntreprise(ligneCommandeClientDto.getIdEntreprise());
         ligneCommandeClients.setArticle(ArticleDto.toEntity(ligneCommandeClientDto.getArticle()));
-//        ligneCommandeClients.setCommandeClient(CommandeClientDto.toEntity(ligneCommandeClientDto.getCommandeClient()));
         return ligneCommandeClients;
     }
 }

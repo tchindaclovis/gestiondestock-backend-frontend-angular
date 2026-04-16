@@ -1,5 +1,6 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tchindaClovis.gestiondestock.model.ERoleName;
 import com.tchindaClovis.gestiondestock.model.Roles;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +11,9 @@ public class RolesDto {
 
     private Integer id;
 
-    private String roleName;
+    private ERoleName roleName;
 
-    @JsonIgnore //pour limiter l'accès à l'info
+    @JsonIgnore //pour limiter l'accès à l'info car pas besoin de charger
     private UtilisateurDto utilisateur;
 
     public static RolesDto fromEntity (Roles roles){

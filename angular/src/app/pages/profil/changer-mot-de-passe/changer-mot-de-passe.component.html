@@ -2,28 +2,55 @@
   <div class="card col-md-4 text-center">
     <div class="col">
       <div class="mb-3 mt-3">
-        <img src="assets/product.png" class="rounded-circle" width="200px" height="200px">
+        <img [src]="connectedUser?.photo || 'assets/profil.png'" class="rounded-circle" width="200px" height="200px">
       </div>
     </div>
     <div class="mb-3">
-      <h2>Nom Prenom</h2>
-      <small class="form-text text-auted">Adresse, Ville, 12345</small>
+      <h2>
+        <span *ngIf="connectedUser !== null">
+          <!--Interpolation Angular {{ }}
+            Affiche dynamiquement le nom de l’utilisateur connecté-->
+          {{ connectedUser.nom }}
+        </span>
+      </h2>
+      <small class="form-text text-auted">
+        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
+        {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
+      </small>
     </div>
   </div>
 
   <div class="card col-md-8">
     <form class="m-lg-3">
-      <div class="form-group mb-3 mt-3">
-        <input type="email" class="form-control" placeholder="Ancien mot de passe" name="ancienmotdepasse"
-               [(ngModel)]="ancienMotDePasse">
+      <div class="row mb-3 mt-3">
+        <div class="col-md-4">
+          <label>Ancien mot de passe:</label>
+        </div>
+        <div class="col-md-8 form-group">
+          <input type="email" class="form-control"  name="ancienmotdepasse"
+                 [(ngModel)]="ancienMotDePasse">
+        </div>
       </div>
-      <div class="form-group mb-3">
-        <input type="password" class="form-control" placeholder="Nouveau mot de passe" name="nouveaumotdepasse"
-               [(ngModel)]="changerMotDePasseDto.motDePasse">
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Nouveau mot de passe:</label>
+        </div>
+        <div class="col-md-8 form-group">
+          <input type="password" class="form-control"  name="nouveaumotdepasse"
+                 [(ngModel)]="changerMotDePasseDto.motDePasse">
+        </div>
       </div>
-      <div class="form-group">
-        <input type="email" class="form-control" placeholder="Confirmer mot de passe" name="confirmermotdepasse"
-               [(ngModel)]="changerMotDePasseDto.confirmMotDePasse">
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Confirmer mot de passe:</label>
+        </div>
+
+        <div class="col-md-8 form-group">
+          <input type="email" class="form-control"  name="confirmermotdepasse"
+                 [(ngModel)]="changerMotDePasseDto.confirmMotDePasse">
+        </div>
       </div>
     </form>
 

@@ -1,0 +1,25 @@
+<div class="row mb-1 mr-0 border">
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    {{ ligneVente.article?.codeArticle }}
+  </div>
+  <div class="col-md-4 border-end mb-1 mt-1 text-center">
+    {{ ligneVente.article?.designation }}
+  </div>
+
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    {{ ligneVente.quantite | number:'1.0-0':'fr' }}
+  </div>
+
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    <span>
+      {{ (ligneVente.prixVenteUnitaireTtc) |
+      currency:'XAF':'symbol':'1.0-0':'fr'  }}
+    </span>
+  </div>
+
+  <div class="col-md-2 mb-1 mt-1 text-center">
+    <span>
+      {{ (calculerTotalLigne()) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+    </span>
+  </div>
+</div>

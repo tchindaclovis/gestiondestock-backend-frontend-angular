@@ -11,12 +11,15 @@ import { CommandeclientfournisseurService } from "../../services/commandeclientf
 export class DetailCommandeClientFournisseurComponent implements OnInit, OnChanges {
 
   @Input() origin = '';
+
   @Input() commande: any = {};
 
-  clientFournisseur: any = {};
+  @Input() clientFournisseur: any;
 
-  @Output()
-  suppressionResult = new EventEmitter<string>();
+  listeCommandes: any = {};
+
+  @Output() suppressionTerminee = new EventEmitter<number>();
+  @Output() suppressionResult = new EventEmitter<string>();
 
   constructor(
     private router: Router,
@@ -54,22 +57,94 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     this.router.navigate([route, this.commande.id]);
   }
 
+
+  // confirmerEtSupprimer(): void {
+  //   if (this.commande && this.commande.id) {
+  //     const delete$ = this.origin === 'client'
+  //       ? this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
+  //       : this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id);
+  //
+  //     delete$.subscribe({
+  //       next: () => {
+  //         // 1. On informe le parent AVANT toute navigation
+  //         this.suppressionTerminee.emit(this.commande.id);
+  //         this.suppressionResult.emit('success');
+  //
+  //         // Note : On ne force plus la navigation ici car l'élément
+  //         // aura déjà disparu visuellement de la liste.
+  //       },
+  //       error: (err) => {
+  //         console.error("Erreur suppression:", err);
+  //         this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression');
+  //       }
+  //     });
+  //   }
+  // }
+
+
   confirmerEtSupprimer(): void {
     if (this.origin === 'client') {
       // ATTENTION : On supprime la COMMANDE (commande.id), pas le client !
-      this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
-        .subscribe({
-          next: () => this.suppressionResult.emit('success'),
-          error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
-        });
+      if (this.commande && this.commande.id) {
+        this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
+          .subscribe({
+            next: () => {
+              // 1. On émet d'abord le succès pour les éventuels composants parents
+              this.suppressionResult.emit('success');
+              // this.listeCommandes = this.listeCommandes.filter(cmd => cmd.id !== this.commande.id);
+              // 2. On attend la fermeture de la modal (300ms) avant de naviguer
+              setTimeout(() => {
+                // 3. Navigation vers la liste des ventes
+                // Cela déclenchera le rechargement du composant de la liste
+                this.router.navigate(['commandesclient']);
+              }, 300);
+            },
+            error: (err) => {
+              console.error("Erreur suppression:", err);
+              this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression');
+            }
+          });
+      }
     } else {
-      this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
-        .subscribe({
-          next: () => this.suppressionResult.emit('success'),
-          error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
-        });
+      if (this.commande && this.commande.id) {
+        this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
+          .subscribe({
+            next: () => {
+              // 1. On émet d'abord le succès pour les éventuels composants parents
+              this.suppressionResult.emit('success');
+              // 2. On attend la fermeture de la modal (300ms) avant de naviguer
+              setTimeout(() => {
+                // 3. Navigation vers la liste des ventes
+                // Cela déclenchera le rechargement du composant de la liste
+                this.router.navigate(['commandesfournisseur']);
+              }, 300);
+            },
+            error: (err) => {
+              console.error("Erreur suppression:", err);
+              this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression');
+            }
+          });
+      }
     }
   }
+
+
+  // confirmerEtSupprimer(): void {
+  //   if (this.origin === 'client') {
+  //     // ATTENTION : On supprime la COMMANDE (commande.id), pas le client !
+  //     this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
+  //       .subscribe({
+  //         next: () => this.suppressionResult.emit('success'),
+  //         error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
+  //       });
+  //   } else {
+  //     this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
+  //       .subscribe({
+  //         next: () => this.suppressionResult.emit('success'),
+  //         error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
+  //       });
+  //   }
+  // }
 }
 
 

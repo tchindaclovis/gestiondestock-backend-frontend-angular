@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 @Service
 @Slf4j
@@ -62,20 +63,22 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 
         List<String> errors = CommandeClientValidator.validate(dto);
-
         if (!errors.isEmpty()) {
             log.error("Commande client n'est pas valide");
-            throw new InvalidEntityException("La commande client n'est pas valide", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, errors);
+            throw new InvalidEntityException(
+                    "La commande client n'est pas valide", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, errors);
         }
 
         if (dto.getId() != null && dto.isCommandeLivree()) {
-            throw new InvalidOperationException("Impossible de modifier la commande lorsqu'elle est livree", ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+            throw new InvalidOperationException(
+                    "Impossible de modifier la commande lorsqu'elle est livree", ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
         }
 
         Optional<Client> client = clientRepository.findById(dto.getClient().getId());
         if (client.isEmpty()) {
             log.warn("Client with ID {} was not found in the DB", dto.getClient().getId());
-            throw new EntityNotFoundException("Aucun client avec l'ID" + dto.getClient().getId() + " n'a ete trouve dans la BDD",
+            throw new EntityNotFoundException(
+                    "Aucun client avec l'ID" + dto.getClient().getId() + " n'a ete trouve dans la BDD",
                     ErrorCodes.CLIENT_NOT_FOUND);
         }
 
@@ -96,7 +99,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
         if (!articleErrors.isEmpty()) {
             log.warn("");
-            throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
+            throw new InvalidEntityException(
+                    "Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
         dto.setDateCommande(Instant.now());
         CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(dto));
@@ -104,9 +108,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         if (dto.getLigneCommandeClients() != null) {
             dto.getLigneCommandeClients().forEach(ligCmdClt -> {
                 LigneCommandeClient ligneCommandeClients = LigneCommandeClientDto.toEntity(ligCmdClt);
-
 //                log.info("LIGNES A SAUVER : {}", dto.getLigneCommandeClients());
-
                 ligneCommandeClients.setCommandeClient(savedCmdClt);
                 ligneCommandeClients.setIdEntreprise(dto.getIdEntreprise());
                 LigneCommandeClient savedLigneCmd = ligneCommandeClientRepository.save(ligneCommandeClients);
@@ -117,6 +119,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
         return CommandeClientDto.fromEntity(savedCmdClt);
     }
+
 
     @Override
     public CommandeClientDto findById(Integer id) {
@@ -152,6 +155,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     }
 
     @Override
+    @Transactional // CRITIQUE : Assure que tout est validé en base à la fin
     public void delete(Integer id) {
         if (id == null) {
             log.error("Commande client ID is NULL");
@@ -159,10 +163,13 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         }
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(id);
         if (!ligneCommandeClients.isEmpty()) {
-            throw new InvalidOperationException("Impossible de supprimer une commande client deja utilisee",
-                    ErrorCodes.COMMANDE_CLIENT_ALREADY_IN_USE);
+            ligneCommandeClientRepository.deleteAll(ligneCommandeClients);
+            log.info("Lignes de commandeClient pour la commande ID {} supprimées", id);
+//            throw new InvalidOperationException("Impossible de supprimer une commande client deja utilisee",
+//                    ErrorCodes.COMMANDE_CLIENT_ALREADY_IN_USE);
         }
         commandeClientRepository.deleteById(id);
+        log.info("CommandeClient ID {} supprimée avec succès", id);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class LigneVenteValidator {
             return errors;
         }
 
-        if(dto.getPrixUnitaire() == null){
+        if(dto.getPrixVenteUnitaireTtc() == null){
             errors.add("Veuillez renseigner le prix unitaire de la la ligne de la Vente");
         }
         if(dto.getQuantite() == null){

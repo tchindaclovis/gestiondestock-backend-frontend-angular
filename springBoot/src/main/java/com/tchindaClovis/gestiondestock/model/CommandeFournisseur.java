@@ -2,7 +2,6 @@ package com.tchindaClovis.gestiondestock.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.Instant;
 import java.util.List;
 
@@ -31,6 +30,8 @@ public class CommandeFournisseur extends AbstractEntity{
     @JoinColumn(name = "idfournisseur")
     private Fournisseur fournisseur;
 
-    @OneToMany(mappedBy = "commandeFournisseur")
+    @OneToMany(mappedBy = "commandeFournisseur", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude // <--- AJOUTEZ CECI
     private List<LigneCommandeFournisseur> ligneCommandeFournisseurs;
 }

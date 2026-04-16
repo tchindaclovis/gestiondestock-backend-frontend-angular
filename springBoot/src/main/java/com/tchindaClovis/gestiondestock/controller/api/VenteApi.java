@@ -1,6 +1,8 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
 import com.tchindaClovis.gestiondestock.dto.CategoryDto;
+import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
+import com.tchindaClovis.gestiondestock.dto.LigneVenteDto;
 import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +36,7 @@ public interface VenteApi {
     )
     VenteDto save(@RequestBody VenteDto dto);
 
-    @GetMapping(value = APP_ROOT + "/ventes/{idVente}",
+    @GetMapping(value = APP_ROOT + "/ventes/id/{idVente}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une vente par ID",
@@ -46,7 +49,7 @@ public interface VenteApi {
     )
     VenteDto findById(@PathVariable("idVente") Integer id);
 
-    @GetMapping(value = APP_ROOT + "/ventes/{codeVente}",
+    @GetMapping(value = APP_ROOT + "/ventes/filter/{codeVente}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une vente par code",
@@ -70,6 +73,10 @@ public interface VenteApi {
             }
     )
     List<VenteDto> findAll();
+
+    @GetMapping(APP_ROOT + "/ventes/lignesVente/{idVente}")
+    ResponseEntity<List<LigneVenteDto>> findAllLignesVentesByVenteId(@PathVariable("idVente") Integer idVente);
+
 
     @DeleteMapping(value = APP_ROOT + "/ventes/delete/{idVente}")
     @Operation(

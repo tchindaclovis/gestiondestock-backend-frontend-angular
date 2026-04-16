@@ -20,10 +20,11 @@ public class VenteDto {
 
     private String commentaire;
 
+    private ClientDto client;
+
     private Integer idEntreprise;
 
-    @JsonIgnore
-    private List<LigneVenteDto> LigneVentes;
+    private List<LigneVenteDto> ligneVentes;
 
     public static VenteDto fromEntity (Vente vente){  //permet de faire un mapping de l'entité vers le DTO
         if(vente == null){
@@ -35,6 +36,7 @@ public class VenteDto {
                 .code(vente.getCode())
                 .dateVente(vente.getDateVente())
                 .commentaire(vente.getCommentaire())
+                .client(ClientDto.fromEntity(vente.getClient()))
                 .idEntreprise(vente.getIdEntreprise())
                 .build();
     }
@@ -48,6 +50,7 @@ public class VenteDto {
         vente.setCode(venteDto.getCode());
         vente.setDateVente(venteDto.getDateVente());
         vente.setCommentaire(venteDto.getCommentaire());
+        vente.setClient(ClientDto.toEntity(venteDto.getClient()));
         vente.setIdEntreprise(venteDto.getIdEntreprise());
 
         return vente;

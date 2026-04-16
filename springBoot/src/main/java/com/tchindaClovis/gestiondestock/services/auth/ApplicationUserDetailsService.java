@@ -100,15 +100,18 @@ public class ApplicationUserDetailsService implements UserDetailsService {
          */
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        /*
+        /**
          * Pour chaque rôle de l'utilisateur,
-         * on transforme le nom du rôle en GrantedAuthority.
+         * on transforme l'énumération ERoleName en String,
+         * puis en SimpleGrantedAuthority.
          */
-        utilisateur.getRoles().forEach(role ->
-                authorities.add(
-                        new SimpleGrantedAuthority(role.getRoleName())
-                )
-        );
+        utilisateur.getRoles().forEach(role -> {
+            // role.getRoleName() retourne l'objet ERoleName (Enum)
+            // .name() permet de récupérer "ADMIN", "MANAGER", etc. en String
+            authorities.add(
+                    new SimpleGrantedAuthority("ROLE_" + role.getRoleName().name())
+            );
+        });
 
         /*
          * Retour d’un objet UserDetails.

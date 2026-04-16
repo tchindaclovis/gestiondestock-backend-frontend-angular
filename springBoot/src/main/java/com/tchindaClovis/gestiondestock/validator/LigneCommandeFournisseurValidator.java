@@ -14,7 +14,7 @@ public class LigneCommandeFournisseurValidator {
             return errors;
         }
 
-        if(dto.getPrixUnitaire() == null){
+        if(dto.getPrixUnitaireTtc() == null){
             errors.add("Veuillez renseigner le prix unitaire de la la ligne de commande Fournisseur");
         }
         if(dto.getQuantite() == null){

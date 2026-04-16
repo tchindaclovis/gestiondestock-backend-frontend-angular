@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { ChangerMotDePasseUtilisateurDto } from '../../../../gs-api/src';
+import {ChangerMotDePasseUtilisateurDto, PhotoService, UtilisateurDto} from '../../../../gs-api/src';
 import { UserService } from '../../../services/user/user.service';
 
 @Component({
@@ -12,10 +12,13 @@ export class ChangerMotDePasseComponent implements OnInit {
 
   changerMotDePasseDto: ChangerMotDePasseUtilisateurDto = {};
   ancienMotDePasse = '';
+  connectedUser: UtilisateurDto | null = null;
+  imgUrl: string | ArrayBuffer = 'assets/profil.png';
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private photoService: PhotoService,
   ) { }
 
     ngOnInit(): void {
@@ -23,6 +26,7 @@ export class ChangerMotDePasseComponent implements OnInit {
       this.ancienMotDePasse = 'som3R@nd0mP@$$word';
       localStorage.removeItem('origin');
        }
+      this.connectedUser = this.userService.getConnectedUser();
     }
 
   cancelClick(): void {

@@ -42,6 +42,11 @@ import { AppercuUtilisateurComponent } from './pages/utilisateur/appercu-utilisa
 import { AppercuClientFournisseurComponent } from './composants/appercu-client-fournisseur/appercu-client-fournisseur.component';
 import {registerLocaleData} from "@angular/common";
 import localeFr from '@angular/common/locales/fr';
+import { PageVenteComponent } from './pages/vente/page-vente/page-vente.component';
+import { NouvelleVenteComponent } from './pages/vente/nouvelle-vente/nouvelle-vente.component';
+import { AppercuVenteComponent } from './pages/vente/appercu-vente/appercu-vente.component';
+import { DetailVenteComponent } from './composants/detail-vente/detail-vente.component';
+import { DetailVenteClientComponent } from './composants/detail-vente-client/detail-vente-client.component';
 
 
 
@@ -82,7 +87,12 @@ registerLocaleData(localeFr);
     LoaderComponent,
     AppercuArticleComponent,
     AppercuUtilisateurComponent,
-    AppercuClientFournisseurComponent
+    AppercuClientFournisseurComponent,
+    PageVenteComponent,
+    NouvelleVenteComponent,
+    AppercuVenteComponent,
+    DetailVenteComponent,
+    DetailVenteClientComponent
   ],
     imports: [
         BrowserModule,

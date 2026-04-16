@@ -11,6 +11,16 @@
 
 export interface RolesDto { 
     id?: number;
-    roleName?: string;
+    roleName?: RolesDto.RoleNameEnum;
 }
+export namespace RolesDto {
+    export const RoleNameEnum = {
+        Caissier: 'CAISSIER',
+        Manager: 'MANAGER',
+        Directeur: 'DIRECTEUR',
+        Admin: 'ADMIN'
+    } as const;
+    export type RoleNameEnum = typeof RoleNameEnum[keyof typeof RoleNameEnum];
+}
+
 

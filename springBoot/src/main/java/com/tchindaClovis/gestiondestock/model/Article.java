@@ -22,10 +22,13 @@ public class Article extends AbstractEntity{
     @Column(name = "description")
     private String description;
 
-    @Column(name = "prixunitaire")
+    @Column(name = "format")
+    private String format;
+
+    @Column(name = "prixunitaireht")
     private BigDecimal prixUnitaireHt;
 
-    @Column(name = "prixventeunitaire")
+    @Column(name = "prixventeunitaireht")
     private BigDecimal prixVenteUnitaireHt;
 
     @Column(name = "tauxtva")
@@ -41,7 +44,7 @@ public class Article extends AbstractEntity{
     private BigDecimal marge;
 
     @Column(name = "photo",length = 1024)
-    private String photo;  //String parceque ça ne sera pas stocké dans la BDD mais dans le cloud
+    private String photo;  //String parce que ça ne sera pas stocké dans la BDD mais dans le cloud
 
     @ManyToOne
     @JoinColumn(name = "idcategory")
@@ -61,4 +64,5 @@ public class Article extends AbstractEntity{
 
     @OneToMany(mappedBy = "article")
     private List<LigneVente> ligneVentes;
+
 }

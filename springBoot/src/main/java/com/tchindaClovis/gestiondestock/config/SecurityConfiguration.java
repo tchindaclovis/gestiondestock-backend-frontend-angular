@@ -182,31 +182,31 @@ public class SecurityConfiguration {
      *  - Autorise toutes les méthodes HTTP
      *  - Autorise les credentials (cookies, headers d’auth)
      */
-    @Bean
-    public CorsFilter corsFilter() {
-
-        CorsConfiguration config = new CorsConfiguration();
-
-        // Origine autorisée (frontend Angular)
-        config.addAllowedOrigin("http://localhost:4200");
-
-        // Autoriser tous les headers
-        config.addAllowedHeader("*");
-
-        // Autoriser toutes les méthodes HTTP (GET, POST, PUT, DELETE...)
-        config.addAllowedMethod("*");
-
-        // Autoriser les credentials (important pour JWT dans headers)
-        config.setAllowCredentials(true);
-
-        // Appliquer cette configuration à toutes les routes
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsFilter(source);
-    }
+//    @Bean
+//    public CorsFilter corsFilter() {
+//
+//        CorsConfiguration config = new CorsConfiguration();
+//
+//        // Origine autorisée (frontend Angular)
+//        config.addAllowedOrigin("http://localhost:4200");
+//
+//        // Autoriser tous les headers
+//        config.addAllowedHeader("*");
+//
+//        // Autoriser toutes les méthodes HTTP (GET, POST, PUT, DELETE...)
+//        config.addAllowedMethod("*");
+//
+//        // Autoriser les credentials (important pour JWT dans headers)
+//        config.setAllowCredentials(true);
+//
+//        // Appliquer cette configuration à toutes les routes
+//        UrlBasedCorsConfigurationSource source =
+//                new UrlBasedCorsConfigurationSource();
+//
+//        source.registerCorsConfiguration("/**", config);
+//
+//        return new CorsFilter(source);
+//    }
 
 
     /**

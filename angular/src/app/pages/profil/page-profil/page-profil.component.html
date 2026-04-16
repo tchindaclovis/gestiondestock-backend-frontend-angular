@@ -2,18 +2,34 @@
   <div class="card col-md-4 text-center mr-3">
     <div class="col">
       <div class="mb-3 mt-3">
-        <img src="assets/product.png" class="rounded-circle" width="200px" height="200px">
+        <img [src]="connectedUser?.photo || 'assets/profil.png'"
+             class="border rounded"
+             width="400px" height="200px">
       </div>
     </div>
     <div class="mb-3">
-      <h2>Nom Prenom</h2>
-      <small class="form-text text-auted">Adresse, Ville, 12345</small>
+      <h2>
+        <span *ngIf="connectedUser !== null">
+          <!--Interpolation Angular {{ }}
+            Affiche dynamiquement le nom de l’utilisateur connecté-->
+        {{ connectedUser.nom }}
+        </span>
+      </h2>
+      <small class="form-text text-auted">
+        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
+        {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
+      </small>
     </div>
     <div class="col text-center mb-3">
-      <button type="button" class="btn btn-primary m-3"><i class="fa-solid fa-pencil"></i>&nbsp;
-        Modifier le profil</button>
-      <button type="button" class="btn btn-warning " (click)="modifierMotDePasse()"><i class="fa-solid fa-lock"></i>&nbsp;
-        Changer le mot de passe</button>
+      <button type="button" class="btn btn-primary m-3" (click)="modifierProfil()">
+        <i class="fa-solid fa-pencil"></i>&nbsp;
+        Modifier le profil
+      </button>
+
+      <button type="button" class="btn btn-warning " (click)="modifierMotDePasse()">
+        <i class="fa-solid fa-lock"></i>&nbsp;
+        Changer le mot de passe
+      </button>
     </div>
 
   </div>
@@ -21,24 +37,27 @@
     <table class="table">
       <tbody>
       <tr>
-        <th scope="row">Nom complet</th>
-        <td>nom prenom</td>
+        <th scope="row">Nom complet :</th>
+        <td>{{ connectedUser?.nom }}</td>
       </tr>
       <tr>
-        <th scope="row">Email</th>
-        <td>adresse@email.com</td>
+        <th scope="row">Email :</th>
+        <td>{{ connectedUser?.email }}</td>
       </tr>
       <tr>
-        <th scope="row">Telephone</th>
-        <td>+237 658 21 20 25</td>
+        <th scope="row">Telephone :</th>
+        <td>{{ connectedUser?.numTel }}</td>
       </tr>
       <tr>
-        <th scope="row">Adresse</th>
-        <td>Adresse, ville, 12345</td>
+        <th scope="row">Adresse :</th>
+        <td>
+          {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
+          {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
+        </td>
       </tr>
       <tr>
-        <th scope="row">Entreprise</th>
-        <td>Nom entreprise</td>
+        <th scope="row">Entreprise :</th>
+        <td>{{ connectedUser?.prenom }}</td>
       </tr>
 
       </tbody>

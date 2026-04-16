@@ -13,7 +13,7 @@ import { ArticleDto } from './articleDto';
 export interface LigneCommandeFournisseurDto { 
     id?: number;
     quantite?: number;
-    prixUnitaire?: number;
+    prixUnitaireTtc?: number;
     idEntreprise?: number;
     article?: ArticleDto;
 }

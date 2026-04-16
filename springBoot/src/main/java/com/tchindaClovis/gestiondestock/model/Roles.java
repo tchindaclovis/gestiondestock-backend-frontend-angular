@@ -12,7 +12,8 @@ import lombok.*;
 public class Roles extends AbstractEntity{
 
     @Column(name = "roleName")
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private ERoleName roleName;
 
     @ManyToOne
     @JoinColumn(name = "idutilisateur")

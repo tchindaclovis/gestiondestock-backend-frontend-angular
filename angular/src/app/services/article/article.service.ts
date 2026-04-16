@@ -8,6 +8,8 @@ import {ActivatedRoute} from "@angular/router";
   providedIn: 'root'
 })
 export class ArticleService {
+  private http: any;
+  private baseUrl: any;
 
   constructor(
     private userService: UserService,
@@ -33,7 +35,7 @@ export class ArticleService {
 
   deleteArticle(idArticle: number): Observable<any> { //type de retour est un observable de any
     if(idArticle){
-      this.articlesService.delete8(idArticle);
+      return this.articlesService.delete8(idArticle);
     }
     return of();  //sinon retourne un observable vide
   }
@@ -47,5 +49,16 @@ export class ArticleService {
       return this.articlesService.findAllArticleByIdCategory(idCategory);
     }
     return of([]);
+  }
+
+  findAllArticlesByIdEntreprise(idEntreprise: number): Observable<ArticleDto[]> {
+    if (idEntreprise) {
+      return this.articlesService.findAllArticleByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
+  getLastCodeArticle(): Observable<string> {
+    return this.articlesService.getLastCodeArticle();
   }
 }

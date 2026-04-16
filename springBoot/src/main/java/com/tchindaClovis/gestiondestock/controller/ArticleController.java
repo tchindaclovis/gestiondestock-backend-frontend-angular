@@ -47,6 +47,15 @@ public class ArticleController implements ArticleApi {
         return articleService.findAll();
     }
 
+
+    @Override
+    public List<ArticleDto> findAllArticleByIdEntreprise(Integer idEntreprise) {
+
+        return articleService.findAllArticleByIdEntreprise(idEntreprise);
+    }
+
+
+
     @Override
     public List<LigneVenteDto> findHistoriqueVentes(Integer idArticle) {
         return articleService.findHistoriqueVentes(idArticle);
@@ -70,5 +79,12 @@ public class ArticleController implements ArticleApi {
     @Override
     public void delete(Integer id) {
         articleService.delete(id);
+    }
+
+
+
+    @Override
+    public String getLastCodeArticle() {
+        return articleService.getLastCodeArticle();
     }
 }
