@@ -8,7 +8,7 @@ import { MvtStockDto, MvtStocksService } from '../../../gs-api/src';
 export class MvtstockService {
 
   constructor(
-    private mvtStocksApiService: MvtStocksService
+    private mvtStocksService: MvtStocksService
   ) { }
 
   /**
@@ -19,7 +19,7 @@ export class MvtstockService {
     if (!idArticle) {
       return of(-1);
     }
-    return this.mvtStocksApiService.stockReelArticle(idArticle);
+    return this.mvtStocksService.stockReelArticle(idArticle);
   }
 
   /**
@@ -30,35 +30,35 @@ export class MvtstockService {
     if (!idArticle) {
       return of([]);
     }
-    return this.mvtStocksApiService.mvtStockArticle(idArticle);
+    return this.mvtStocksService.mvtStockArticle(idArticle);
   }
 
   /**
    * Équivalent de entreeStock(MvtStockDto dto)
    */
   entreeStock(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
-    return this.mvtStocksApiService.entreeStock(mvtStockDto);
+    return this.mvtStocksService.entreeStock(mvtStockDto);
   }
 
   /**
    * Équivalent de sortieStock(MvtStockDto dto)
    */
   sortieStock(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
-    return this.mvtStocksApiService.sortieStock(mvtStockDto);
+    return this.mvtStocksService.sortieStock(mvtStockDto);
   }
 
   /**
    * Équivalent de correctionStockPos(MvtStockDto dto)
    */
   correctionStockPos(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
-    return this.mvtStocksApiService.correctionStockPos(mvtStockDto);
+    return this.mvtStocksService.correctionStockPos(mvtStockDto);
   }
 
   /**
    * Équivalent de correctionStockNeg(MvtStockDto dto)
    */
   correctionStockNeg(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
-    return this.mvtStocksApiService.correctionStockNeg(mvtStockDto);
+    return this.mvtStocksService.correctionStockNeg(mvtStockDto);
   }
 }
 

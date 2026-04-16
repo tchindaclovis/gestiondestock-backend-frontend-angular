@@ -11,6 +11,7 @@ public interface ArticleService {
     ArticleDto findById(Integer id);
     ArticleDto findByCodeArticle(String codeArticle);
     List<ArticleDto> findAll();
+    List<ArticleDto> findAllArticleByIdEntreprise(Integer idEntreprise);
 
     List<ArticleDto> findAllArticleByIdCategory(Integer idCategory);
 
@@ -21,4 +22,6 @@ public interface ArticleService {
     List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle);
 
     void delete(Integer id);
+
+    String getLastCodeArticle();
 }

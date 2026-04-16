@@ -23,6 +23,7 @@ export interface CommandeFournisseurDto {
 }
 export namespace CommandeFournisseurDto {
     export const EtatCommandeEnum = {
+        Brouillon: 'BROUILLON',
         EnPreparation: 'EN_PREPARATION',
         Validee: 'VALIDEE',
         Livree: 'LIVREE'

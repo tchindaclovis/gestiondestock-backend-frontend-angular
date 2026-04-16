@@ -1,11 +1,14 @@
 <!--photo utilisateur-->
 <div class="row mb-1 custom-border">
-  <div class="col-md-1 border-end p-1 text-center">
-    <img [src]="utilisateurDto.photo ? utilisateurDto.photo : 'assets/product.png'" width="100px" height="100px">
+  <div class="col-md-3 border-end p-1 text-center">
+    <img [src]="utilisateurDto.photo ? utilisateurDto.photo : 'assets/product.png'"
+         width="300px" height="100px"
+         style="object-fit: cover; border-radius: 4px;"
+         alt="Photo article">
   </div>
 
   <!--  details client ou fournisseur-->
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-3 border-end mb-1 mt-1">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
@@ -23,7 +26,7 @@
   </div>
 
   <!--  detail adresse client ou fournisseur-->
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-3 border-end mb-1 mt-1">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-house blue-color"></i></div>

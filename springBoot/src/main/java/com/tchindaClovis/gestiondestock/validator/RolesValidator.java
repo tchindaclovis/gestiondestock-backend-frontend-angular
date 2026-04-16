@@ -8,7 +8,7 @@ import java.util.List;
 public class RolesValidator {
     public static List<String> validate(RolesDto rolesDto){
         List< String> errors = new ArrayList<>();
-        if(rolesDto == null || !StringUtils.hasLength(rolesDto.getRoleName())){
+        if(rolesDto == null || !StringUtils.hasLength(rolesDto.getRoleName().toString())){
             errors.add("Veuillez renseigner le nom du role");
         }
         return errors;

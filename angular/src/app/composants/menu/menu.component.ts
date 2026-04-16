@@ -66,8 +66,14 @@ export class MenuComponent implements OnInit {
         {
           id: '32',
           titre: 'Commandes clients',
-          icon: 'fa-solid fa-person-walking-arrow-right',
+          icon: 'fa-regular fa-folder-open',
           url: 'commandesclient'
+        },
+        {
+          id: '33',
+          titre: 'Ventes',
+          icon: 'fa-brands fa-hubspot',
+          url: 'ventes'
         }
       ]
     },

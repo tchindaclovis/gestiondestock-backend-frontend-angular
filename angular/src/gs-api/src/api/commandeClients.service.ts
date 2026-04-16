@@ -498,10 +498,10 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateEtatCommande(idCommande: number, etatCommande: 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<CommandeClientDto>;
-    public updateEtatCommande(idCommande: number, etatCommande: 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
-    public updateEtatCommande(idCommande: number, etatCommande: 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
-    public updateEtatCommande(idCommande: number, etatCommande: 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<any> {
+    public updateEtatCommande(idCommande: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<CommandeClientDto>;
+    public updateEtatCommande(idCommande: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public updateEtatCommande(idCommande: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public updateEtatCommande(idCommande: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<any> {
         if (idCommande === null || idCommande === undefined) {
             throw new Error('Required parameter idCommande was null or undefined when calling updateEtatCommande.');
         }
@@ -535,7 +535,7 @@ export class CommandeClientsService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommande", value: idCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'EN_PREPARATION' | 'VALIDEE' | 'LIVREE'", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommande", value: idCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE'", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeClientDto>('patch', `${basePath}${localVarPath}`,
             {

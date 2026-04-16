@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PhotoService, UtilisateurDto} from "../../../../gs-api/src";
 import {UtilisateurService} from "../../../services/utilisateur/utilisateur.service";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
   selector: 'app-nouvel-utilisateur',
@@ -15,11 +16,12 @@ export class NouvelUtilisateurComponent implements OnInit {
   }; //objet ou variable initialisé à vide
   errorMsg: Array<string> = [];   //ou alors errorMsg: string[] = [];
   file: File| null = null;  // objet file qui peut être null et qui va être initialisé à null
-  imgUrl: string | ArrayBuffer = 'assets/product.png';
+  imgUrl: string | ArrayBuffer = 'assets/new_product1.png';
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute, //va permettre de récupérer l'id de l'utilisateur qu'on va passer en paramètre
+    private userService: UserService,
     private utilisateurService: UtilisateurService,   //injection du nouveau service article créé dans Angular
     private photoService: PhotoService,
   ) { }
@@ -28,9 +30,14 @@ export class NouvelUtilisateurComponent implements OnInit {
     const idUtilisateur = this.activatedRoute.snapshot.params['idUtilisateur'];
     if(idUtilisateur){
       this.utilisateurService.findUtilisateurById(idUtilisateur)
-        .subscribe(utilisateur =>{
-          this.utilisateurDto = utilisateur;
-        });
+      .subscribe(utilisateur =>{
+        this.utilisateurDto = utilisateur;
+
+        // CORRECTION : Si l'utilisateur a une photo (URL MinIO), on l'assigne à imgUrl
+        if (this.utilisateurDto.photo && this.utilisateurDto.photo.startsWith('http')) {
+          this.imgUrl = this.utilisateurDto.photo;
+        }
+      });
     }
   }
 
@@ -41,7 +48,7 @@ export class NouvelUtilisateurComponent implements OnInit {
   enregistrerUtilisateur(): void {
     this.utilisateurService.enregistrerUtilisateur(this.utilisateurDto)
       .subscribe(uti =>{
-        this.savePhoto(uti.id)
+        this.savePhoto(uti.id, uti.nom)
       }, error =>{
         this.errorMsg = error.error.errors;
       });
@@ -55,6 +62,7 @@ export class NouvelUtilisateurComponent implements OnInit {
         fileReader.readAsDataURL(this.file)  //pour afficher le fichier avant de l'enregistrer
         fileReader.onload = (event) => {
           if(fileReader.result){
+            // Mise à jour de la prévisualisation avec le nouveau fichier sélectionné
             this.imgUrl = fileReader.result; //je peux changer ou mettre à jour le fichier
           }
         };
@@ -62,25 +70,53 @@ export class NouvelUtilisateurComponent implements OnInit {
     }
   }
 
-  savePhoto(idUtilisateur?: number, titre?: string): void {
-    if (idUtilisateur && titre && this.file) {  //si j'ai mon idUtilisateur et un fichier sélectionné
+  // savePhoto(idUtilisateur?: number, titre?: string): void {
+  //   if (idUtilisateur && titre && this.file) {  //si j'ai mon idUtilisateur et un fichier sélectionné
+  //
+  //     this.photoService.savePhoto(
+  //       'utilisateur',        // context
+  //       idUtilisateur,        // id
+  //       titre,            // title
+  //       this.file         // file (Blob)
+  //     ).subscribe({
+  //       next: () => {
+  //         this.router.navigate(['utilisateurs']);
+  //       },
+  //       error: (err) => {
+  //         console.error('Erreur upload photo', err);
+  //       }
+  //     });
+  //   } else {
+  //     this.router.navigate(['utilisateurs']);
+  //   }
+  // }
 
-      this.photoService.savePhoto(
-        'utilisateur',        // context
-        idUtilisateur,        // id
-        titre,            // title
-        this.file         // file (Blob)
-      ).subscribe({
-        next: () => {
-          this.router.navigate(['utilisateurs']);
-        },
-        error: (err) => {
-          console.error('Erreur upload photo', err);
-        }
-      });
-    } else {
-      this.router.navigate(['utilisateurs']);
+
+  savePhoto(idUtilisateur?: number, titre?: string): void {
+    if (idUtilisateur && titre && this.file) {
+      this.photoService.savePhoto('utilisateur', idUtilisateur, titre, this.file)
+        .subscribe({
+          next: () => {
+            // --- ACTION CRUCIALE ICI ---
+            // On recharge les infos de l'utilisateur pour avoir la nouvelle URL de photo
+            this.utilisateurService.findUtilisateurById(idUtilisateur).subscribe(user => {
+              this.userService.setConnectedUser(user); // Cela va notifier le Header !
+              this.router.navigate(['utilisateurs']);
+            });
+          }
+        });
     }
+  }
+
+
+  /**
+   * Retourne l'URL de la photo.
+   * Si la photo commence par 'http', on l'utilise directement.
+   * Sinon, on affiche l'image par défaut.
+   */
+// Gardez cette méthode pour la sécurité, mais nous allons simplifier le HTML
+  getPhotoUrl(): string | ArrayBuffer {
+    return this.imgUrl;
   }
 
   autoResize(event: any) {

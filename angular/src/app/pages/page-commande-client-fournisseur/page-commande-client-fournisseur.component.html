@@ -1,7 +1,7 @@
 <div class="col">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Commande {{origin}}s</h1>
+      <h1>Commande{{origin}}s</h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action (clickEvent)="nouvelleCommande()"  [isImporterVisible] = "false">
@@ -25,6 +25,7 @@
               <app-detail-commande-client-fournisseur
                 [commande]="cmd"
                 [origin]="origin"
+                (suppressionResult)="handleSuppression($event)"
               ></app-detail-commande-client-fournisseur>
             </button>
           </div>
@@ -33,30 +34,23 @@
                [attr.data-bs-parent]="'#accordionExample1' + cmd.id"
                style="max-height: 300px; overflow-y: scroll;">
             <div class="accordion-body">
-              <div class="row mb-1 mr-0 border">
-
-                <div class="col-md-2 border-end mb-1 mt-1 text-center">
-                  <h5>Code article</h5>
-                </div>
-                <div class="col-md-4 border-end mb-1 mt-1 text-center">
-                  <h5>Désignation article</h5>
-                </div>
-                <div class="col-md-2 border-end mb-1 mt-1 text-center">
-                  <h5>Nombre article</h5>
-                </div>
-                <div class="col-md-2 border-end mb-1 mt-1 text-center">
-                  <h5>Prix unitaire article</h5>
-                </div>
-                <div class="col-md-2 mb-1 mt-1 text-center">
-                  <h5>Prix total article</h5>
-                </div>
+              <div class="row mb-1 mr-0 border bg-light">
+                <div class="col-md-2 border-end text-center"><h5>Code article</h5></div>
+                <div class="col-md-4 border-end text-center"><h5>Désignation article</h5></div>
+                <div class="col-md-2 border-end text-center"><h5>Nombre article</h5></div>
+                <div class="col-md-2 border-end text-center"><h5>Prix unitaire article</h5></div>
+                <div class="col-md-2 text-center"><h5>Prix total article</h5></div>
               </div>
+
               <app-detail-commande
                 *ngFor="let ligne of mapLignesCommande.get(cmd.id)"
                 [ligneCommande]="ligne"
-              ></app-detail-commande>
-              <div *ngIf="mapLignesCommande.get(cmd.id).length === 0" class="p-3 text-center text-muted">
-                Aucune commande pour ce {{origin}}.
+                [origin]="origin">
+              </app-detail-commande>
+
+              <div *ngIf="!mapLignesCommande.get(cmd.id) || mapLignesCommande.get(cmd.id)?.length === 0"
+                   class="p-3 text-center text-muted">
+                Chargement des lignes ou aucune ligne pour cette commande...
               </div>
             </div>
           </div>
@@ -64,10 +58,10 @@
           <div class="card-footer">
             <div class="row">
               <div class="col-md-6 text-start">
-                <h5>{{mapLignesCommande.get(cmd.id).length | number:'1.0-0':'fr'}} lignes de commande</h5>
+                <h5>{{ (mapLignesCommande.get(cmd.id)?.length || 0) | number:'1.0-0':'fr'}} lignes de commande</h5>
               </div>
               <div class="col-md-6 text-end">
-                <h5>Montant total commande: {{ calculerTotalCommande(cmd.id) | currency:'XAF':'symbol':'1.0-0':'fr'}}</h5>
+                <h5>Montant total : {{ calculerTotalCommande(cmd.id) | currency:'XAF':'symbol':'1.0-0':'fr'}}</h5>
               </div>
             </div>
           </div>
@@ -81,5 +75,95 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+<!--<div class="col">-->
+<!--  <div class="row ms-3 me-3 page_title">-->
+<!--    <div class="col-md-8 p-0">-->
+<!--      <h1>Commande {{origin}}s</h1>-->
+<!--    </div>-->
+<!--    <div class="col-md-4 text-end">-->
+<!--      <app-boutton-action (clickEvent)="nouvelleCommande()"  [isImporterVisible] = "false">-->
+
+<!--      </app-boutton-action>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  detail mouvement de stock 1&ndash;&gt;-->
+<!--  <div class="col ms-3 me-3 mt-1 mb-1 scroll-commandes">-->
+<!--    <div class="col ms-1 me-1 mt-1 mb-1"-->
+<!--         *ngFor="let cmd of listeCommandes">-->
+<!--      <div class="accordion" id="accordionExample1{{cmd.id}}">-->
+<!--        <div class="col accordion-item mb-2 custom-border">-->
+<!--          <div class="accordion-header" id="headingOne1">-->
+<!--            <button class="btn w-100 text-start" type="button"-->
+<!--                    data-bs-toggle="collapse"-->
+<!--                    [attr.data-bs-target]="'#collapseOne1' + cmd.id"-->
+<!--                    aria-expanded="true"-->
+<!--                    aria-controls="collapseOne1">-->
+<!--              <app-detail-commande-client-fournisseur-->
+<!--                [commande]="cmd"-->
+<!--                [origin]="origin"-->
+<!--              ></app-detail-commande-client-fournisseur>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div id="collapseOne1{{cmd.id}}" class="accordion-collapse collapse"-->
+<!--               aria-labelledby="headingOne1"-->
+<!--               [attr.data-bs-parent]="'#accordionExample1' + cmd.id"-->
+<!--               style="max-height: 300px; overflow-y: scroll;">-->
+<!--            <div class="accordion-body">-->
+<!--              <div class="row mb-1 mr-0 border">-->
+
+<!--                <div class="col-md-2 border-end mb-1 mt-1 text-center">-->
+<!--                  <h5>Code article</h5>-->
+<!--                </div>-->
+<!--                <div class="col-md-4 border-end mb-1 mt-1 text-center">-->
+<!--                  <h5>Désignation article</h5>-->
+<!--                </div>-->
+<!--                <div class="col-md-2 border-end mb-1 mt-1 text-center">-->
+<!--                  <h5>Nombre article</h5>-->
+<!--                </div>-->
+<!--                <div class="col-md-2 border-end mb-1 mt-1 text-center">-->
+<!--                  <h5>Prix unitaire article</h5>-->
+<!--                </div>-->
+<!--                <div class="col-md-2 mb-1 mt-1 text-center">-->
+<!--                  <h5>Prix total article</h5>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <app-detail-commande-->
+<!--                *ngFor="let ligne of mapLignesCommande.get(cmd.id)"-->
+<!--                [ligneCommande]="ligne"-->
+<!--              ></app-detail-commande>-->
+<!--              <div *ngIf="mapLignesCommande.get(cmd.id).length === 0" class="p-3 text-center text-muted">-->
+<!--                Aucune commande pour ce {{origin}}.-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="card-footer">-->
+<!--            <div class="row">-->
+<!--              <div class="col-md-6 text-start">-->
+<!--                <h5>{{mapLignesCommande.get(cmd.id).length | number:'1.0-0':'fr'}} lignes de commande</h5>-->
+<!--              </div>-->
+<!--              <div class="col-md-6 text-end">-->
+<!--                <h5>Montant total commande: {{ calculerTotalCommande(cmd.id) | currency:'XAF':'symbol':'1.0-0':'fr'}}</h5>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">-->
+<!--    <div class="text-center">-->
+<!--      <app-pagination></app-pagination>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 

@@ -1,12 +1,22 @@
 <div class="col pt-3 pb-3 p-5">
-  <div class="col-md-12 mb-3">
-    <button (click)="fileInput.click()" style="background-color: transparent; border: none">
-      <img [src]="imgUrl"
-           class="rounded-circle"
-           width="200px" height="200px"
-           style="object-fit: cover; border: 2px solid #007bff; cursor: pointer;"/>
-      <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)" accept="image/*">
-    </button>
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <button (click)="fileInput.click()" style="background-color: transparent; border: none">
+        <img [src]="articleDto.photo ? articleDto.photo : 'assets/new_product.png'"  [src]="imgUrl"
+             class="rounded-circle"
+             width="200px" height="200px"
+             style="object-fit: cover; border: 2px solid #007bff; cursor: pointer;"/>
+        <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)" accept="image/*">
+      </button>
+    </div>
+
+<!--    <div class="col-md-6">-->
+<!--      <button class="btn btn-primary" (click)="enregistrerArticle()">-->
+<!--        <i class="fa-solid fa-circle-info green-color"></i>&nbsp;-->
+<!--        Code disponible-->
+<!--      </button>-->
+<!--    </div>-->
+
   </div>
   <hr>
   <div class="col-md-12">
@@ -22,44 +32,66 @@
       </div>
       <form action="">
         <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" name="codearticle" placeholder="Code article"
-                   aria-label="Code article" [(ngModel)]="articleDto.codeArticle">
+          <div class="col-md-3">
+            <label>Code Article (Généré automatiquement)</label>
           </div>
-          <div class="col">
+          <div class="col-md-3">
+            <input type="text"
+                   class="form-control bg-light"
+                   name="codearticle"
+                   [(ngModel)]="articleDto.codeArticle"
+                   readonly>
+<!--            <input type="text" class="form-control" name="codearticle" placeholder="Code article: format (ART****)"-->
+<!--                   aria-label="Code article"-->
+<!--                   [(ngModel)]="articleDto.codeArticle"-->
+<!--                   (blur)="verifierCodeArticle()">-->
+
+          </div>
+          <div class="col-md-6">
             <input type="text" class="form-control" name="designation" placeholder="Designation"
                    aria-label="Designation" [(ngModel)]="articleDto.designation">
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" name="prixunitht" placeholder="Prix unitaire HT"
-                   aria-label="Prix unitaire HT" (input)="calculerTTC()" [(ngModel)]="articleDto.prixUnitaireHt ">
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="format" placeholder="FormatConditionnement"
+                   aria-label="Format" [(ngModel)]="articleDto.format">
           </div>
-          <div class="col">
-            <input type="text" class="form-control" name="tauxtva" placeholder="Taux TVA"
-                   aria-label="Taux TVA" (input)="calculerTTC()" [(ngModel)]="articleDto.tauxTva">
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="prixachatunitht" placeholder="Prix achat unitaire HT"
+                   aria-label="Prix achat unitaire HT" (input)="calculerTTC()" [(ngModel)]="articleDto.prixUnitaireHt ">
+          </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="prixventeunitht" placeholder="Prix  vente unitaire HT"
+                   aria-label="Prix unitaire HT" (input)="calculerTTC()" [(ngModel)]="articleDto.prixVenteUnitaireHt ">
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" name="prixunitttc" placeholder="Prix unitaire TTC"
-                   aria-label="Prix unitaire TTC" [(ngModel)]="articleDto.prixUnitaireTtc">
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="tauxtva" placeholder="Taux TVA"
+                   aria-label="Taux TVA" (input)="calculerTTC()" [(ngModel)]="articleDto.tauxTva">
           </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="prixachatunitttc" placeholder="Prix achat unitaire TTC"
+                   aria-label="Prix achat unitaire TTC" [(ngModel)]="articleDto.prixUnitaireTtc" readonly>
+          </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="prixventeunitttc" placeholder="Prix vente unitaire TTC"
+                   aria-label="Prix vente unitaire TTC" [(ngModel)]="articleDto.prixVenteUnitaireTtc" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
           <div class="col">
             <div class="col">
               <div class="col">
                 <textarea
                   class="form-control description-area" name="description" placeholder="Description"
                   aria-label="Description" [(ngModel)]="articleDto.description"
-                  cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10">
+                  cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5">
                 </textarea>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="row mb-3">
           <div class="col-md-6">
             <select class="form-select form-select-sm" name="cat" placeholder="Type catégorie"
                     aria-label="choix categorie" [(ngModel)]="categorieDto.id">
@@ -81,5 +113,6 @@
       Enregistrer
     </button>
   </div>
+
 </div>
 

@@ -17,7 +17,7 @@ export interface FournisseurDto {
     photo?: string;
     email?: string;
     numTel?: string;
-    idEntreprise?: number;
     adresse?: AdresseDto;
+    idEntreprise?: number;
 }
 

@@ -18,6 +18,8 @@ public class ArticleDto {
 
     private String description;
 
+    private String format;
+
     private BigDecimal prixUnitaireHt;
 
     private BigDecimal prixVenteUnitaireHt;
@@ -46,6 +48,7 @@ public class ArticleDto {
                 .codeArticle(article.getCodeArticle())
                 .designation(article.getDesignation())
                 .description(article.getDescription())
+                .format(article.getFormat())
                 .prixUnitaireHt(article.getPrixUnitaireHt())
                 .prixVenteUnitaireHt(article.getPrixVenteUnitaireHt())
                 .tauxTva(article.getTauxTva())
@@ -67,6 +70,7 @@ public class ArticleDto {
         article.setCodeArticle(articleDto.getCodeArticle());
         article.setDesignation(articleDto.getDesignation());
         article.setDescription(articleDto.getDescription());
+        article.setFormat(articleDto.getFormat());
         article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
         article.setPrixVenteUnitaireHt(articleDto.getPrixVenteUnitaireHt());
         article.setTauxTva(articleDto.getTauxTva());

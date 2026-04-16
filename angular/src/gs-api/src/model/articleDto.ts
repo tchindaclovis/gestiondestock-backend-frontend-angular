@@ -15,6 +15,7 @@ export interface ArticleDto {
     codeArticle?: string;
     designation?: string;
     description?: string;
+    format?: string;
     prixUnitaireHt?: number;
     prixVenteUnitaireHt?: number;
     tauxTva?: number;

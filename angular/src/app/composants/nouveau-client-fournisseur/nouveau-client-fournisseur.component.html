@@ -1,8 +1,9 @@
 <div class="col pt-3 pb-3 p-5">
   <div class="col-md-12 mb-3">
     <button (click)="fileInput.click()" style="background-color: transparent; border: none">
-      <img [src]="clientFournisseur.photo ? clientFournisseur.photo : 'assets/product.png'" [src]="imgUrl"
-           class="rounded-circle" width="200px" height="200px" />
+      <img [src]="clientFournisseur.photo ? clientFournisseur.photo : 'assets/new_product.png'" [src]="imgUrl"
+           class="rounded-circle" width="200px" height="200px"
+           style="object-fit: cover; border: 2px solid #007bff; cursor: pointer;"/>
       <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)">
     </button>
   </div>

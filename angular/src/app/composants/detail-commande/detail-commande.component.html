@@ -1,51 +1,99 @@
 <div class="row mb-1 mr-0 border">
-
-  <!--  details code article-->
-  <div class="col-md-2 border-end mb-1 mt-1">
-    <div class="row text-center">
-      <div class="col-md-11">
-        {{ ligneCommande.article?.codeArticle }}
-      </div>
-    </div>
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    {{ ligneCommande.article?.codeArticle }}
+  </div>
+  <div class="col-md-4 border-end mb-1 mt-1 text-center">
+    {{ ligneCommande.article?.designation }}
   </div>
 
-  <!--  details designation-->
-  <div class="col-md-4 border-end mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        {{ ligneCommande.article?.designation }}
-      </div>
-    </div>
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    {{ ligneCommande.quantite | number:'1.0-0':'fr' }}
   </div>
 
-  <!--  details quantite-->
-  <div class="col-md-2 border-end mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        {{ ligneCommande.quantite | number:'1.0-0':'fr'}}
-      </div>
-    </div>
+  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+    <span *ngIf="this.origin === 'client'">
+      {{ (ligneCommande.prixVenteUnitaireTtc) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+    </span>
+    <span *ngIf="this.origin === 'fournisseur'">
+      {{ (ligneCommande.prixUnitaireTtc) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+    </span>
+<!--    {{ (ligneCommande.prixUnitaire ||-->
+<!--    ligneCommande.prixUnitaireTtc ||-->
+<!--    ligneCommande.prixVenteUnitaireTtc || 0) | currency:'XAF':'symbol':'1.0-0':'fr'  }}-->
   </div>
 
-  <!--  prix unitaire-->
-  <div class="col-md-2 border-end mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        {{ ligneCommande.prixUnitaire | currency:'XAF':'symbol':'1.0-0':'fr' }}
-      </div>
-    </div>
-  </div>
-
-  <!--  prix total-->
-  <div class="col-md-2 mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        {{ (ligneCommande.prixUnitaire && ligneCommande.quantite ?
-        +ligneCommande.prixUnitaire * +ligneCommande.quantite : '') | currency:'XAF':'symbol':'1.0-0':'fr' }}
-      </div>
-    </div>
+  <div class="col-md-2 mb-1 mt-1 text-center">
+    <span>
+      {{ (calculerTotalLigne()) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+    </span>
   </div>
 </div>
+
+
+
+
+
+
+
+<!--<div class="row mb-1 mr-0 border">-->
+
+<!--  &lt;!&ndash;  details code article&ndash;&gt;-->
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <div class="col-md-11">-->
+<!--        {{ ligneCommande.article?.codeArticle }}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  details designation&ndash;&gt;-->
+<!--  <div class="col-md-4 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        {{ ligneCommande.article?.designation }}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  details quantite&ndash;&gt;-->
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        {{ ligneCommande.quantite | number:'1.0-0':'fr'}}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  prix unitaire&ndash;&gt;-->
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center"-->
+<!--           *ngIf="this.origin === 'client'">-->
+<!--        {{ ligneCommande.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr' }}-->
+<!--      </div>-->
+<!--      <div class="col-md-12 text-center"-->
+<!--           *ngIf="this.origin === 'fournisseur'">-->
+<!--        {{ ligneCommande.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr' }}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;  prix total&ndash;&gt;-->
+<!--  <div class="col-md-2 mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center"-->
+<!--           *ngIf="this.origin === 'client'">-->
+<!--        {{ (ligneCommande.prixVenteUnitaireTtc && ligneCommande.quantite ?-->
+<!--        +ligneCommande.prixVenteUnitaireTtc * +ligneCommande.quantite : '') | currency:'XAF':'symbol':'1.0-0':'fr' }}-->
+<!--      </div>-->
+<!--      <div class="col-md-12 text-center"-->
+<!--           *ngIf="this.origin === 'fournisseur'">-->
+<!--        {{ (ligneCommande.prixUnitaireTtc && ligneCommande.quantite ?-->
+<!--        +ligneCommande.prixUnitaireTtc * +ligneCommande.quantite : '') | currency:'XAF':'symbol':'1.0-0':'fr' }}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 
 

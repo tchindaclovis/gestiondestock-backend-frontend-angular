@@ -6,7 +6,7 @@
     <!--input-group → composant Bootstrap pour associer
       un champ input avec un élément (icône, bouton, etc.)
       flex-nowrap → empêche le retour à la ligne-->
-    <div class="input-group flex-nowrap">
+    <div class="input-group">
       <!--Champ de saisie texte form-control → style Bootstrap
         placeholder → texte indicatif
         aria-* → accessibilité (lecture par lecteurs d’écran)-->
@@ -32,7 +32,7 @@
   <div class="col-md-4">
     <div class="row">
       <!--Partie texte (9/12)text-end → aligne le texte à droite-->
-      <div class="col-md-9 text-end">
+      <div class="col-md-9 text-end ">
         <!--*ngIf → directive structurelle Angular
           Affiche le contenu uniquement si connectedUser n’est pas null
           (donc si un utilisateur est connecté)-->
@@ -43,14 +43,14 @@
         </span>
       </div>
       <!--Partie image profil (3/12)-->
-      <div class="col-md-3">
+      <div class="col-md-3 text-center border rounded">
         <!--routerLink → navigation Angular sans rechargement de page
           Redirige vers la route /profil-->
         <a href="javascript:void(0);" [routerLink]="['/profil']">
           <!--Image utilisateur rounded-circle → rend l’image circulaire (Bootstrap)
             favicon.ico → image temporaire (à remplacer par photo utilisateur)-->
           <img [src]="connectedUser?.photo || 'assets/profil.png'"
-               class="rounded-circle" width="50px" height="50px"/>
+                width="90px" height="40px"/>
 <!--          <img src="favicon.ico" class="rounded-circle"/>-->
         </a>
       </div>

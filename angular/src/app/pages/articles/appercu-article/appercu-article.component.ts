@@ -92,5 +92,4 @@ export class AppercuArticleComponent implements OnInit {
       this.router.navigate(['articles']);
     }
   }
-
 }

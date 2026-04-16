@@ -51,9 +51,10 @@
         </button>
       </div>
       <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol" data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id">
-          <i class="fa-solid fa-trash-alt blue-color"></i>&nbsp;
+        <button type="button" class="btn btn-link souligner-au-survol text-danger"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalDelete1' + commande.id">
+          <i class="fa-solid fa-trash-alt"></i>&nbsp;
           Supprimer
         </button>
       </div>
@@ -61,30 +62,39 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="modalDelete{{ clientFournisseur.id }}"
-       data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" [id]="'modalDelete1' + commande.id"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1"
+       aria-labelledby="staticBackdropLabel"
+       aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+          <h5 class="modal-title">Confirmation</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">x</span>
+<!--            <span aria-hidden="true">x</span>-->
           </button>
         </div>
         <div class="modal-body">
-          Etes-vous sûr de vouloir supprimer ce {{ origin }}?
+          Etes-vous sûr de vouloir supprimer cette commande {{ origin }} <strong>{{ commande.code }}</strong>?
+          Cela supprimera également toutes les lignes associées.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-ban"></i>Annuler</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
-            <i class="fa-solid fa-trash-can"></i>Supprimer</button>
+            <i class="fa-solid fa-ban"></i>Annuler
+          </button>
+          <button type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                  (click)="confirmerEtSupprimer()">
+            <i class="fa-solid fa-trash-can"></i>
+            Supprimer
+          </button>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
 

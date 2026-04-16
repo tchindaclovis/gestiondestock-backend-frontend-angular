@@ -1,5 +1,6 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tchindaClovis.gestiondestock.model.Article;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.LigneCommandeFournisseur;
@@ -14,7 +15,9 @@ public class LigneCommandeFournisseurDto {
 
     private BigDecimal quantite;
 
-    private BigDecimal prixUnitaire;
+//    // Cette annotation permet de recevoir "prixUnitaire" OU "prixUnitaireTtc" depuis Angular
+//    @JsonProperty("prixUnitaire")
+    private BigDecimal prixUnitaireTtc;
 
     private Integer idEntreprise;
 
@@ -31,10 +34,9 @@ public class LigneCommandeFournisseurDto {
         return LigneCommandeFournisseurDto.builder()
                 .id(ligneCommandeFournisseurs.getId())
                 .quantite(ligneCommandeFournisseurs.getQuantite())
-                .prixUnitaire(ligneCommandeFournisseurs.getPrixUnitaire())
+                .prixUnitaireTtc(ligneCommandeFournisseurs.getPrixUnitaireTtc())
                 .idEntreprise(ligneCommandeFournisseurs.getIdEntreprise())
                 .article(ArticleDto.fromEntity(ligneCommandeFournisseurs.getArticle()))
-//                .commandeFournisseur(CommandeFournisseurDto.fromEntity(ligneCommandeFournisseurs.getCommandeFournisseurs()))
                 .build();
     }
 
@@ -45,11 +47,9 @@ public class LigneCommandeFournisseurDto {
         LigneCommandeFournisseur ligneCommandeFournisseurs = new LigneCommandeFournisseur();
         ligneCommandeFournisseurs.setId(ligneCommandeFournisseurDto.getId());
         ligneCommandeFournisseurs.setQuantite(ligneCommandeFournisseurDto.getQuantite());
-        ligneCommandeFournisseurs.setPrixUnitaire(ligneCommandeFournisseurDto.getPrixUnitaire());
+        ligneCommandeFournisseurs.setPrixUnitaireTtc(ligneCommandeFournisseurDto.getPrixUnitaireTtc());
         ligneCommandeFournisseurs.setIdEntreprise(ligneCommandeFournisseurDto.getIdEntreprise());
         ligneCommandeFournisseurs.setArticle(ArticleDto.toEntity(ligneCommandeFournisseurDto.getArticle()));
-//        ligneCommandeFournisseurs.setCommandeFournisseur(CommandeFournisseurDto.toEntity(ligneCommandeFournisseurDto.getCommandeFournisseur()));
-
         return ligneCommandeFournisseurs;
     }
 

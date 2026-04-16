@@ -254,10 +254,13 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
         }
         List<LigneCommandeFournisseur> ligneCommandeFournisseurs = ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(id);
         if (!ligneCommandeFournisseurs.isEmpty()) {
-            throw new InvalidOperationException("Impossible de supprimer une commande fournisseur deja utilisee",
-                    ErrorCodes.COMMANDE_FOURNISSEUR_ALREADY_IN_USE);
+            ligneCommandeFournisseurRepository.deleteAll(ligneCommandeFournisseurs);
+            log.info("Lignes de commandeFournisseur pour l'achat ID {} supprimées", id);
+//            throw new InvalidOperationException("Impossible de supprimer une commande fournisseur deja utilisee",
+//                    ErrorCodes.COMMANDE_FOURNISSEUR_ALREADY_IN_USE);
         }
         commandeFournisseurRepository.deleteById(id);
+        log.info("CommandeFournisseur ID {} supprimée avec succès", id);
     }
 
 

@@ -12,19 +12,19 @@
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.codeArticle }}</div>
+        <div class="col-md-11">{{ articleDto.codeArticle }} / {{ articleDto.designation }}</div>
       </div>
       <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.designation }}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+        <div class="col-md-1"><i class="fa-solid fa-tape blue-color"></i></div>
+        <div class="col-md-11">{{ articleDto.format }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+        <div class="col-md-11">{{ articleDto.prixVenteUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
+        <div class="col-md-11">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
       </div>
     </div>
   </div>
@@ -77,28 +77,56 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalDeleteArt{{ articleDto.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
-       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">x</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Etes-vous sûr de vouloir supprimer cette article?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-ban"></i>Annuler</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimerArt()">
-            <i class="fa-solid fa-trash-can"></i>Supprimer</button>
-        </div>
+  <!-- Modal de suppression -->
+  <div class="modal fade"
+       [id]="'modalDeleteArt' + articleDto.id"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1"
+       aria-labelledby="staticBackdropLabel"
+       aria-hidden="false"> <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer l'article <strong>{{ articleDto.codeArticle }}</strong> ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fa-solid fa-ban"></i> Annuler
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimerArt()">
+          <i class="fa-solid fa-trash-can"></i> Supprimer
+        </button>
       </div>
     </div>
   </div>
+  </div>
+
+
+<!--  <div class="modal fade" id="modalDeleteArt{{ articleDto.id }}" data-bs-backdrop="static" data-bs-keyboard="false"-->
+<!--       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>-->
+<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">-->
+<!--            <span aria-hidden="true">x</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--          Etes-vous sûr de vouloir supprimer cette article?-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">-->
+<!--            <i class="fa-solid fa-ban"></i>Annuler</button>-->
+<!--          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimerArt()">-->
+<!--            <i class="fa-solid fa-trash-can"></i>Supprimer</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
 

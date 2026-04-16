@@ -12,6 +12,8 @@ export class PageLoginComponent implements OnInit {
 
   authenticationRequest: AuthenticationRequest = {};
   errorMessage = '';
+  // Variable pour basculer entre type="password" et type="text"
+  passwordVisible = false;
 
   constructor(
     private userService: UserService,
@@ -19,6 +21,12 @@ export class PageLoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+
+  // Méthode pour inverser l'état de visibilité
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   login() {

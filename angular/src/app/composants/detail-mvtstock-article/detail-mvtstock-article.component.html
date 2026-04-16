@@ -18,11 +18,11 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr' }}</div>
+        <div class="col-md-11">{{ articleDto.prixVenteUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr' }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr' }}</div>
+        <div class="col-md-11">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr' }}</div>
       </div>
     </div>
   </div>
@@ -47,21 +47,11 @@
     </div>
   </div>
 
-<!--  &lt;!&ndash;  boutons correction de stock&ndash;&gt;-->
-<!--  <div class="col-md-3 mb-1 mt-1">-->
-<!--    <div class="row">-->
-<!--      <div class="col-md-12 text-center">-->
-<!--        &lt;!&ndash;btn-outline-primary&ndash;&gt;-->
-<!--        <button type="button" class="btn btn-link souligner-au-survol">-->
-<!--          <i class="fa-solid fa-up-down"></i>&nbsp;Correction de stock-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-  <div class="col-md-3 mb-1 mt-1 ">
+  <!--  boutons correction de stock-->
+  <div class="col-md-3 mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
+        <!--btn-outline-primary-->
         <button type="button" class="btn btn-link souligner-au-survol"
                 data-toggle="modal" data-target="#exampleModal">
           <i class="fa-solid fa-up-down"></i>&nbsp;Correction de stock

@@ -72,6 +72,12 @@ public interface ArticleApi {
     )
     List<ArticleDto> findAll();
 
+
+    @GetMapping(value = APP_ROOT + "/articles/filter/entreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<ArticleDto> findAllArticleByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
+
+
     @GetMapping(value = APP_ROOT + "/articles/historique/vente/{idArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<LigneVenteDto> findHistoriqueVentes(@PathVariable("idArticle") Integer idArticle);
@@ -97,6 +103,17 @@ public interface ArticleApi {
             }
     )
     void delete(@PathVariable("idArticle") Integer id);
+
+
+    @GetMapping(value = APP_ROOT + "/articles/lastcodearticle")
+    @Operation(
+            summary  = "Récupérer le dernier code article enregistré",
+            description = "Cette méthode permet de récupérer le dernier code au format ARTxxxx",
+            responses = {
+                @ApiResponse(responseCode  = "200", description  = "Le dernier code a été récupéré / ART0000 par défaut")
+            }
+    )
+    String getLastCodeArticle();
 }
 
 

@@ -14,6 +14,7 @@ export class PageInscriptionComponent implements OnInit {
   entrepriseDto: EntrepriseDto = {};
   adresse: AdresseDto = {};
   errorMsg: Array<string> =[];
+  errorMessage = '';
 
   constructor(
     private entrepriseService: EntrepriseService,
@@ -64,6 +65,7 @@ export class PageInscriptionComponent implements OnInit {
               : response.accessToken?.token;
 
           if (!token) {
+            this.errorMessage = 'Erreur : aucun token reçu du serveur.';
             console.error("❌ Aucun token reçu du backend");
             return;
           }

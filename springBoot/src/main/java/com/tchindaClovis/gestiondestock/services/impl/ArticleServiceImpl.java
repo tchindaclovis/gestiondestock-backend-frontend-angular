@@ -116,6 +116,17 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ArticleDto> findAllArticleByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return articleRepository.findAllByIdEntreprise(idEntreprise).stream()
+                .map(ArticleDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ArticleDto> findAllArticleByIdCategory(Integer idCategory) {
@@ -168,6 +179,15 @@ public class ArticleServiceImpl implements ArticleService {
                     ErrorCodes.ARTICLE_ALREADY_IN_USE);
         }
         articleRepository.deleteById(id);
+    }
+
+    @Override
+    public String getLastCodeArticle() {
+        // CORRECTION : Utilisez l'instance "articleRepository" (minuscule)
+        // et extrayez le code de l'objet Article
+        return articleRepository.findTopByOrderByCodeArticleDesc()
+                .map(Article::getCodeArticle) // On transforme l'Article en String (son code)
+                .orElse("ART0000");           // Valeur par défaut si aucun article n'existe
     }
 }
 

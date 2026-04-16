@@ -59,7 +59,12 @@ export class HeaderComponent implements OnInit {
     // Cette méthode retourne généralement :
     // - un objet UtilisateurDto si l’utilisateur est connecté
     // - null si aucun utilisateur n’est authentifié
-    this.connectedUser = this.userService.getConnectedUser();
+    // this.connectedUser = this.userService.getConnectedUser();
+
+    // On s'abonne au flux de l'utilisateur
+    this.userService.currentUser$.subscribe(user => {
+      this.connectedUser = user;
+    });
   }
 
   /**
