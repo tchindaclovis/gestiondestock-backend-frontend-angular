@@ -1,7 +1,10 @@
 <div class="col p-lg-2">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Liste des categories</h1>
+      <h1>
+        <span *ngIf="listCategories.length > 0">Liste des catégories ( {{ listCategories.length }} )</span>
+        <span *ngIf="listCategories.length === 0">Aucune catégorie disponible</span>
+      </h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action  (clickEvent)="nouvelleCategory()">

@@ -8,6 +8,7 @@ package com.tchindaClovis.gestiondestock.services.impl;
  */
 
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.model.ETypeMvtStock;
@@ -48,10 +49,10 @@ import java.util.stream.Collectors;
 public class MvtStockServiceImpl implements MvtStockService {
 
     /*
-     * Repository pour accéder à la base de données
+     * mvtStockRepository pour accéder à la base de données
      * concernant les mouvements de stock
      */
-    private MvtStockRepository repository;
+    private MvtStockRepository mvtStockRepository;
 
     /*
      * Service Article :
@@ -64,10 +65,19 @@ public class MvtStockServiceImpl implements MvtStockService {
      * Injection par constructeur (bonne pratique)
      */
     @Autowired
-    public MvtStockServiceImpl(MvtStockRepository repository,
+    public MvtStockServiceImpl(MvtStockRepository mvtStockRepository,
                                ArticleService articleService) {
-        this.repository = repository;
+        this.mvtStockRepository = mvtStockRepository;
         this.articleService = articleService;
+    }
+
+
+
+    @Override
+    public List<MvtStockDto> findAllMvtStock() {
+        return mvtStockRepository.findAll().stream()
+                .map(MvtStockDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 
@@ -90,8 +100,8 @@ public class MvtStockServiceImpl implements MvtStockService {
         // Vérifie si l’article existe (sinon exception)
         articleService.findById(idArticle);
 
-        // Appel du repository pour calculer le stock réel
-        return repository.stockReelArticle(idArticle);
+        // Appel du mvtStockRepository pour calculer le stock réel
+        return mvtStockRepository.stockReelArticle(idArticle);
     }
 
 
@@ -105,7 +115,7 @@ public class MvtStockServiceImpl implements MvtStockService {
     @Override
     public List<MvtStockDto> mvtStockArticle(Integer idArticle) {
 
-        return repository.findAllByArticleId(idArticle)
+        return mvtStockRepository.findAllByArticleId(idArticle)
                 .stream()
 
                 // Conversion Entity → DTO
@@ -179,15 +189,11 @@ public class MvtStockServiceImpl implements MvtStockService {
      *
      * Rend la quantité toujours positive.
      */
-    private MvtStockDto entreePositive(MvtStockDto dto,
-                                       ETypeMvtStock typeMvtStock) {
-
+    private MvtStockDto entreePositive(MvtStockDto dto, ETypeMvtStock typeMvtStock) {
         // Validation des données
         List<String> errors = MvtStockValidator.validate(dto);
-
         if (!errors.isEmpty()) {
             log.error("Article is not valid {}", dto);
-
             throw new InvalidEntityException(
                     "Le mouvement du stock n'est pas valide",
                     ErrorCodes.MVT_STOCK_NOT_VALID,
@@ -195,11 +201,8 @@ public class MvtStockServiceImpl implements MvtStockService {
             );
         }
 
-        /*
-         * Transformation de la quantité en valeur positive
-         *
-         * Math.abs() garantit que la valeur est positive
-         */
+//        *Transformation de la quantité en valeur positive
+//        *Math.abs() garantit que la valeur est positive
         dto.setQuantite(
                 BigDecimal.valueOf(
                         Math.abs(dto.getQuantite().doubleValue())
@@ -208,10 +211,9 @@ public class MvtStockServiceImpl implements MvtStockService {
 
         // Définition du type de mouvement
         dto.setTypeMvt(typeMvtStock);
-
         // Sauvegarde en base (DTO → Entity → DB → DTO)
         return MvtStockDto.fromEntity(
-                repository.save(MvtStockDto.toEntity(dto))
+                mvtStockRepository.save(MvtStockDto.toEntity(dto))
         );
     }
 
@@ -223,15 +225,11 @@ public class MvtStockServiceImpl implements MvtStockService {
      *
      * Rend la quantité toujours négative.
      */
-    private MvtStockDto sortieNegative(MvtStockDto dto,
-                                       ETypeMvtStock typeMvtStock) {
-
+    private MvtStockDto sortieNegative(MvtStockDto dto, ETypeMvtStock typeMvtStock) {
         // Validation des données
         List<String> errors = MvtStockValidator.validate(dto);
-
         if (!errors.isEmpty()) {
             log.error("Article is not valid {}", dto);
-
             throw new InvalidEntityException(
                     "Le mouvement du stock n'est pas valide",
                     ErrorCodes.MVT_STOCK_NOT_VALID,
@@ -239,24 +237,18 @@ public class MvtStockServiceImpl implements MvtStockService {
             );
         }
 
-        /*
-         * Transformation de la quantité en valeur négative
-         *
-         * Exemple :
-         * 10 → -10
-         */
+//         * Transformation de la quantité en valeur négative
+//         * Exemple : 10 → -10
         dto.setQuantite(
                 BigDecimal.valueOf(
                         Math.abs(dto.getQuantite().doubleValue()) * -1
                 )
         );
-
         // Définition du type de mouvement
         dto.setTypeMvt(typeMvtStock);
-
         // Sauvegarde en base
         return MvtStockDto.fromEntity(
-                repository.save(MvtStockDto.toEntity(dto))
+                mvtStockRepository.save(MvtStockDto.toEntity(dto))
         );
     }
 

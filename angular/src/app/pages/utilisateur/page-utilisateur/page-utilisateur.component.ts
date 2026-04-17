@@ -9,6 +9,7 @@ import {UtilisateurService} from "../../../services/utilisateur/utilisateur.serv
   styleUrls: ['./page-utilisateur.component.scss']
 })
 export class PageUtilisateurComponent implements OnInit {
+
   listUtilisateur: Array<UtilisateurDto> = [];
   errorMsg = '';
   constructor(

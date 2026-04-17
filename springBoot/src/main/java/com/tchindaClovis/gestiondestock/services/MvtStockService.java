@@ -1,10 +1,14 @@
 package com.tchindaClovis.gestiondestock.services;
 
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface MvtStockService {
+
+    List<MvtStockDto> findAllMvtStock();
 
     BigDecimal stockReelArticle(Integer idArticle);
 

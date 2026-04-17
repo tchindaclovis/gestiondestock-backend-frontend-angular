@@ -7,7 +7,10 @@
   <div class="row ms-3 me-3 page_title">
     <!--Partie gauche (8/12) / Titre de la page-->
     <div class="col-md-8 p-0">
-      <h1>Liste des articles</h1>
+      <h1>
+        <span *ngIf="listArticle.length > 0">Liste des articles ( {{ listArticle.length }} )</span>
+        <span *ngIf="listArticle.length === 0">Aucun article disponible</span>
+      </h1>
     </div>
     <!--Partie droite (4/12)
       Contient le bouton d’ajout d’un nouvel article

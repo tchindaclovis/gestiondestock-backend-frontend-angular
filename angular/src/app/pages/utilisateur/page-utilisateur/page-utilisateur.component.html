@@ -1,7 +1,10 @@
 <div class="col p-lg-2">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Liste des utilisateurs</h1>
+      <h1>
+        <span *ngIf="listUtilisateur.length > 0">Liste des utilisateurs ( {{ listUtilisateur.length }} )</span>
+        <span *ngIf="listUtilisateur.length === 0">Aucun utilisateur disponible</span>
+      </h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action

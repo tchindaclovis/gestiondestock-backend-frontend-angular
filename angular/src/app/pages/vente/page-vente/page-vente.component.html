@@ -1,7 +1,10 @@
 <div class="col">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Ventes</h1>
+      <h1>
+        <span *ngIf="listeVentes.length > 0">Liste des ventes ( {{ listeVentes.length }} )</span>
+        <span *ngIf="listeVentes.length === 0">Aucune vente disponible</span>
+      </h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action (clickEvent)="nouvelleVente()"  [isImporterVisible] = "false">

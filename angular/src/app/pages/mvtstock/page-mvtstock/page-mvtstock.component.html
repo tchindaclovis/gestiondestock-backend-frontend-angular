@@ -1,7 +1,10 @@
 <div class="col">
   <div class="row ms-3 me-3 page_title">
     <div class="col-md-8 p-0">
-      <h1>Mouvements de stock par article</h1>
+      <h1>
+        <span *ngIf="totalMouvements > 0">Liste des mouvements de stock ( {{ totalMouvements }} )</span>
+        <span *ngIf="totalMouvements === 0">Aucun mouvement de stock</span>
+      </h1>
     </div>
     <div class="col-md-4 text-end">
       <app-boutton-action
@@ -24,8 +27,9 @@
                     aria-expanded="false"
                     [attr.aria-controls]="'collapseArt' + article.id">
               <app-detail-mvtstock-article
-                [articleDto]="article">
-              </app-detail-mvtstock-article>
+                [articleDto]="article"
+                (correctionStockEvent)="handleCorrection($event)"
+              ></app-detail-mvtstock-article>
             </button>
           </div>
 
@@ -55,7 +59,7 @@
               <ng-container *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
                 <app-detail-mvtstock
                   *ngFor="let mouvement of listeMvts"
-                  [mvtStock]="mouvement">
+                  [mvtStockDto]="mouvement">
                 </app-detail-mvtstock>
                 <div *ngIf="listeMvts.length === 0" class="p-3 text-center text-muted">
                   Aucun mouvement de stock pour cet article.

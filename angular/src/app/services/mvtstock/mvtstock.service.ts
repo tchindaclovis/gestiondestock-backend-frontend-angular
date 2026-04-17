@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { MvtStockDto, MvtStocksService } from '../../../gs-api/src';
+import {ArticleDto, MvtStockDto, MvtStocksService} from '../../../gs-api/src';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +59,12 @@ export class MvtstockService {
    */
   correctionStockNeg(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
     return this.mvtStocksService.correctionStockNeg(mvtStockDto);
+  }
+
+
+
+  findAllMvtStock(): Observable<MvtStockDto[]>{  //renvoit un observable de listes d'articleDto
+    return this.mvtStocksService.findAllMvtStock();
   }
 }
 

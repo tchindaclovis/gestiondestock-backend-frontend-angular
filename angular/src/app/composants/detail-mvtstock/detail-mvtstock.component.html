@@ -2,7 +2,7 @@
 
   <div class="col-md-3 border-end mb-1 mt-1">
     <div class="row text-center">
-      <div class="col-md-11">{{ mvtStock.dateMvt | date:'dd/MM/yyyy HH:mm' }}</div>
+      <div class="col-md-11">{{ mvtStockDto.dateMvt | date:'dd/MM/yyyy HH:mm' }}</div>
     </div>
   </div>
 
@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <h5 [ngClass]="isEntree ? 'text-success' : 'text-danger'">
-          {{ mvtStock.quantite | number:'1.0-0':'fr' }}
+          {{ mvtStockDto.quantite | number:'1.0-0':'fr' }}
         </h5>
       </div>
     </div>

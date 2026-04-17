@@ -13,9 +13,9 @@ export class PageMvtstockComponent implements OnInit {
 
   connectedUser: UtilisateurDto | null = null;
   listArticle: Array<ArticleDto> = [];
+  listeMvts: Array<any> = [];
   // Map pour stocker les mouvements par ID d'article : Key = idArticle, Value = MvtStockDto[]
   mapMouvementsStock = new Map<number, Array<MvtStockDto>>();
-  // mapMouvementsStock = new Map();
   errorMsg = '';
 
   constructor(
@@ -100,6 +100,34 @@ export class PageMvtstockComponent implements OnInit {
   //     this.mapMouvementsStock.set(idArticle, mvts);
   //   });
   // }
+
+  handleCorrection(result: string): void {
+    if (result === 'success') {
+      // On appelle simplement la méthode qui charge vos ventes
+      // Cela mettra à jour la liste 'ventes' et Angular rafraîchira l'écran instantanément
+      this.findAllArticlesAndMvts();
+    } else {
+      // // Optionnel : afficher un message d'erreur si le signal n'est pas 'success'
+      // this.errorMsg = result;
+    }
+  }
+
+  findAllMvtStock(): void {
+    this.mvtStockService.findAllMvtStock().subscribe(res => {
+      this.listeMvts= res;
+    });
+  }
+
+  // Nous allons créer une propriété calculée (getter) qui additionne la taille
+  // de chaque liste de mouvements stockée dans votre mapMouvementsStock.
+  // Remplacez ou ajoutez ce getter pour calculer le total dynamiquement
+  get totalMouvements(): number {
+    let total = 0;
+    this.mapMouvementsStock.forEach((liste) => {
+      total += liste.length;
+    });
+    return total;
+  }
 }
 
 

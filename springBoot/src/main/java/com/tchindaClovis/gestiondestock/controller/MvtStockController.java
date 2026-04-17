@@ -29,6 +29,11 @@ public class MvtStockController implements MvtStockApi {
     }
 
     @Override
+    public List<MvtStockDto> findAllMvtStock() {
+        return mvtStockService.findAllMvtStock();
+    }
+
+    @Override
     public MvtStockDto entreeStock(MvtStockDto dto) {
             return mvtStockService.entreeStock(dto);
     }

@@ -20,6 +20,9 @@ public interface MvtStockApi {
     @GetMapping(APP_ROOT + "/mvtstock/filter/article/{idArticle}")
     List<MvtStockDto> mvtStockArticle(@PathVariable("idArticle") Integer idArticle);
 
+    @GetMapping(APP_ROOT + "/mvtstock/all")
+    List<MvtStockDto> findAllMvtStock();
+
     @PostMapping(APP_ROOT + "/mvtstock/entree")
     MvtStockDto entreeStock(@RequestBody MvtStockDto dto);
 
