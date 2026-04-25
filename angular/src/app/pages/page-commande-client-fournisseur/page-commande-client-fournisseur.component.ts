@@ -88,25 +88,25 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
     });
   }
 
-  findLignesCommandeByCommande(idCommande: number): void {
+  findLignesCommandeByCommande(idCmd: number): void {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
     let serviceLignes: Observable<any>;
 
       serviceLignes = (this.origin === 'client') ?
-        this.commandeClientFournisseurService.findAllLigneCommandesClientByCommande(idCommande) :
-        this.commandeClientFournisseurService.findAllLigneCommandesFournisseurByCommande(idCommande);
+        this.commandeClientFournisseurService.findAllLigneCommandesClientByCommande(idCmd) :
+        this.commandeClientFournisseurService.findAllLigneCommandesFournisseurByCommande(idCmd);
 
     serviceLignes.subscribe(list => {
       // Si le retour est un Blob (fréquent dans votre projet), on le gère
       if (list instanceof Blob) {
         list.text().then(text => {
           const parsedList = JSON.parse(text);
-          this.mapLignesCommande.set(idCommande, parsedList);
-          this.mapPrixTotalCommande.set(idCommande, this.calcTotalCmd(parsedList));
+          this.mapLignesCommande.set(idCmd, parsedList);
+          this.mapPrixTotalCommande.set(idCmd, this.calcTotalCmd(parsedList));
         });
       } else {
-        this.mapLignesCommande.set(idCommande, list || []);
-        this.mapPrixTotalCommande.set(idCommande, this.calcTotalCmd(list || []));
+        this.mapLignesCommande.set(idCmd, list || []);
+        this.mapPrixTotalCommande.set(idCmd, this.calcTotalCmd(list || []));
       }
     });
   }
@@ -262,18 +262,18 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
 //   }
 //
 //
-//   findLignesCommande(idCommande?: number): void {
+//   findLignesCommande(idCmd?: number): void {
 //     if(this.origin === 'client'){
-//       this.commandeClientFournisseurService.findAllLigneCommandesClient(idCommande)
+//       this.commandeClientFournisseurService.findAllLigneCommandesClient(idCmd)
 //         .subscribe(list => {
-//           this.mapLignesCommande.set(idCommande, list); //la clé est l'idCommande et la valeur est la liste des lignes commandes
-//           this.mapPrixTotalCommande.set(idCommande, this.calcTotalCmd(list));
+//           this.mapLignesCommande.set(idCmd, list); //la clé est l'idCmd et la valeur est la liste des lignes commandes
+//           this.mapPrixTotalCommande.set(idCmd, this.calcTotalCmd(list));
 //         });
 //     } else if(this.origin === 'fournisseur'){
-//       this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(idCommande)
+//       this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(idCmd)
 //         .subscribe(list => {
-//           this.mapLignesCommande.set(idCommande, list); //la clé est l'idCommande et la valeur est la liste des lignes commandes
-//           this.mapPrixTotalCommande.set(idCommande, this.calcTotalCmd(list));
+//           this.mapLignesCommande.set(idCmd, list); //la clé est l'idCmd et la valeur est la liste des lignes commandes
+//           this.mapPrixTotalCommande.set(idCmd, this.calcTotalCmd(list));
 //         });
 //     }
 //   }

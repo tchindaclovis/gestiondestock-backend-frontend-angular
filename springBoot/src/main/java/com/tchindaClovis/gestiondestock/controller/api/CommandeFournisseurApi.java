@@ -20,18 +20,18 @@ public interface CommandeFournisseurApi {
     @PostMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/create")
     CommandeFournisseurDto save(@RequestBody CommandeFournisseurDto dto);
 
-    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/etat/{idCommande}/{etatCommande}")
-    CommandeFournisseurDto updateEtatCommande(@PathVariable("idCommande") Integer idCommande, @PathVariable("etatCommande") EEtatCommande etatCommande);
+    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/etat/{idCommandeFournisseur}/{etatCommande}")
+    CommandeFournisseurDto updateEtatCommande(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur, @PathVariable("etatCommande") EEtatCommande etatCommande);
 
-    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/quantite/{idCommande}/{idLigneCommande}/{quantite}")
-    CommandeFournisseurDto updateQuantiteCommande(@PathVariable("idCommande") Integer idCommande,
+    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/quantite/{idCommandeFournisseur}/{idLigneCommande}/{quantite}")
+    CommandeFournisseurDto updateQuantiteCommande(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
                                                   @PathVariable("idLigneCommande") Integer idLigneCommande, @PathVariable("quantite") BigDecimal quantite);
 
-    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/fournisseur/{idCommande}/{idFournisseur}")
-    CommandeFournisseurDto updateFournisseur(@PathVariable("idCommande") Integer idCommande, @PathVariable("idFournisseur") Integer idFournisseur);
+    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/fournisseur/{idCommandeFournisseur}/{idFournisseur}")
+    CommandeFournisseurDto updateFournisseur(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur, @PathVariable("idFournisseur") Integer idFournisseur);
 
-    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/article/{idCommande}/{idLigneCommande}/{idArticle}")
-    CommandeFournisseurDto updateArticle(@PathVariable("idCommande") Integer idCommande,
+    @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/article/{idCommandeFournisseur}/{idLigneCommande}/{idArticle}")
+    CommandeFournisseurDto updateArticle(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
                                          @PathVariable("idLigneCommande") Integer idLigneCommande, @PathVariable("idArticle") Integer idArticle);
 
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/{idCommandeFournisseur}")
@@ -47,15 +47,15 @@ public interface CommandeFournisseurApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
-    @GetMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/lignescommande/{idCommande}")
-    List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(@PathVariable("idCommande") Integer idCommande);
+    @GetMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/lignescommande/{idCommandeFournisseur}")
+    List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur);
 
 
     @DeleteMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/{idCommandeFournisseur}")
     void delete(@PathVariable("idCommandeFournisseur") Integer id);
 
-    @DeleteMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/article/{idCommande}/{idLigneCommande}")
-    CommandeFournisseurDto deleteArticle(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande") Integer idLigneCommande);
+    @DeleteMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/article/{idCommandeFournisseur}/{idLigneCommande}")
+    CommandeFournisseurDto deleteArticle(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur, @PathVariable("idLigneCommande") Integer idLigneCommande);
 
 
     @GetMapping(value = APP_ROOT + "/commandefournisseurs/lastcodecommandefournisseur")

@@ -290,26 +290,6 @@ export class NouvelleVenteComponent implements OnInit {
   }
 
 
-  // private preparerVente(): any {
-  //   return {
-  //     id: this.idVente,
-  //     // On s'assure d'envoyer l'objet client au bon champ
-  //     client: this.selectedClientFournisseur,
-  //     code: this.codeVente,
-  //     commentaire: this.commentaire,
-  //     dateVente: new Date().toISOString(), // Utiliser ISO String pour Jackson/Java Instant
-  //     idEntreprise: this.connectedUser?.entreprise?.id,
-  //     // LE CHAMP DOIT S'APPELER EXACTEMENT ligneVentes
-  //     ligneVentes: this.listeLignesVente.map(ligne => ({
-  //       id: ligne.id || null,
-  //       article: ligne.article,
-  //       quantite: ligne.quantite,
-  //       prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc,
-  //       idEntreprise: this.connectedUser?.entreprise?.id
-  //     }))
-  //   };
-  // }
-
 
   private preparerVente(): any {
     const idEnt = this.connectedUser?.entreprise?.id;

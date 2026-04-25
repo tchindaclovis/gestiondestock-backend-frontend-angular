@@ -56,8 +56,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   codeCommandeFournisseur = ''; // Lié au champ "Code commande fournisseur"
   idCommandeClient: number | null = null;
   idCommandeFournisseur: number | null = null;
-  // commande: any = {};
-
 
   selectedClientFournisseur: any = {}; // Variable utilisée dans le HTML
   listClients: ClientDto[] = [];
@@ -86,75 +84,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     private categoryService: CategoryService,  //injection du nouveau service category créé dans Angular
     private commandeClientFournisseurService: CommandeclientfournisseurService
   ) { }
-
-
-  // ngOnInit(): void {
-  //   this.connectedUser = this.userService.getConnectedUser();
-  //
-  //   this.activatedRoute.data.subscribe(data => {
-  //     this.origin = data['origin'];
-  //
-  //     // On récupère l'ID selon le paramètre défini dans le routing
-  //     const idParam = (this.origin === 'client')
-  //       ? this.activatedRoute.snapshot.params['idCommandeClient']
-  //       : this.activatedRoute.snapshot.params['idCommandeFournisseur'];
-  //
-  //     if (idParam) {
-  //       // Stockage de l'ID pour la modification
-  //       if (this.origin === 'client') {
-  //         this.idCommandeClient = idParam;
-  //       } else {
-  //         this.idCommandeFournisseur = idParam;
-  //       }
-  //       this.chargerDonneesPourModification(idParam);
-  //     } else {
-  //       // Logique de génération de code pour une NOUVELLE commande
-  //       // this.chargerNouveauCode();
-  //       if(this.origin === 'client') {
-  //         this.commandeClientFournisseurService.getLastCodeCommandeClient()
-  //           .subscribe({
-  //           next: async (res: any) => { // Ajoutez 'async' ici
-  //             let rawValue = res;
-  //
-  //             // Si la réponse est un Blob, on extrait son contenu textuel
-  //             if (res instanceof Blob) {
-  //               rawValue = await res.text();
-  //             }
-  //
-  //             console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "CMC0013"
-  //             this.codeCommandeClient = this.genererProchainCode(rawValue);
-  //           },
-  //           error: (err) => {
-  //             console.error('Erreur API :', err);
-  //             this.codeCommandeClient = 'CMC0001';
-  //           }
-  //         });
-  //       }else{
-  //         this.commandeClientFournisseurService.getLastCodeCommandeFournisseur().subscribe({
-  //           next: async (res: any) => { // Ajoutez 'async' ici
-  //             let rawValue = res;
-  //
-  //             // Si la réponse est un Blob, on extrait son contenu textuel
-  //             if (res instanceof Blob) {
-  //               rawValue = await res.text();
-  //             }
-  //
-  //             console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "CMC0013"
-  //             this.codeCommandeFournisseur = this.genererProchainCode(rawValue);
-  //           },
-  //           error: (err) => {
-  //             console.error('Erreur API :', err);
-  //             this.codeCommandeFournisseur ='CMF0001';
-  //           }
-  //         });
-  //       }
-  //     }
-  //     this.findAllClientsFournisseurs();
-  //     this.findAllArticles();
-  //   });
-  // }
-
-
 
 
     ngOnInit(): void {
@@ -300,7 +229,7 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
       this.codeCommandeClient = cmd.code || '';
       this.selectedClientFournisseur = cmd.client; // On récupère soit le client selon l'origine
       console.log("Données affectées au formulaire :", this.codeCommandeClient);
-    } else {
+    } else if(this.origin === 'fournisseur') {
       this.idCommandeFournisseur = cmd.id; // On stocke l'ID reçu
       this.codeCommandeFournisseur = cmd.code || '';
       this.selectedClientFournisseur = cmd.fournisseur; // On récupère soit le fournisseur selon l'origine
@@ -309,29 +238,14 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
 
-  // private affecterDonnees(cmd: any): void {
-  //   if(this.origin === 'client') {
-  //     this.codeCommandeClient = cmd.code || '';
-  //     // On récupère soit le client selon l'origine
-  //     this.selectedClientFournisseur = cmd.client;
-  //     console.log("Données affectées au formulaire :", this.codeCommandeClient);
-  //   }else{
-  //     this.codeCommandeFournisseur = cmd.code || '';
-  //     // On récupère soit le fournisseur selon l'origine
-  //     this.selectedClientFournisseur = cmd.fournisseur;
-  //
-  //     console.log("Données affectées au formulaire :", this.codeCommandeFournisseur);
-  //   }
-  // }
 
-
-  private chargerLignesCommande(idCommande: number): void {
+  private chargerLignesCommande(idCmd: number): void {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
     let serviceLignes: Observable<any>;
 
       serviceLignes = (this.origin === 'client') ?
-        this.commandeClientFournisseurService.findAllLigneCommandesClientByCommande(idCommande) :
-        this.commandeClientFournisseurService.findAllLigneCommandesFournisseurByCommande(idCommande);
+        this.commandeClientFournisseurService.findAllLigneCommandesClientByCommande(idCmd) :
+        this.commandeClientFournisseurService.findAllLigneCommandesFournisseurByCommande(idCmd);
 
     // 2. Appel du subscribe
     serviceLignes.subscribe({
@@ -350,6 +264,7 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
           this.listeLignesCommande = res;
           this.calculerTotalCommande();
         }
+        console.log("Lignes de vente :", this.listeLignesCommande);
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des lignes', err);
@@ -367,10 +282,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
           lig.prixUnitaireTtc;
 
         this.totalCommande += (+prix * +lig.quantite);
-
-      // // On récupère le prix disponible
-      // const prix = lig.prixUnitaire || lig.prixVenteUnitaireTtc || lig.prixUnitaireTtc || 0;
-      // this.totalCommande += (+prix * +lig.quantite);
     });
   }
 
@@ -383,17 +294,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
 
-  // findAllClientsFournisseurs(): void {
-  //   const idEntreprise = this.connectedUser?.entreprise?.id;
-  //   if (idEntreprise) {
-  //     (this.origin === 'client') ?
-  //       this.clientFournisseurService.findAllClientByIdEntreprise(idEntreprise)
-  //         .subscribe(res => this.listClientsFournisseurs = res) :
-  //       this.clientFournisseurService.findAllFournisseurs()
-  //         .subscribe(res => this.listClientsFournisseurs = res);
-  //   }
-  // }
-
 
     findAllClientsFournisseurs(): void {
     const idEntreprise = this.connectedUser?.entreprise?.id;
@@ -403,7 +303,7 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
           .subscribe(res => {
             this.listClients = res;
           });
-      } else {
+      } else if (this.origin === 'fournisseur') {
         this.clientFournisseurService.findAllFournisseurs()
           .subscribe(res => {
             this.listFournisseurs = res;
@@ -470,7 +370,7 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
       if (this.origin === 'client') {
         nouvelleLigne.prixVenteUnitaireTtc = this.searchedArticle.prixVenteUnitaireTtc;
-      } else {
+      } else if (this.origin === 'fournisseur') {
         nouvelleLigne.prixUnitaireTtc = this.searchedArticle.prixUnitaireTtc;
       }
 
@@ -478,32 +378,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     }
   }
 
-
-  // private checkLigneCommande(): void {
-  //   const ligneExistante = this.listeLignesCommande.find(lig =>
-  //     lig.article?.codeArticle === this.searchedArticle.codeArticle
-  //   );
-  //
-  //   if (ligneExistante) {
-  //     ligneExistante.quantite += +this.quantite;
-  //   } else {
-  //     if (this.origin === 'client') {
-  //       const ligneCmd = {
-  //         article: this.searchedArticle,
-  //         prixVenteUnitaireTtc: this.searchedArticle.prixVenteUnitaireTtc,
-  //         quantite: +this.quantite
-  //       };
-  //       this.listeLignesCommande.push(ligneCmd);
-  //     }else{
-  //       const ligneCmd = {
-  //         article: this.searchedArticle,
-  //         prixUnitaireTtc: this.searchedArticle.prixUnitaireTtc,
-  //         quantite: +this.quantite
-  //       };
-  //       this.listeLignesCommande.push(ligneCmd);
-  //     }
-  //   }
-  // }
 
   enregistrerCommande(): void {
     const commande = this.preparerCommande();
@@ -525,66 +399,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
 
-  // enregistrerCommande(): void {
-  //   const commande = this.preparerCommande();
-  //   if (this.origin === 'client') {
-  //     this.commandeClientFournisseurService.enregistrerCommandeClient(commande)
-  //       .subscribe(() => this.router.navigate(['commandesclient']), e => this.handleError(e));
-  //   } else {
-  //     this.commandeClientFournisseurService.enregistrerCommandeFournisseur(commande)
-  //       .subscribe(() => this.router.navigate(['commandesfournisseur']), e => this.handleError(e));
-  //   }
-  // }
-
-
-
-  // private preparerCommande(): any {
-  //   const idEnt = this.connectedUser?.entreprise?.id;
-  //   const currentId = (this.origin === 'client') ? this.idCommandeClient : this.idCommandeFournisseur;
-  //
-  //   // 1. On mappe les lignes de commande
-  //   const lignesPourBackend = this.listeLignesCommande.map(ligne => {
-  //     return {
-  //       // CRITIQUE : Garder l'ID de la ligne pour que JPA fasse un UPDATE et non un DELETE/INSERT
-  //       id: ligne.id || null,
-  //
-  //       // On envoie un objet minimal pour l'article pour éviter les conflits d'entités
-  //       article: { id: ligne.article?.id },
-  //
-  //       quantite: ligne.quantite,
-  //
-  //       // Affectation dynamique du prix selon l'origine
-  //       ...(this.origin === 'client'
-  //           ? { prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc }
-  //           : { prixUnitaireTtc: ligne.prixUnitaireTtc }
-  //       ),
-  //
-  //       idEntreprise: idEnt,
-  //
-  //       // Très important : lier la ligne à la commande actuelle pour le merge
-  //       ...(currentId ? {
-  //         [this.origin === 'client' ? 'commandeClient' : 'commandeFournisseur']: { id: currentId }
-  //       } : {})
-  //     };
-  //   });
-  //
-  //   // 2. Construction de l'objet final
-  //   return {
-  //     id: currentId ? currentId : null,
-  //     code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
-  //     dateCommande: new Date().toISOString(), // ISO String est plus stable pour Instant en Java
-  //     etatCommande: 'EN_PREPARATION',
-  //     idEntreprise: idEnt,
-  //
-  //     // Liaison Client ou Fournisseur
-  //     [this.origin]: { id: this.selectedClientFournisseur?.id },
-  //
-  //     // Liste des lignes (le nom doit correspondre exactement au DTO)
-  //     [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
-  //   };
-  // }
-
-
   private preparerCommande(): any {
     const idEnt = this.connectedUser?.entreprise?.id;
     // Utiliser l'ID général récupéré lors du ngOnInit (idCommande)
@@ -602,139 +416,21 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
       };
     });
 
-    const commandeDto: any = {
-      id: currentId ? currentId : null,
+    return {
+      id: currentId, // Si présent, Hibernate fera un UPDATE // CRITIQUE : L'ID de la commande pour déclencher l'UPDATE au lieu du INSERT
+      [this.origin]: this.selectedClientFournisseur,
+      // client: { id: this.selectedClientFournisseur?.id },
       code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
-      dateCommande: new Date().getTime(), // Utilisez le format attendu par votre Backend (Long ou ISO)
+      dateCommande: new Date().toISOString(), // Utiliser ISOString pour la stabilité
       etatCommande: 'EN_PREPARATION',
       idEntreprise: idEnt,
-      // On passe l'objet complet ou l'id pour le client/fournisseur
-      [this.origin]: { id: this.selectedClientFournisseur?.id }
+      [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
     };
-
-    // On injecte la liste des lignes dans la bonne propriété
-    if (this.origin === 'client') {
-      commandeDto.ligneCommandeClients = lignesPourBackend;
-    } else {
-      commandeDto.ligneCommandeFournisseurs = lignesPourBackend;
-    }
-
-    return commandeDto;
-
-    // return {
-    //   id: currentId ? currentId : null, // Si présent, Hibernate fera un UPDATE // CRITIQUE : L'ID de la commande pour déclencher l'UPDATE au lieu du INSERT
-    //   [this.origin]: this.selectedClientFournisseur,
-    //   // client: { id: this.selectedClientFournisseur?.id },
-    //   code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
-    //   dateCommande: new Date().toISOString(), // Utiliser ISOString pour la stabilité
-    //   etatCommande: 'EN_PREPARATION',
-    //   idEntreprise: idEnt,
-    //   [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
-    // };
   }
 
 
-
-
-
-
-  // private preparerCommande(): any {
-  //   const idEnt = this.connectedUser?.entreprise?.id;
-  //   // On détermine l'ID actuel (null si création, nombre si modification)
-  //   const currentId = (this.origin === 'client') ? this.idCommandeClient : this.idCommandeFournisseur;
-  //
-  //   const lignesPourBackend = this.listeLignesCommande.map(ligne => {
-  //     return {
-  //       id: ligne.id || null, // Garder l'ID de la ligne est CRUCIAL pour l'UPDATE
-  //       article: { id: ligne.article?.id }, // Simplification pour éviter les StaleObjectException
-  //       quantite: ligne.quantite,
-  //       // On mappe le prix selon l'origine
-  //       [this.origin === 'client' ? 'prixVenteUnitaireTtc' : 'prixUnitaireTtc']:
-  //         (this.origin === 'client' ? ligne.prixVenteUnitaireTtc : ligne.prixUnitaireTtc),
-  //       idEntreprise: idEnt
-  //     };
-  //   });
-  //
-  //   const commandeDto: any = {
-  //     id: currentId ? currentId : null, // Si présent, Hibernate fera un UPDATE
-  //     [this.origin]: { id: this.selectedClientFournisseur?.id }, // Envoi de l'ID client/fournisseur
-  //     code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
-  //     dateCommande: new Date().getTime(),
-  //     etatCommande: 'EN_PREPARATION',
-  //     idEntreprise: idEnt
-  //
-  //   };
-  //
-  //   // Ajout de la liste des lignes avec la bonne clé
-  //   if (this.origin === 'client') {
-  //     commandeDto.ligneCommandeClients = lignesPourBackend;
-  //   } else {
-  //     commandeDto.ligneCommandeFournisseurs = lignesPourBackend;
-  //   }
-  //
-  //   return commandeDto;
-  // }
-
-
-  // private preparerCommande(): any {
-  //   const idEnt = this.connectedUser?.entreprise?.id;
-  //   if(this.origin === 'client') {
-  //     // On crée une copie des lignes pour ne pas modifier l'affichage en cours
-  //     const lignesPourBackend = this.listeLignesCommande.map(ligne => {
-  //       return {
-  //         // Très important : garder l'ID de la ligne si elle existe déjà
-  //         id: ligne.id || null,
-  //         article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
-  //         // article: ligne.article,
-  //         quantite: ligne.quantite,
-  //         prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc,
-  //         // [(this.origin === 'client') ? 'prixVenteUnitaireTtc' : 'prixUnitaireTtc']:
-  //         //   (this.origin === 'client') ? ligne.prixVenteUnitaireTtc : ligne.prixUnitaireTtc,
-  //         idEntreprise: idEnt
-  //       };
-  //     });
-  //
-  //     return {
-  //       id: this.idCommandeClient,
-  //       [this.origin]: this.selectedClientFournisseur, // clé dynamique 'client' ou 'fournisseur'
-  //       // id: (this.origin === 'client') ? this.idCommandeClient : this.idCommandeFournisseur,
-  //       code: this.codeCommandeClient,
-  //       // code: (this.origin === 'client') ?this.commandeClientDto.code : this.commandeFournisseurDto.code,
-  //       dateCommande: new Date().getTime(),
-  //       etatCommande: 'EN_PREPARATION',
-  //       idEntreprise: idEnt,
-  //       ['ligneCommandeClients']: lignesPourBackend
-  //       // [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
-  //     };
-  //   }else{
-  //     // On crée une copie des lignes pour ne pas modifier l'affichage en cours
-  //     const lignesPourBackend = this.listeLignesCommande.map(ligne => {
-  //       return {
-  //         // Très important : garder l'ID de la ligne si elle existe déjà
-  //         id: ligne.id || null,
-  //         article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
-  //         quantite: ligne.quantite,
-  //         prixUnitaireTtc: ligne.prixUnitaireTtc,
-  //         idEntreprise: idEnt
-  //       };
-  //     });
-  //
-  //     return {
-  //       id: this.idCommandeFournisseur,
-  //       [this.origin]: this.selectedClientFournisseur, // clé dynamique 'client' ou 'fournisseur'
-  //       code: this.codeCommandeFournisseur,
-  //       dateCommande: new Date().getTime(),
-  //       // dateCommande: new Date().getTime(),
-  //       etatCommande: 'EN_PREPARATION',
-  //       idEntreprise: idEnt,
-  //       ['ligneCommandeFournisseurs']: lignesPourBackend
-  //     };
-  //   }
-  // }
-
-
   cancelClick(): void {
-    this.router.navigate([this.origin === 'client' ?
+    this.router.navigate([(this.origin === 'client') ?
       'commandesclient' :
       'commandesfournisseur'
     ]);

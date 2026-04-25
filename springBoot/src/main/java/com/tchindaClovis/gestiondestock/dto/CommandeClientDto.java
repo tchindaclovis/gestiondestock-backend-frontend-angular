@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -81,3 +82,88 @@ public class  CommandeClientDto {
         return EEtatCommande.LIVREE.equals(this.etatCommande);
     }
 }
+
+
+
+
+
+//package com.tchindaClovis.gestiondestock.dto;
+//
+//import com.tchindaClovis.gestiondestock.model.CommandeClient;
+//import com.tchindaClovis.gestiondestock.model.EEtatCommande;
+//import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
+//import lombok.Builder;
+//import lombok.Data;
+//import java.time.Instant;
+//import java.util.List;
+//import java.util.stream.Collectors;
+//
+//@Data
+//@Builder
+//public class CommandeClientDto {
+//
+//    private Integer id;
+//    private String code;
+//    private Instant dateCommande;
+//    private Integer idEntreprise;
+//    private EEtatCommande etatCommande;
+//    private ClientDto client;
+//    private List<LigneCommandeClientDto> ligneCommandeClients;
+//
+//    public static CommandeClientDto fromEntity(CommandeClient commandeClient) {
+//        if (commandeClient == null) {
+//            return null;
+//        }
+//
+//        return CommandeClientDto.builder()
+//                .id(commandeClient.getId())
+//                .code(commandeClient.getCode())
+//                .dateCommande(commandeClient.getDateCommande())
+//                .idEntreprise(commandeClient.getIdEntreprise())
+//                .etatCommande(commandeClient.getEtatCommande())
+//                .client(ClientDto.fromEntity(commandeClient.getClient()))
+//                // ACTIVATION DU MAPPAGE VERS DTO
+//                .ligneCommandeClients(
+//                        commandeClient.getLigneCommandeClients() != null ?
+//                                commandeClient.getLigneCommandeClients().stream()
+//                                        .map(LigneCommandeClientDto::fromEntity)
+//                                        .collect(Collectors.toList()) : null
+//                )
+//                .build();
+//    }
+//
+//    public static CommandeClient toEntity(CommandeClientDto dto) {
+//        if (dto == null) {
+//            return null;
+//        }
+//        CommandeClient entity = new CommandeClient();
+//        entity.setId(dto.getId());
+//        entity.setCode(dto.getCode());
+//        entity.setDateCommande(dto.getDateCommande());
+//        entity.setEtatCommande(dto.getEtatCommande());
+//        entity.setIdEntreprise(dto.getIdEntreprise());
+//        entity.setClient(ClientDto.toEntity(dto.getClient()));
+//
+//        // ACTIVATION DU MAPPAGE VERS ENTITÉ (Crucial pour la sauvegarde)
+//        if (dto.getLigneCommandeClients() != null) {
+//            List<LigneCommandeClient> lignes = dto.getLigneCommandeClients()
+//                    .stream()
+//                    .map(LigneCommandeClientDto::toEntity)
+//                    .collect(Collectors.toList());
+//
+//            // On s'assure que chaque ligne pointe vers cette commande
+//            lignes.forEach(ligne -> ligne.setCommandeClient(entity));
+//            entity.setLigneCommandeClients(lignes);
+//        }
+//
+//        return entity;
+//    }
+//
+//    public boolean isCommandeLivree() {
+//        return EEtatCommande.LIVREE.equals(this.etatCommande);
+//    }
+//}
+
+
+
+

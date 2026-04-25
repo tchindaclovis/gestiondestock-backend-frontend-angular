@@ -33,28 +33,28 @@ public class CommandeClientController implements CommandeClientApi {
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> updateEtatCommande(Integer idCommande, EEtatCommande etatCommande) {
-        return ResponseEntity.ok(commandeClientService.updateEtatCommande(idCommande, etatCommande));
+    public ResponseEntity<CommandeClientDto> updateEtatCommande(Integer idCommandeClient, EEtatCommande etatCommande) {
+        return ResponseEntity.ok(commandeClientService.updateEtatCommande(idCommandeClient, etatCommande));
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite) {
-        return ResponseEntity.ok(commandeClientService.updateQuantiteCommande(idCommande, idLigneCommande, quantite));
+    public ResponseEntity<CommandeClientDto> updateQuantiteCommande(Integer idCommandeClient, Integer idLigneCommande, BigDecimal quantite) {
+        return ResponseEntity.ok(commandeClientService.updateQuantiteCommande(idCommandeClient, idLigneCommande, quantite));
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> updateClient(Integer idCommande, Integer idClient) {
-        return ResponseEntity.ok(commandeClientService.updateClient(idCommande, idClient));
+    public ResponseEntity<CommandeClientDto> updateClient(Integer idCommandeClient, Integer idClient) {
+        return ResponseEntity.ok(commandeClientService.updateClient(idCommandeClient, idClient));
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> deleteArticle(Integer idCommande, Integer idLigneCommande) {
-        return ResponseEntity.ok(commandeClientService.deleteArticle(idCommande, idLigneCommande));
+    public ResponseEntity<CommandeClientDto> deleteArticle(Integer idCommandeClient, Integer idLigneCommande) {
+        return ResponseEntity.ok(commandeClientService.deleteArticle(idCommandeClient, idLigneCommande));
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
-        return ResponseEntity.ok(commandeClientService.updateArticle(idCommande, idLigneCommande, idArticle));
+    public ResponseEntity<CommandeClientDto> updateArticle(Integer idCommandeClient, Integer idLigneCommande, Integer idArticle) {
+        return ResponseEntity.ok(commandeClientService.updateArticle(idCommandeClient, idLigneCommande, idArticle));
     }
 
     @Override
@@ -79,8 +79,8 @@ public class CommandeClientController implements CommandeClientApi {
     }
 
     @Override
-    public ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(Integer idCommande) {
-        return ResponseEntity.ok(commandeClientService.findAllLignesCommandesClientByCommandeClientId(idCommande));
+    public ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(Integer idCommandeClient) {
+        return ResponseEntity.ok(commandeClientService.findAllLignesCommandesClientByCommandeClientId(idCommandeClient));
     }
 
     @Override

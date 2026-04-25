@@ -10,20 +10,20 @@ import java.util.List;
 public interface CommandeFournisseurService {
     CommandeFournisseurDto save(CommandeFournisseurDto dto);
 
-    CommandeFournisseurDto updateEtatCommande(Integer idCommande, EEtatCommande etatCommande);
+    CommandeFournisseurDto updateEtatCommande(Integer idCommandeFournisseur, EEtatCommande etatCommande);
 
-    CommandeFournisseurDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
+    CommandeFournisseurDto updateQuantiteCommande(Integer idCommandeFournisseur, Integer idLigneCommande, BigDecimal quantite);
 
-    CommandeFournisseurDto updateFournisseur(Integer idCommande, Integer idFournisseur);
+    CommandeFournisseurDto updateFournisseur(Integer idCommandeFournisseur, Integer idFournisseur);
 
-    CommandeFournisseurDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle);
+    CommandeFournisseurDto updateArticle(Integer idCommandeFournisseur, Integer idLigneCommande, Integer idArticle);
     CommandeFournisseurDto findById(Integer id);
     CommandeFournisseurDto findByCode(String code);
     List<CommandeFournisseurDto> findAll();
-    List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande);
+    List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommandeFournisseur);
     void delete(Integer id);
     // Delete article ==> delete LigneCommandeFournisseur
-    CommandeFournisseurDto deleteArticle(Integer idCommande, Integer idLigneCommande);
+    CommandeFournisseurDto deleteArticle(Integer idCommandeFournisseur, Integer idLigneCommande);
 
     String getLastCodeCommandeFournisseur();
 

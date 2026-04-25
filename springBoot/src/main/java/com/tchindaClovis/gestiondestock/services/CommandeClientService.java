@@ -9,19 +9,19 @@ import java.util.List;
 
 public interface CommandeClientService {
     CommandeClientDto save(CommandeClientDto dto);
-    CommandeClientDto updateEtatCommande(Integer idCommande, EEtatCommande etatCommande);
-    CommandeClientDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
+    CommandeClientDto updateEtatCommande(Integer idCommandeClient, EEtatCommande etatCommande);
+    CommandeClientDto updateQuantiteCommande(Integer idCommandeClient, Integer idLigneCommande, BigDecimal quantite);
 
-    CommandeClientDto updateClient(Integer idCommande, Integer idClient);
+    CommandeClientDto updateClient(Integer idCommandeClient, Integer idClient);
 
-    CommandeClientDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer newIdArticle);
+    CommandeClientDto updateArticle(Integer idCommandeClient, Integer idLigneCommande, Integer newIdArticle);
 
     // Delete article ==> delete LigneCommandeClient
-    CommandeClientDto deleteArticle(Integer idCommande, Integer idLigneCommande);
+    CommandeClientDto deleteArticle(Integer idCommandeClient, Integer idLigneCommande);
     CommandeClientDto findById(Integer id);
     CommandeClientDto findByCode(String code);
     List<CommandeClientDto> findAll();
-    List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande);
+    List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommandeClient);
 
     List<CommandeClientDto> findAllCommandeClientByIdEntreprise(Integer idEntreprise);
 
