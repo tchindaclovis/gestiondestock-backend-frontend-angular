@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {ArticleDto, UtilisateurDto} from "../../../../gs-api/src";
+import {UtilisateurDto} from "../../../../gs-api/src";
 import {UtilisateurService} from "../../../services/utilisateur/utilisateur.service";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
   selector: 'app-page-utilisateur',
@@ -10,22 +11,32 @@ import {UtilisateurService} from "../../../services/utilisateur/utilisateur.serv
 })
 export class PageUtilisateurComponent implements OnInit {
 
+  connectedUser: UtilisateurDto | null = null;
   listUtilisateur: Array<UtilisateurDto> = [];
   errorMsg = '';
   constructor(
     private router: Router,
+    private userService: UserService,
     private utilisateurService: UtilisateurService
   ) { }
 
   ngOnInit(): void {
+    // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
+    this.connectedUser = this.userService.getConnectedUser();
+
     this.findListUtilisateur()
   }
 
   findListUtilisateur(): void{
-    this.utilisateurService.findAllUtilisateur()
-      .subscribe(utilisateurs =>{
-        this.listUtilisateur = utilisateurs;
-      });
+    // On récupère l'id de l'entreprise de l'utilisateur connecté
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+
+    if (idEntreprise) {
+      this.utilisateurService.findAllUtilisateurByIdEntreprise(idEntreprise)
+        .subscribe(utilisateurs => {
+          this.listUtilisateur = utilisateurs;
+        });
+    }
   }
 
 

@@ -12,12 +12,13 @@
         <span *ngIf="connectedUser !== null">
           <!--Interpolation Angular {{ }}
             Affiche dynamiquement le nom de l’utilisateur connecté-->
-        {{ connectedUser.nom }}
+          {{ connectedUser.nom }}
+          <small class="form-text text-auted small-size">{{ connectedUser.statut }}</small>
         </span>
       </h2>
       <small class="form-text text-auted">
-        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
-        {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
+        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }} //
+        {{ connectedUser?.adresse?.codePostale }} {{ connectedUser?.adresse?.ville }}
       </small>
     </div>
     <div class="col text-center mb-3">
@@ -41,6 +42,10 @@
         <td>{{ connectedUser?.nom }}</td>
       </tr>
       <tr>
+        <th scope="row">Statut :</th>
+        <td>{{ connectedUser?.statut }}</td>
+      </tr>
+      <tr>
         <th scope="row">Email :</th>
         <td>{{ connectedUser?.email }}</td>
       </tr>
@@ -51,15 +56,14 @@
       <tr>
         <th scope="row">Adresse :</th>
         <td>
-          {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
+          {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }} //
           {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
         </td>
       </tr>
       <tr>
         <th scope="row">Entreprise :</th>
-        <td>{{ connectedUser?.prenom }}</td>
+        <td>{{ connectedUser?.nom }}</td>
       </tr>
-
       </tbody>
     </table>
 

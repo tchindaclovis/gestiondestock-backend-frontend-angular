@@ -204,6 +204,16 @@ public class VenteServiceImpl implements VenteService {
     }
 
     @Override
+    public List<VenteDto> findAllVenteByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return venteRepository.findAllByIdEntreprise(idEntreprise).stream()
+                .map(VenteDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+    @Override
     public List<LigneVenteDto> findAllLignesVentesByVenteId(Integer idVente) {
         return ligneVenteRepository.findAllByVenteId(idVente).stream()
                 .map(LigneVenteDto::fromEntity)
@@ -284,5 +294,15 @@ public class VenteServiceImpl implements VenteService {
                 .idEntreprise(lig.getIdEntreprise())
                 .build();
         mvtStockService.sortieStock(mvtStockDto);
+    }
+
+
+    @Override
+    public String getLastCodeVente() {
+        // CORRECTION : Utilisez l'instance "venteRepository" (minuscule)
+        // et extrayez le code de l'objet Vente
+        return venteRepository.findTopByOrderByCodeDesc()
+                .map(Vente::getCode) // On transforme l'Vente en String (son code)
+                .orElse("CVT0000");           // Valeur par défaut si aucun vente n'existe
     }
 }

@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.repository;
 
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
+import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
 import com.tchindaClovis.gestiondestock.model.LigneCommandeFournisseur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,8 @@ public interface LigneCommandeFournisseurRepository extends JpaRepository<LigneC
     List<LigneCommandeFournisseur> findAllByCommandeFournisseurId(Integer idCommande);
 
     List<LigneCommandeFournisseur> findAllByArticleId(Integer idCommande);
+
+    List<LigneCommandeFournisseur> findAllByIdEntreprise(Integer idEntreprise);
 
     // LigneVenteRepository.java
     @Modifying(clearAutomatically = true)

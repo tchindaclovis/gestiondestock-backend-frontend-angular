@@ -239,6 +239,18 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return commandeFournisseurRepository.findAllByIdEntreprise(idEntreprise).stream()
+                .map(CommandeFournisseurDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande) {
         return ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(idCommande).stream()
@@ -332,7 +344,17 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
                 .build();
         mvtStockService.entreeStock(mvtStkDto);
     }
+
+    @Override
+    public String getLastCodeCommandeFournisseur() {
+        // CORRECTION : Utilisez l'instance "commandeFournisseurRepository" (minuscule)
+        // et extrayez le code de l'objet CommandeFournisseur
+        return commandeFournisseurRepository.findTopByOrderByCodeDesc()
+                .map(CommandeFournisseur::getCode) // On transforme la CommandeFournisseur en String (son code)
+                .orElse("CMF0000");           // Valeur par défaut si aucun commandeFournisseur n'existe
+    }
 }
+
 
 
 

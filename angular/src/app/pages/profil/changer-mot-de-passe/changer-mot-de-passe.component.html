@@ -1,8 +1,8 @@
 <div class="row m-3">
-  <div class="card col-md-4 text-center">
+  <div class="card col-md-6 text-center">
     <div class="col">
       <div class="mb-3 mt-3">
-        <img [src]="connectedUser?.photo || 'assets/profil.png'" class="rounded-circle" width="200px" height="200px">
+        <img [src]="connectedUser?.photo || 'assets/profil.png'" class="rounded-circle" width="400px" height="200px">
       </div>
     </div>
     <div class="mb-3">
@@ -11,23 +11,34 @@
           <!--Interpolation Angular {{ }}
             Affiche dynamiquement le nom de l’utilisateur connecté-->
           {{ connectedUser.nom }}
+          <small class="form-text text-auted small-size">{{ connectedUser.statut }}</small>
         </span>
       </h2>
       <small class="form-text text-auted">
-        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }}
-        {{ connectedUser?.adresse?.ville }} {{ connectedUser?.adresse?.codePostale }}
+        {{ connectedUser?.adresse?.adresse1 }} {{ connectedUser?.adresse?.adresse2 }} //
+        {{ connectedUser?.adresse?.codePostale }} {{ connectedUser?.adresse?.ville }}
       </small>
     </div>
   </div>
 
-  <div class="card col-md-8">
+  <div class="card col-md-6">
     <form class="m-lg-3">
+      <div class="row mb-3 mt-3">
+        <div class="col-md-4">
+          <label>Email:</label>
+        </div>
+        <div class="col-md-8 form-group">
+          <input type="email" class="form-control"  name="email"
+                 [(ngModel)]="connectedUser!.email">
+        </div>
+      </div>
+
       <div class="row mb-3 mt-3">
         <div class="col-md-4">
           <label>Ancien mot de passe:</label>
         </div>
         <div class="col-md-8 form-group">
-          <input type="email" class="form-control"  name="ancienmotdepasse"
+          <input type="password" class="form-control"  name="ancienmotdepasse"
                  [(ngModel)]="ancienMotDePasse">
         </div>
       </div>
@@ -48,7 +59,7 @@
         </div>
 
         <div class="col-md-8 form-group">
-          <input type="email" class="form-control"  name="confirmermotdepasse"
+          <input type="password" class="form-control"  name="confirmermotdepasse"
                  [(ngModel)]="changerMotDePasseDto.confirmMotDePasse">
         </div>
       </div>

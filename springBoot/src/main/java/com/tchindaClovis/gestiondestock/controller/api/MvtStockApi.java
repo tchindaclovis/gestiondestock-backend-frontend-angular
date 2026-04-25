@@ -17,7 +17,7 @@ public interface MvtStockApi {
     @GetMapping(APP_ROOT + "/mvtstock/stockreel/{idArticle}")
     BigDecimal stockReelArticle(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(APP_ROOT + "/mvtstock/filter/article/{idArticle}")
+    @GetMapping(APP_ROOT + "/mvtstock/filter/idarticle/{idArticle}")
     List<MvtStockDto> mvtStockArticle(@PathVariable("idArticle") Integer idArticle);
 
     @GetMapping(APP_ROOT + "/mvtstock/all")

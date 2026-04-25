@@ -70,7 +70,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         return UtilisateurDto.builder()
                 .adresse(dto.getAdresse())
                 .nom(dto.getNom().toUpperCase())
-                .prenom(dto.getNom().toLowerCase())
+                .statut(dto.getStatut().toLowerCase())
                 .email(dto.getEmail())
                 .numTel(dto.getNumTel())
                 .motDePasse(generateRandomPassword())

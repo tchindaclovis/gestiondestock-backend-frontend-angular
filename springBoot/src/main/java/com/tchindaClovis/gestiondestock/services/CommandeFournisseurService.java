@@ -1,5 +1,6 @@
 package com.tchindaClovis.gestiondestock.services;
 
+import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
@@ -23,4 +24,9 @@ public interface CommandeFournisseurService {
     void delete(Integer id);
     // Delete article ==> delete LigneCommandeFournisseur
     CommandeFournisseurDto deleteArticle(Integer idCommande, Integer idLigneCommande);
+
+    String getLastCodeCommandeFournisseur();
+
+    List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(Integer idEntreprise);
+
 }

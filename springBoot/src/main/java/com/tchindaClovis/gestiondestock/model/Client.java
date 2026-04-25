@@ -15,8 +15,8 @@ public class Client extends AbstractEntity{
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "prenom")
-    private String prenom;
+    @Column(name = "statutclient")
+    private String statut;
 
     @Embedded //champ embarqué qui peut être utilisé dan plusieurs autres classes
     private Adresse adresse;

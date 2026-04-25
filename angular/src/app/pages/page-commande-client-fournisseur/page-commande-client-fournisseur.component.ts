@@ -3,8 +3,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {
   CommandeclientfournisseurService
 } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
-import {CommandeClientDto, LigneCommandeClientDto} from "../../../gs-api/src";
 import {Observable} from "rxjs";
+import {UtilisateurDto} from "../../../gs-api/src";
+import {UserService} from "../../services/user/user.service";
+import {
+  LignecmdclientfournisseurService
+} from "../../services/lignecmdclientfournisseur/lignecmdclientfournisseur.service";
 
 @Component({
   selector: 'app-page-commande-client-fournisseur',
@@ -13,58 +17,84 @@ import {Observable} from "rxjs";
 })
 export class PageCommandeClientFournisseurComponent implements OnInit {
 
+  connectedUser: UtilisateurDto | null = null;
   @Input() origin = '';
   listeCommandes: Array<any> = [];
+  listeLigneCommandes: Array<any> = [];
   // Initialisation de la Map pour éviter les erreurs de lecture immédiate dans le template
   mapLignesCommande = new Map<number, any[]>();
   mapPrixTotalCommande = new Map<number, number>();
 
   constructor(
     private router: Router,
+    private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private commandeClientFournisseurService: CommandeclientfournisseurService
+    private commandeClientFournisseurService: CommandeclientfournisseurService,
+    private ligneCmdClientFournisseurService: LignecmdclientfournisseurService
   ) { }
 
   ngOnInit(): void {
+    // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
+    this.connectedUser = this.userService.getConnectedUser();
+
     this.activatedRoute.data.subscribe(data =>{
       this.origin = data['origin'];
       this.findAllCommandes(); // Déplacé ici pour garantir que l'origin est chargé
+      this.findAllLigneCommandes();
     });
   }
 
   findAllCommandes(): void {
     let serviceCall: Observable<any>;
 
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
       serviceCall = (this.origin === 'client') ?
-        this.commandeClientFournisseurService.findAllCommandesClient() :
-        this.commandeClientFournisseurService.findAllCommandesFournisseur();
+        this.commandeClientFournisseurService.findAllCommandeClientByIdEntreprise(idEntreprise) :
+        this.commandeClientFournisseurService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
 
 
-    serviceCall.subscribe(cmd => {
-      this.listeCommandes = cmd;
-      // Initialiser la Map avec des tableaux vides pour CHAQUE commande immédiatement
-      this.listeCommandes.forEach(c => {
-        this.mapLignesCommande.set(c.id, []);
-        this.mapPrixTotalCommande.set(c.id, 0);
+      serviceCall.subscribe(cmd => {
+        this.listeCommandes = cmd;
+        // Initialiser la Map avec des tableaux vides pour CHAQUE commande immédiatement
+        this.listeCommandes.forEach(c => {
+          this.mapLignesCommande.set(c.id, []);
+          this.mapPrixTotalCommande.set(c.id, 0);
+        });
+        this.findAllLigneCommandeByCommande();
       });
-      this.findAllLigneCommande();
-    });
+    }
   }
 
-  findAllLigneCommande(): void {
+
+  findAllLigneCommandes(): void {
+    let serviceCall: Observable<any>;
+
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
+      serviceCall = (this.origin === 'client') ?
+        this.ligneCmdClientFournisseurService.findAllLigneCommandeClientByIdEntreprise(idEntreprise) :
+        this.ligneCmdClientFournisseurService.findAllLigneCommandeFournisseurByIdEntreprise(idEntreprise);
+
+      serviceCall.subscribe(cmd => {
+        this.listeLigneCommandes = cmd;
+      });
+    }
+  }
+
+  findAllLigneCommandeByCommande(): void {
     this.listeCommandes.forEach(cmd => {
-      this.findLignesCommande(cmd.id);
+      this.findLignesCommandeByCommande(cmd.id);
     });
   }
 
-  findLignesCommande(idCommande: number): void {
+  findLignesCommandeByCommande(idCommande: number): void {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
     let serviceLignes: Observable<any>;
 
       serviceLignes = (this.origin === 'client') ?
-        this.commandeClientFournisseurService.findAllLigneCommandesClient(idCommande) :
-        this.commandeClientFournisseurService.findAllLigneCommandesFournisseur(idCommande);
-
+        this.commandeClientFournisseurService.findAllLigneCommandesClientByCommande(idCommande) :
+        this.commandeClientFournisseurService.findAllLigneCommandesFournisseurByCommande(idCommande);
 
     serviceLignes.subscribe(list => {
       // Si le retour est un Blob (fréquent dans votre projet), on le gère
@@ -80,6 +110,18 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
       }
     });
   }
+
+  // get totalLignesCommande(): number {
+  //   let totalLignes = 0;
+  //   // On parcourt toutes les entrées de la Map
+  //   this.mapLignesCommande.forEach((lignes) => {
+  //     if (lignes) {
+  //       totalLignes += lignes.length;
+  //     }
+  //   });
+  //   return totalLignes;
+  // }
+
 
   calcTotalCmd(list: Array<any>): number {
     let total = 0;
@@ -118,6 +160,7 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
       // On appelle simplement la méthode qui charge vos ventes
       // Cela mettra à jour la liste 'ventes' et Angular rafraîchira l'écran instantanément
       this.findAllCommandesClientFournisseur();
+      this.findAllLigneCommandes()
     } else {
       // // Optionnel : afficher un message d'erreur si le signal n'est pas 'success'
       // this.errorMsg = result;

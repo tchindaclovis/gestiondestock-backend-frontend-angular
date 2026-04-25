@@ -1,9 +1,6 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
-import com.tchindaClovis.gestiondestock.dto.CategoryDto;
-import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
-import com.tchindaClovis.gestiondestock.dto.LigneVenteDto;
-import com.tchindaClovis.gestiondestock.dto.VenteDto;
+import com.tchindaClovis.gestiondestock.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +33,7 @@ public interface VenteApi {
     )
     VenteDto save(@RequestBody VenteDto dto);
 
-    @GetMapping(value = APP_ROOT + "/ventes/id/{idVente}",
+    @GetMapping(value = APP_ROOT + "/ventes/find/idvente/{idVente}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une vente par ID",
@@ -49,7 +46,7 @@ public interface VenteApi {
     )
     VenteDto findById(@PathVariable("idVente") Integer id);
 
-    @GetMapping(value = APP_ROOT + "/ventes/filter/{codeVente}",
+    @GetMapping(value = APP_ROOT + "/ventes/find/codevente/{codeVente}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une vente par code",
@@ -74,7 +71,12 @@ public interface VenteApi {
     )
     List<VenteDto> findAll();
 
-    @GetMapping(APP_ROOT + "/ventes/lignesVente/{idVente}")
+
+    @GetMapping(value = APP_ROOT + "/ventes/filter/identreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<VenteDto> findAllVenteByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
+
+    @GetMapping(APP_ROOT + "/ventes/lignesVente/filter/idvente/{idVente}")
     ResponseEntity<List<LigneVenteDto>> findAllLignesVentesByVenteId(@PathVariable("idVente") Integer idVente);
 
 
@@ -87,5 +89,16 @@ public interface VenteApi {
             }
     )
     void delete(@PathVariable("idVente") Integer id);
+
+
+    @GetMapping(value = APP_ROOT + "/ventes/lastcodevente")
+    @Operation(
+            summary  = "Récupérer le dernier code vente enregistré",
+            description = "Cette méthode permet de récupérer le dernier code au format CVTxxxx",
+            responses = {
+                    @ApiResponse(responseCode  = "200", description  = "Le dernier code a été récupéré / CVT0000 par défaut")
+            }
+    )
+    String getLastCodeVente();
 }
 

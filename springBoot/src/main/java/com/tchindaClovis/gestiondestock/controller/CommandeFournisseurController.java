@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.CommandeFournisseurApi;
+import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
@@ -64,6 +65,12 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
     }
 
     @Override
+    public List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(Integer idEntreprise) {
+
+        return commandeFournisseurService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
+    }
+
+    @Override
     public List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande) {
         return commandeFournisseurService.findAllLignesCommandesFournisseurByCommandeFournisseurId(idCommande);
     }
@@ -78,4 +85,8 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
         return commandeFournisseurService.deleteArticle(idCommande, idLigneCommande);
     }
 
+    @Override
+    public String getLastCodeCommandeFournisseur() {
+        return commandeFournisseurService.getLastCodeCommandeFournisseur();
+    }
 }

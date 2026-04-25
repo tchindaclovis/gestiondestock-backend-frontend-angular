@@ -10,4 +10,9 @@ import java.util.Optional;
 public interface CommandeFournisseurRepository extends JpaRepository<CommandeFournisseur, Integer> {
     Optional<CommandeFournisseur> findCommandeFournisseurByCode(String code);
     List<CommandeFournisseur> findAllByFournisseurId(Integer id);
+
+    List<CommandeFournisseur> findAllByIdEntreprise(Integer idEntreprise);
+
+    // Cette méthode va trier par codeCommandeFournisseur descendant et prendre le premier (le plus grand)
+    Optional<CommandeFournisseur> findTopByOrderByCodeDesc();
 }

@@ -13,6 +13,7 @@ import { AdresseDto } from './adresseDto';
 export interface EntrepriseDto { 
     id?: number;
     nom?: string;
+    statut?: string;
     description?: string;
     codeFiscal?: string;
     photo?: string;

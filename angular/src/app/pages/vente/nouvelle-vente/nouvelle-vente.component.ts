@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ArticleDto, CategoryDto, UtilisateurDto} from "../../../../gs-api/src";
+import {ArticleDto, CategoryDto, ClientDto, UtilisateurDto, VenteDto} from "../../../../gs-api/src";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {ClientfournisseurService} from "../../../services/clientfournisseurs/clientfournisseur.service";
@@ -27,7 +27,7 @@ export class NouvelleVenteComponent implements OnInit {
 
 
   selectedClientFournisseur: any = {}; // Variable utilisée dans le HTML
-  listClientsFournisseurs: Array<any> = [];
+  listClients: ClientDto[] = [];
 
   searchedArticle: ArticleDto = {};
   listArticle: Array<ArticleDto> = [];
@@ -35,8 +35,9 @@ export class NouvelleVenteComponent implements OnInit {
 
 
   articleDto: ArticleDto = {}; //objet ou variable initialisé à vide
+  venteDto: VenteDto = {}; //objet ou variable initialisé à vide
   errorMsg : Array<string> = [];
-  listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
+  // listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
 
   listeLignesVente: Array<any> = [];
   totalVente = 0;
@@ -56,13 +57,6 @@ export class NouvelleVenteComponent implements OnInit {
     // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
     this.connectedUser = this.userService.getConnectedUser();
 
-    // Récupération de l'ID depuis l'URL (ex: /nouvellevente/253)
-    const id = this.activatedRoute.snapshot.params['idVente'];
-    if (id) {
-      this.idVente = id;
-      // ... votre logique pour charger la vente existante ...
-    }
-
     // 1. Déterminer l'origine
     this.activatedRoute.data.subscribe(data => {
       this.origin = 'client';
@@ -74,13 +68,60 @@ export class NouvelleVenteComponent implements OnInit {
       this.findAllArticles();
 
       // 3. Mode Modification / Visualisation
-      // On récupère l'ID passé dans l'URL (le "103" de votre exemple)
+      // Récupération de l'ID depuis l'URL (ex: /nouvellevente/253)
       const id = this.activatedRoute.snapshot.params['idVente'];
       if (id) {
+        this.idVente = id;
         this.chargerDonneesPourModification(id);
+        this.venteService.findVenteById(id)
+          .subscribe(vente =>{
+            this.venteDto = vente;
+          });
+      }else{
+        this.venteService.getLastCodeVente().subscribe({
+          next: async (res: any) => { // Ajoutez 'async' ici
+            let rawValue = res;
+            // Si la réponse est un Blob, on extrait son contenu textuel
+            if (res instanceof Blob) {
+              rawValue = await res.text();
+            }
+            console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "ART0013"
+            this.codeVente = this.genererProchainCode(rawValue);
+          },
+          error: (err) => {
+            console.error('Erreur API :', err);
+            this.codeVente = 'CVT0001';
+          }
+        });
       }
     });
   }
+
+
+  private genererProchainCode(lastCode: any): string {
+    console.log('Type de lastCode :', typeof lastCode);
+    console.log('Valeur brute de lastCode :', lastCode);
+    // 1. Conversion en string et nettoyage radical (supprime guillemets, espaces, retours à la ligne)
+    const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
+
+    // 2. Extraction de TOUS les chiffres présents dans la chaîne
+    // On cherche une suite de chiffres (\d+)
+    const match = cleanCode.match(/\d+/);
+
+    let nextNumber = 9999; // Valeur par défaut si aucun chiffre n'est trouvé
+
+    if (match && match[0]) {
+      // 3. Conversion de la partie trouvée (ex: "0013") en nombre et incrémentation
+      nextNumber = parseInt(match[0], 10) + 1;
+    }
+
+    // 4. Formatage : "ART" + nombre formaté sur 4 positions (Milliers, Centaines, Dizaines, Unités)
+    // padStart(4, '0') transforme 14 en "0014"
+    const formattedNumber = nextNumber.toString().padStart(4, '0');
+
+    return `CVT${formattedNumber}`;
+  }
+
 
   chargerDonneesPourModification(id: number): void {
     console.log("ID détecté :", id, " | Origine :", this.origin);
@@ -96,12 +137,13 @@ export class NouvelleVenteComponent implements OnInit {
     });
   }
 
+
   private traiterReponse(res: any, id: number): void {
     // Cas où la réponse est un Blob (Binaire JSON)
     if (res instanceof Blob) {
       res.text().then(text => {
-        const cmd = JSON.parse(text);
-        this.affecterDonnees(cmd);
+        const vte = JSON.parse(text);
+        this.affecterDonnees(vte);
         this.chargerLignesVente(id);
       });
     }
@@ -115,7 +157,7 @@ export class NouvelleVenteComponent implements OnInit {
   private affecterDonnees(vte: any): void {
     this.codeVente = vte.code || '';
     this.commentaire = vte.commentaire || '';
-    // On récupère soit le client soit le fournisseur selon l'origine
+    // On récupère le client
     this.selectedClientFournisseur =  vte.client;
     console.log("Données affectées au formulaire :", this.codeVente);
   }
@@ -124,7 +166,7 @@ export class NouvelleVenteComponent implements OnInit {
   private chargerLignesVente(idVente: number): void {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
     let serviceLignes: Observable<any>;
-      serviceLignes = this.venteService.findAllLigneVentes(idVente);
+      serviceLignes = this.venteService.findAllLigneVenteByVentes(idVente);
 
 
     // 2. Appel du subscribe
@@ -172,8 +214,11 @@ export class NouvelleVenteComponent implements OnInit {
   }
 
   findAllClientsFournisseurs(): void {
-      this.clientFournisseurService.findAllClients()
-        .subscribe(res => this.listClientsFournisseurs = res);
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
+      this.clientFournisseurService.findAllClientByIdEntreprise(idEntreprise)
+        .subscribe(res => this.listClients = res);
+    }
   }
 
 
@@ -267,14 +312,16 @@ export class NouvelleVenteComponent implements OnInit {
 
 
   private preparerVente(): any {
+    const idEnt = this.connectedUser?.entreprise?.id;
     const lignesPourBackend = this.listeLignesVente.map(ligne => {
       return {
         // Très important : garder l'ID de la ligne si elle existe déjà
         id: ligne.id || null,
-        article: ligne.article,
+        article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
+        // article: ligne.article,
         quantite: ligne.quantite,
         prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc,
-        idEntreprise: this.connectedUser?.entreprise?.id
+        idEntreprise: idEnt
       };
     });
 
@@ -285,7 +332,7 @@ export class NouvelleVenteComponent implements OnInit {
       code: this.codeVente,
       commentaire: this.commentaire,
       dateVente: new Date().getTime(),
-      idEntreprise: this.connectedUser?.entreprise?.id,
+      idEntreprise: idEnt,
       ['ligneVentes']: lignesPourBackend
     };
   }

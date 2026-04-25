@@ -4,7 +4,7 @@ import {
   ArticleDto,
   ArticlesService,
   CommandeClientDto,
-  LigneCommandeClientDto, LigneVenteDto,
+  LigneCommandeClientDto, LigneVenteDto, UtilisateurDto,
   VenteDto,
   VentesService
 } from "../../../gs-api/src";
@@ -43,7 +43,15 @@ export class VenteService {
   }
 
 
-  findAllLigneVentes(idVte?: number): Observable<LigneVenteDto[]> {
+  findAllVenteByIdEntreprise(idEntreprise: number): Observable<VenteDto[]> {
+    if (idEntreprise) {
+      return this.ventesService.findAllVenteByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
+
+  findAllLigneVenteByVentes(idVte?: number): Observable<LigneVenteDto[]> {
     return this.ventesService
       .findAllLignesVentesByVenteId(idVte!)
       .pipe(
@@ -63,5 +71,9 @@ export class VenteService {
       return this.ventesService._delete(idClient);
     }
     return of();
+  }
+
+  getLastCodeVente(): Observable<string> {
+    return this.ventesService.getLastCodeVente();
   }
 }

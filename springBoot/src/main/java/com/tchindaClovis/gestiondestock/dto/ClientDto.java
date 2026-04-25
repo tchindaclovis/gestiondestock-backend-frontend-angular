@@ -14,7 +14,7 @@ public class ClientDto {
 
     private String nom;
 
-    private String prenom;
+    private String statut;
 
     private String photo;
 
@@ -37,7 +37,7 @@ public class ClientDto {
         return ClientDto.builder()
                 .id(client.getId())
                 .nom(client.getNom())
-                .prenom(client.getPrenom())
+                .statut(client.getStatut())
                 .photo(client.getPhoto())
                 .email(client.getEmail())
                 .numTel(client.getNumTel())
@@ -53,7 +53,7 @@ public class ClientDto {
         Client client = new Client();
         client.setId(clientDto.getId());
         client.setNom(clientDto.getNom());
-        client.setPrenom(clientDto.getPrenom());
+        client.setStatut(clientDto.getStatut());
         client.setPhoto(clientDto.getPhoto());
         client.setEmail(clientDto.getEmail());
         client.setNumTel(clientDto.getNumTel());

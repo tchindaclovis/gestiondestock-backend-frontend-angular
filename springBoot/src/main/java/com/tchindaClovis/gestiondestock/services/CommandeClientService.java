@@ -22,5 +22,10 @@ public interface CommandeClientService {
     CommandeClientDto findByCode(String code);
     List<CommandeClientDto> findAll();
     List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande);
+
+    List<CommandeClientDto> findAllCommandeClientByIdEntreprise(Integer idEntreprise);
+
     void delete(Integer id);
+
+    String getLastCodeCommandeClient();
 }

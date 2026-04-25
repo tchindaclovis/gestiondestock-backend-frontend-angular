@@ -14,7 +14,7 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur?.prenom }}</div>
+        <div class="col-md-11">{{ clientFournisseur?.statut }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
@@ -28,15 +28,15 @@
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
-        <div class="col-md-11">{{ commande.code }}</div>
+        <div class="col-md-11">{{ commande?.code }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11">{{ commande.dateCommande | date:'dd/MM/yyyy HH:mm'}}</div>
+        <div class="col-md-11">{{ commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
-        <div class="col-md-11">{{ commande.etatCommande }}</div>
+        <div class="col-md-11">{{ commande?.etatCommande }}</div>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
       <div class="col-md-6 text-center">
         <button type="button" class="btn btn-link souligner-au-survol text-danger"
                 data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDelete1' + commande.id">
+                [attr.data-bs-target]="'#modalDelete' + commande.id">
           <i class="fa-solid fa-trash-alt"></i>&nbsp;
           Supprimer
         </button>
@@ -62,7 +62,7 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" [id]="'modalDelete1' + commande.id"
+  <div class="modal fade" [id]="'modalDelete' + commande.id"
        data-bs-backdrop="static"
        data-bs-keyboard="false"
        tabindex="-1"

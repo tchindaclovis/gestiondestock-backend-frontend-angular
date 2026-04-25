@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {UserService} from "../user/user.service";
-import {ClientDto, ClientsService, FournisseurDto, FournisseursService} from "../../../gs-api/src";
+import {ArticleDto, ClientDto, ClientsService, FournisseurDto, FournisseursService} from "../../../gs-api/src";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -30,6 +30,20 @@ export class ClientfournisseurService {
 
   findAllFournisseurs(): Observable<FournisseurDto[]>{
     return this.fournisseursService.findAll2();
+  }
+
+  findAllClientByIdEntreprise(idEntreprise: number): Observable<ClientDto[]> {
+    if (idEntreprise) {
+      return this.clientsService.findAllClientByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
+  findAllFournisseurByIdEntreprise(idEntreprise: number): Observable<FournisseurDto[]> {
+    if (idEntreprise) {
+      return this.fournisseursService.findAllFournisseurByIdEntreprise(idEntreprise);
+    }
+    return of([]);
   }
 
   findClientById(id: number): Observable<ClientDto>{

@@ -149,7 +149,7 @@ export class ArticlesService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/articles/filter/category/{idCategory}
+     * @endpoint get /gestiondestock/v1/articles/filter/idcategory/{idCategory}
      * @param idCategory 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -188,7 +188,7 @@ export class ArticlesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/articles/filter/category/${this.configuration.encodeParam({name: "idCategory", value: idCategory, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/articles/filter/idcategory/${this.configuration.encodeParam({name: "idCategory", value: idCategory, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<ArticleDto>>('get', `${basePath}${localVarPath}`,
             {
@@ -203,7 +203,7 @@ export class ArticlesService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/articles/filter/entreprise/{idEntreprise}
+     * @endpoint get /gestiondestock/v1/articles/filter/identreprise/{idEntreprise}
      * @param idEntreprise 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -242,7 +242,7 @@ export class ArticlesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/articles/filter/entreprise/${this.configuration.encodeParam({name: "idEntreprise", value: idEntreprise, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/articles/filter/identreprise/${this.configuration.encodeParam({name: "idEntreprise", value: idEntreprise, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<ArticleDto>>('get', `${basePath}${localVarPath}`,
             {
@@ -259,7 +259,7 @@ export class ArticlesService extends BaseService {
     /**
      * Rechercher un article par code
      * Cette méthode permet de rechercher un article par son code
-     * @endpoint get /gestiondestock/v1/articles/codeArticle/{codeArticle}
+     * @endpoint get /gestiondestock/v1/articles/find/codearticle/{codeArticle}
      * @param codeArticle 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -298,7 +298,7 @@ export class ArticlesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/articles/codeArticle/${this.configuration.encodeParam({name: "codeArticle", value: codeArticle, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/articles/find/codearticle/${this.configuration.encodeParam({name: "codeArticle", value: codeArticle, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ArticleDto>('get', `${basePath}${localVarPath}`,
             {
@@ -315,7 +315,7 @@ export class ArticlesService extends BaseService {
     /**
      * Rechercher un article par ID
      * Cette méthode permet de rechercher un article par son ID
-     * @endpoint get /gestiondestock/v1/articles/idArticle/{idArticle}
+     * @endpoint get /gestiondestock/v1/articles/find/idarticle/{idArticle}
      * @param idArticle 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -354,7 +354,7 @@ export class ArticlesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/articles/idArticle/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/articles/find/idarticle/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ArticleDto>('get', `${basePath}${localVarPath}`,
             {

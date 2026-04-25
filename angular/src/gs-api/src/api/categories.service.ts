@@ -145,7 +145,7 @@ export class CategoriesService extends BaseService {
     /**
      * Rechercher une categorie par code
      * Cette méthode permet de rechercher une categorie par son code
-     * @endpoint get /gestiondestock/v1/categories/code/{codeCategory}
+     * @endpoint get /gestiondestock/v1/categories/find/codecategory/{codeCategory}
      * @param codeCategory 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -184,7 +184,7 @@ export class CategoriesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/categories/code/${this.configuration.encodeParam({name: "codeCategory", value: codeCategory, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/categories/find/codecategory/${this.configuration.encodeParam({name: "codeCategory", value: codeCategory, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CategoryDto>('get', `${basePath}${localVarPath}`,
             {
@@ -201,7 +201,7 @@ export class CategoriesService extends BaseService {
     /**
      * Rechercher une categorie par ID
      * Cette méthode permet de rechercher une categorie par son ID
-     * @endpoint get /gestiondestock/v1/categories/id/{idCategory}
+     * @endpoint get /gestiondestock/v1/categories/find/idcategory/{idCategory}
      * @param idCategory 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -240,7 +240,7 @@ export class CategoriesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/categories/id/${this.configuration.encodeParam({name: "idCategory", value: idCategory, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/categories/find/idcategory/${this.configuration.encodeParam({name: "idCategory", value: idCategory, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CategoryDto>('get', `${basePath}${localVarPath}`,
             {

@@ -11,7 +11,7 @@ public class UtilisateurValidator {
 
         if (utilisateurDto == null) {
             errors.add("Veuillez renseigner le nom d'utilisateur");
-            errors.add("Veuillez renseigner le prenom d'utilisateur");
+            errors.add("Veuillez renseigner le statut d'utilisateur");
             errors.add("Veuillez renseigner le mot de passe d'utilisateur");
             errors.add("Veuillez renseigner l'adresse d'utilisateur");
             errors.addAll(AdresseValidator.validate(null));
@@ -21,8 +21,8 @@ public class UtilisateurValidator {
         if (!StringUtils.hasLength(utilisateurDto.getNom())) {
             errors.add("Veuillez renseigner le nom d'utilisateur");
         }
-        if (!StringUtils.hasLength(utilisateurDto.getPrenom())) {
-            errors.add("Veuillez renseigner le prenom d'utilisateur");
+        if (!StringUtils.hasLength(utilisateurDto.getStatut())) {
+            errors.add("Veuillez renseigner le statut d'utilisateur");
         }
         if (!StringUtils.hasLength(utilisateurDto.getEmail())) {
             errors.add("Veuillez renseigner l'email d'utilisateur");

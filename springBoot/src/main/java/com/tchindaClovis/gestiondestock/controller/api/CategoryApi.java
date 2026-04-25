@@ -118,7 +118,7 @@ public interface CategoryApi {
     CategoryDto save(@RequestBody CategoryDto dto);
 
     // ✅ URL UNIQUE pour findById
-    @GetMapping(value = APP_ROOT + "/categories/id/{idCategory}",
+    @GetMapping(value = APP_ROOT + "/categories/find/idcategory/{idCategory}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une categorie par ID",
@@ -132,7 +132,7 @@ public interface CategoryApi {
     CategoryDto findById(@PathVariable("idCategory") Integer id);
 
     // ✅ URL UNIQUE pour findByCode
-    @GetMapping(value = APP_ROOT + "/categories/code/{codeCategory}",
+    @GetMapping(value = APP_ROOT + "/categories/find/codecategory/{codeCategory}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une categorie par code",

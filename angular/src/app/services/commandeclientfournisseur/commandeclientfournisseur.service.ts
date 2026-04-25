@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ArticleDto,
   CommandeClientDto, CommandeClientsService,
   CommandeFournisseurDto, CommandeFournisseursService,
   LigneCommandeClientDto,
@@ -14,8 +15,8 @@ import {UserService} from "../user/user.service";
 export class CommandeclientfournisseurService {
 
   constructor(
-    private commandeClientService: CommandeClientsService,
-    private commandeFournisseurService: CommandeFournisseursService,
+    private commandeClientsService: CommandeClientsService,
+    private commandeFournisseursService: CommandeFournisseursService,
     private userService: UserService
   ) { }
 
@@ -23,14 +24,14 @@ export class CommandeclientfournisseurService {
   enregistrerCommandeClient(commandeClientDto: CommandeClientDto)
     : Observable<CommandeClientDto> {
     commandeClientDto.idEntreprise = this.userService.getConnectedUser()?.entreprise?.id; //affecter l'idEntreprise à l'utilisateur
-    return this.commandeClientService.save5(commandeClientDto);
+    return this.commandeClientsService.save4(commandeClientDto);
   }
 
 
   enregistrerCommandeFournisseur(commandeFournisseurDto: CommandeFournisseurDto)
     : Observable<CommandeFournisseurDto> {
     commandeFournisseurDto.idEntreprise = this.userService.getConnectedUser()?.entreprise?.id; //affecter l'idEntreprise à l'utilisateur
-    return this.commandeFournisseurService.save4(commandeFournisseurDto);
+    return this.commandeFournisseursService.save5(commandeFournisseurDto);
   }
 
 
@@ -38,7 +39,7 @@ export class CommandeclientfournisseurService {
   //   return this.commandeClientService.findAll5();
   // }
   findAllCommandesClient(): Observable<CommandeClientDto[]> {
-    return this.commandeClientService.findAll5().pipe(
+    return this.commandeClientsService.findAll4().pipe(
       switchMap((data: any) => {
         if (data instanceof Blob) {
           return from(data.text()).pipe(
@@ -51,12 +52,20 @@ export class CommandeclientfournisseurService {
   }
 
 
+  findAllCommandeClientByIdEntreprise(idEntreprise: number): Observable<CommandeClientDto[]> {
+    if (idEntreprise) {
+      return this.commandeClientsService.findAllCommandeClientByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
+
 
   // findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
   //   return this.commandeFournisseurService.findAll4();
   // }
   findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
-    return this.commandeFournisseurService.findAll4().pipe(
+    return this.commandeFournisseursService.findAll5().pipe(
       switchMap((data: any) => {
         if (data instanceof Blob) {
           return from(data.text()).pipe(
@@ -69,14 +78,22 @@ export class CommandeclientfournisseurService {
   }
 
 
+  findAllCommandeFournisseurByIdEntreprise(idEntreprise: number): Observable<CommandeFournisseurDto[]> {
+    if (idEntreprise) {
+      return this.commandeFournisseursService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
+
   // findAllLigneCommandesClient(idCmd?: number): Observable<LigneCommandeClientDto[]> {
   //   if (idCmd) {
   //     return this.commandeClientService.findAllLignesCommandesClientByCommandeClientId(idCmd);
   //   }
   //   return of();
   // }
-  findAllLigneCommandesClient(idCmd?: number): Observable<LigneCommandeClientDto[]> {
-    return this.commandeClientService
+  findAllLigneCommandesClientByCommande(idCmd?: number): Observable<LigneCommandeClientDto[]> {
+    return this.commandeClientsService
       .findAllLignesCommandesClientByCommandeClientId(idCmd!)
       .pipe(
         switchMap((data: any) => {
@@ -98,8 +115,8 @@ export class CommandeclientfournisseurService {
   //   }
   //   return of();
   // }
-  findAllLigneCommandesFournisseur(idCmd?: number): Observable<LigneCommandeFournisseurDto[]> {
-    return this.commandeFournisseurService
+  findAllLigneCommandesFournisseurByCommande(idCmd?: number): Observable<LigneCommandeFournisseurDto[]> {
+    return this.commandeFournisseursService
       .findAllLignesCommandesFournisseurByCommandeFournisseurId(idCmd!)
       .pipe(
         switchMap((data: any) => {
@@ -115,26 +132,34 @@ export class CommandeclientfournisseurService {
 
 
   findCommandeClientById(id: number): Observable<CommandeClientDto> {
-    return this.commandeClientService.findById5(id);
+    return this.commandeClientsService.findById4(id);
   }
 
   findCommandeFournisseurById(id: number): Observable<CommandeFournisseurDto> {
-    return this.commandeFournisseurService.findById4(id);
+    return this.commandeFournisseursService.findById5(id);
   }
 
 
   deleteCommandeClient(idClient: number): Observable<any>{
     if(idClient){
-      return this.commandeClientService.delete5(idClient);
+      return this.commandeClientsService.delete4(idClient);
     }
     return of();
   }
 
   deleteCommandeFournisseur(idFournisseur: number): Observable<any>{
     if(idFournisseur){
-      return this.commandeFournisseurService.delete4(idFournisseur);
+      return this.commandeFournisseursService.delete5(idFournisseur);
     }
     return of();
+  }
+
+  getLastCodeCommandeClient(): Observable<string> {
+    return this.commandeClientsService.getLastCodeCommandeClient();
+  }
+
+  getLastCodeCommandeFournisseur(): Observable<string> {
+    return this.commandeFournisseursService.getLastCodeCommandeFournisseur();
   }
 }
 

@@ -34,7 +34,7 @@ public interface EntrepriseApi {
     )
     EntrepriseDto save(@RequestBody EntrepriseDto dto);
 
-    @GetMapping(value = APP_ROOT + "/entreprises/{idEntreprise}",
+    @GetMapping(value = APP_ROOT + "/entreprises/find/identreprise/{idEntreprise}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une entreprise par ID",
@@ -48,7 +48,7 @@ public interface EntrepriseApi {
     EntrepriseDto findById(@PathVariable("idEntreprise") Integer id);
 
 
-    @GetMapping(value = APP_ROOT + "/entreprises/{nom}",
+    @GetMapping(value = APP_ROOT + "/entreprises/find/nomentreprise/{nom}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une entreprise par nom",
@@ -61,7 +61,7 @@ public interface EntrepriseApi {
     )
     EntrepriseDto findByNom(@PathVariable("nomEntreprise")  String nom);
 
-    @GetMapping(value = APP_ROOT + "/entreprises/{codeFiscal}",
+    @GetMapping(value = APP_ROOT + "/entreprises/find/codefiscal/{codeFiscal}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une entreprise par code fiscal",

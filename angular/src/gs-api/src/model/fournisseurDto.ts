@@ -13,7 +13,7 @@ import { AdresseDto } from './adresseDto';
 export interface FournisseurDto { 
     id?: number;
     nom?: string;
-    prenom?: string;
+    statut?: string;
     photo?: string;
     email?: string;
     numTel?: string;

@@ -35,6 +35,16 @@ public class UtilisateurController implements UtilisateurApi {
         return utilisateurService.findById(id);
     }
 
+    @Override
+    public UtilisateurDto findByNom(String nom) {
+        return utilisateurService.findByNom(nom);
+    }
+
+    @Override
+    public UtilisateurDto findByStatut(String statut) {
+        return utilisateurService.findByStatut(statut);
+    }
+
 
     @Override
     public ResponseEntity<UtilisateurDto> findByEmail(@PathVariable("email") String email) {
@@ -48,6 +58,13 @@ public class UtilisateurController implements UtilisateurApi {
     @Override
     public List<UtilisateurDto> findAll() {
         return utilisateurService.findAll();
+    }
+
+
+    @Override
+    public List<UtilisateurDto> findAllUtilisateurByIdEntreprise(Integer idEntreprise) {
+
+        return utilisateurService.findAllUtilisateurByIdEntreprise(idEntreprise);
     }
 
     @Override

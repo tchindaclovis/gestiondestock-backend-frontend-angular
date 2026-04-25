@@ -36,7 +36,7 @@ public interface UtilisateurApi {
     UtilisateurDto changerMotDePasse(@RequestBody ChangerMotDePasseUtilisateurDto dto);
 
 
-    @GetMapping(value = APP_ROOT + "/utilisateurs/{idUtilisateur}",
+    @GetMapping(value = APP_ROOT + "/utilisateurs/find/idutilisateur/{idUtilisateur}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher un utilisateur par ID",
@@ -49,36 +49,27 @@ public interface UtilisateurApi {
     )
     UtilisateurDto findById(@PathVariable("idUtilisateur") Integer id);
 
-//    @GetMapping(value = APP_ROOT + "/utilisateurs/{nom}",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(
-//            summary = "Rechercher un utilisateur par nom",
-//            description = "Cette méthode permet de rechercher un utilisateur par son nom",
-//    responses = {
-//                @ApiResponse(responseCode = "200", description = "Le nom de l'utilisateur a été trouvé dans la BDD",
-//                        content = @Content(schema = @Schema(implementation = UtilisateurDto.class))),
-//                @ApiResponse(responseCode = "404", description = "Aucun utilisateur trouvé avec le nom fourni")
-//            }
-//    )
-//    UtilisateurDto findByNom(@PathVariable("nomUtilisateur")  String nom);
+
+    @GetMapping(APP_ROOT + "/utilisateurs/find/nomutilisateur/{nom}")
+    UtilisateurDto findByNom(@PathVariable("nom") String nom);
 
 
 
-//    @GetMapping(value = APP_ROOT + "/utilisateurs/{prenom}",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(
-//            summary = "Rechercher un utilisateur par prenom",
-//            description = "Cette méthode permet de rechercher un utilisateur  par son prenom",
-//            responses = {
-//                @ApiResponse(responseCode = "200", description = "Le prenom de l'utilisateur a été trouvé dans la BDD",
-//                        content = @Content(schema = @Schema(implementation = UtilisateurDto.class))),
-//                @ApiResponse(responseCode = "404", description = "Aucun utilisateur trouvé avec le prenom fourni")
-//            }
-//    )
-//    UtilisateurDto findByPrenom(@PathVariable("prenomUtilisateur")  String prenom);
+    @GetMapping(value = APP_ROOT + "/utilisateurs/find/statututilisateur/{statut}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un utilisateur par statut",
+            description = "Cette méthode permet de rechercher un utilisateur  par son statut",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Le statut de l'utilisateur a été trouvé dans la BDD",
+                        content = @Content(schema = @Schema(implementation = UtilisateurDto.class))),
+                @ApiResponse(responseCode = "404", description = "Aucun utilisateur trouvé avec le statut fourni")
+            }
+    )
+    UtilisateurDto findByStatut(@PathVariable("statutUtilisateur")  String statut);
 
 
-    @GetMapping(APP_ROOT + "/utilisateurs/find/{email}")
+    @GetMapping(APP_ROOT + "/utilisateurs/find/emailutilisateur/{email}")
     ResponseEntity<UtilisateurDto> findByEmail(@PathVariable("email") String email);
 
 
@@ -93,6 +84,11 @@ public interface UtilisateurApi {
             }
     )
     List<UtilisateurDto> findAll();
+
+
+    @GetMapping(value = APP_ROOT + "/utilisateurs/filter/identreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<UtilisateurDto> findAllUtilisateurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
     @DeleteMapping(value = APP_ROOT + "/utilisateurs/delete/{idUtilisateur}")
     @Operation(

@@ -1,5 +1,6 @@
 package com.tchindaClovis.gestiondestock.repository;
 
+import com.tchindaClovis.gestiondestock.model.Article;
 import com.tchindaClovis.gestiondestock.model.CommandeClient;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.Vente;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VenteRepository extends JpaRepository<Vente, Integer> {
@@ -16,5 +18,10 @@ public interface VenteRepository extends JpaRepository<Vente, Integer> {
 
     @Query("SELECT v FROM Vente v LEFT JOIN FETCH v.ligneVentes WHERE v.id = :id")
     Optional<Vente> findByIdWithLignes(@Param("id") Integer id);
+
+    List<Vente> findAllByIdEntreprise(Integer idEntreprise);
+
+    // Cette méthode va trier par codeArticle descendant et prendre le premier (le plus grand)
+    Optional<Vente> findTopByOrderByCodeDesc();
 
 }

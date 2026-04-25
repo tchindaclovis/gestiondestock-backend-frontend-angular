@@ -2,6 +2,7 @@ package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.ClientApi;
 import com.tchindaClovis.gestiondestock.dto.ClientDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,22 +30,28 @@ public class ClientController implements ClientApi {
         return clientService.findById(id);
     }
 
-//    @Override
-//    public ClientDto findByNom(String nom) {
-//
-//        return clientService.findByNom(nom);
-//    }
+    @Override
+    public ClientDto findByNom(String nom) {
 
-//    @Override
-//    public ClientDto findByPrenom(String prenom) {
-//
-//        return clientService.findByPrenom(prenom);
-//    }
+        return clientService.findByNom(nom);
+    }
+
+    @Override
+    public ClientDto findByStatut(String statut) {
+
+        return clientService.findByStatut(statut);
+    }
 
     @Override
     public List<ClientDto> findAll() {
 
         return clientService.findAll();
+    }
+
+    @Override
+    public List<ClientDto> findAllClientByIdEntreprise(Integer idEntreprise) {
+
+        return clientService.findAllClientByIdEntreprise(idEntreprise);
     }
 
     @Override

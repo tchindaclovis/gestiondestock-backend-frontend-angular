@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
 import com.tchindaClovis.gestiondestock.dto.ClientDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,7 +32,7 @@ public interface ClientApi {
     )
     ClientDto save(@RequestBody ClientDto dto);
 
-    @GetMapping(value = APP_ROOT + "/clients/{idClient}",
+    @GetMapping(value = APP_ROOT + "/clients/find/idclient/{idClient}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher un client par ID",
@@ -44,31 +45,31 @@ public interface ClientApi {
     )
     ClientDto findById(@PathVariable("idClient") Integer id);
 
-//    @GetMapping(value = APP_ROOT + "/clients/{nom}",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(
-//            summary = "Rechercher un client par nom",
-//            description = "Cette méthode permet de rechercher un client par son nom",
-//            responses = {
-//                @ApiResponse(responseCode = "200", description = "Le nom du client a été trouvé dans la BDD",
-//                    content = @Content(schema = @Schema(implementation = ClientDto.class))),
-//                @ApiResponse(responseCode = "404", description = "Aucun client trouvé avec le nom fourni")
-//            }
-//    )
-//    ClientDto findByNom(@PathVariable("nom")  String nom);
+    @GetMapping(value = APP_ROOT + "/clients/find/nomclient/{nom}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un client par nom",
+            description = "Cette méthode permet de rechercher un client par son nom",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Le nom du client a été trouvé dans la BDD",
+                    content = @Content(schema = @Schema(implementation = ClientDto.class))),
+                @ApiResponse(responseCode = "404", description = "Aucun client trouvé avec le nom fourni")
+            }
+    )
+    ClientDto findByNom(@PathVariable("nom")  String nom);
 
-//    @GetMapping(value = APP_ROOT + "/clients/{prenom}",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(
-//            summary = "Rechercher un client par prenom",
-//            description = "Cette méthode permet de rechercher un client par son prenom",
-//            responses = {
-//                @ApiResponse(responseCode = "200", description = "Le prenom du client a été trouvé dans la BDD",
-//                    content = @Content(schema = @Schema(implementation = ClientDto.class))),
-//                @ApiResponse(responseCode = "404", description = "Aucun client trouvé avec le prenom fourni")
-//            }
-//    )
-//    ClientDto findByPrenom(@PathVariable("prenom")  String prenom);
+    @GetMapping(value = APP_ROOT + "/clients/find/statutclient/{statut}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un client par statut",
+            description = "Cette méthode permet de rechercher un client par son statut",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Le statut du client a été trouvé dans la BDD",
+                    content = @Content(schema = @Schema(implementation = ClientDto.class))),
+                @ApiResponse(responseCode = "404", description = "Aucun client trouvé avec le statut fourni")
+            }
+    )
+    ClientDto findByStatut(@PathVariable("statut")  String statut);
 
     @GetMapping(value = APP_ROOT + "/clients/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +82,11 @@ public interface ClientApi {
             }
     )
     List<ClientDto> findAll();
+
+
+    @GetMapping(value = APP_ROOT + "/clients/filter/identreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<ClientDto> findAllClientByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
     @DeleteMapping(value = APP_ROOT + "/clients/delete/{idClient}")
     @Operation(

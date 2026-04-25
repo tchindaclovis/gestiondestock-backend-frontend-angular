@@ -11,20 +11,20 @@ import {UtilisateurService} from "../../services/utilisateur/utilisateur.service
 export class DetailUtilisateurComponent implements OnInit {
 
   @Input()
-  // utilisateurDto: UtilisateurDto = {};
-  utilisateurDto: UtilisateurDto = {
-    nom: '',
-    prenom: '',
-    email: '',
-    numTel: '',
-    adresse: {
-      adresse1: '',
-      adresse2: '',
-      ville: '',
-      codePostale: '',
-      pays: ''
-    }
-  };
+  utilisateurDto: UtilisateurDto = {};
+  // utilisateurDto: UtilisateurDto = {
+  //   nom: '',
+  //   statut: '',
+  //   email: '',
+  //   numTel: '',
+  //   adresse: {
+  //     adresse1: '',
+  //     adresse2: '',
+  //     ville: '',
+  //     codePostale: '',
+  //     pays: ''
+  //   }
+  // };
 
   @Output()
   suppressionResult = new EventEmitter();

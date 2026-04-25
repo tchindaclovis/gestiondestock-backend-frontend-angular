@@ -2,6 +2,7 @@ package com.tchindaClovis.gestiondestock.services.impl;
 
 import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.FournisseurDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
@@ -77,6 +78,20 @@ public class FournisseurServiceImpl implements FournisseurService {
         );
     }
 
+    @Override
+    public FournisseurDto findByStatut(String statut) {
+        if(!StringUtils.hasLength(statut)){
+            log.error("Fournisseur STATUT is null");
+            return null;
+        }
+        Optional<Fournisseur> fournisseur = fournisseurRepository.findByStatut(statut);
+        return Optional.of(FournisseurDto.fromEntity(fournisseur.get())).orElseThrow(() ->
+                new EntityNotFoundException(
+                        "Aucun fournisseur avec le STATUT = " + statut + "n'a ete trouve dans la BDD",
+                        ErrorCodes.FOURNISSEUR_NOT_FOUND)
+        );
+    }
+
 
     @Override
     public List<FournisseurDto> findAll() {
@@ -85,6 +100,17 @@ public class FournisseurServiceImpl implements FournisseurService {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<FournisseurDto> findAllFournisseurByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return fournisseurRepository.findAllByIdEntreprise(idEntreprise).stream()
+                .map(FournisseurDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void delete(Integer id) {

@@ -17,7 +17,7 @@ public class UtilisateurDto {
 
     private String nom;
 
-    private String prenom;
+    private String statut;
 
     private String email;
 
@@ -43,7 +43,7 @@ public class UtilisateurDto {
         return UtilisateurDto.builder()
                 .id(utilisateur.getId())
                 .nom(utilisateur.getNom())
-                .prenom(utilisateur.getPrenom())
+                .statut(utilisateur.getStatut())
                 .email(utilisateur.getEmail())
                 .numTel(utilisateur.getNumTel())
                 .dateDeNaissance(utilisateur.getDateDeNaissance())
@@ -67,7 +67,7 @@ public class UtilisateurDto {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setId(utilisateurDto.getId());
         utilisateur.setNom(utilisateurDto.getNom());
-        utilisateur.setPrenom(utilisateurDto.getPrenom());
+        utilisateur.setStatut(utilisateurDto.getStatut());
         utilisateur.setEmail(utilisateurDto.getEmail());
         utilisateur.setNumTel(utilisateurDto.getNumTel());
         utilisateur.setDateDeNaissance(utilisateurDto.getDateDeNaissance());

@@ -12,6 +12,9 @@ api/commandeClients.service.ts
 api/commandeFournisseurs.service.ts
 api/entreprises.service.ts
 api/fournisseurs.service.ts
+api/ligneCommandeClients.service.ts
+api/ligneCommandeFournisseurs.service.ts
+api/ligneVentes.service.ts
 api/mvtStocks.service.ts
 api/photo.service.ts
 api/utilisateurs.service.ts

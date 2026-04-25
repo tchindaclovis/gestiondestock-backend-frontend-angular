@@ -49,6 +49,7 @@ export class NouvelUtilisateurComponent implements OnInit {
     this.utilisateurService.enregistrerUtilisateur(this.utilisateurDto)
       .subscribe(uti =>{
         this.savePhoto(uti.id, uti.nom)
+        // this.router.navigate(['utilisateurs']);
       }, error =>{
         this.errorMsg = error.error.errors;
       });
@@ -91,22 +92,57 @@ export class NouvelUtilisateurComponent implements OnInit {
   //   }
   // }
 
-
   savePhoto(idUtilisateur?: number, titre?: string): void {
-    if (idUtilisateur && titre && this.file) {
-      this.photoService.savePhoto('utilisateur', idUtilisateur, titre, this.file)
-        .subscribe({
-          next: () => {
-            // --- ACTION CRUCIALE ICI ---
-            // On recharge les infos de l'utilisateur pour avoir la nouvelle URL de photo
-            this.utilisateurService.findUtilisateurById(idUtilisateur).subscribe(user => {
-              this.userService.setConnectedUser(user); // Cela va notifier le Header !
-              this.router.navigate(['utilisateurs']);
-            });
-          }
-        });
+    if (idUtilisateur && titre && this.file) {  //si j'ai mon idArticle et un fichier sélectionné
+
+      this.photoService.savePhoto(
+        'utilisateur',        // context
+        idUtilisateur,        // id
+        titre,            // title
+        this.file         // file (Blob)
+      ).subscribe({
+        next: () => {
+
+
+          // On recharge les infos de l'utilisateur pour avoir la nouvelle URL de photo
+          this.utilisateurService.findUtilisateurById(idUtilisateur).subscribe(user => {
+            this.userService.setConnectedUser(user); // Cela va notifier le Header !
+          });
+
+          this.router.navigate(['utilisateurs']);
+        },
+        error: (err) => {
+          console.error('Erreur upload photo', err);
+        }
+      });
+    } else {
+
+      // On recharge les infos de l'utilisateur pour avoir la nouvelle URL de photo
+      this.utilisateurService.findUtilisateurById(idUtilisateur).subscribe(user => {
+        this.userService.setConnectedUser(user); // Cela va notifier le Header !
+      });
+
+      this.router.navigate(['utilisateurs']);
     }
   }
+
+
+
+  // savePhoto(idUtilisateur?: number, titre?: string): void {
+  //   if (idUtilisateur && titre && this.file) {
+  //     this.photoService.savePhoto('utilisateur', idUtilisateur, titre, this.file)
+  //       .subscribe({
+  //         next: () => {
+  //           // --- ACTION CRUCIALE ICI ---
+  //           // On recharge les infos de l'utilisateur pour avoir la nouvelle URL de photo
+  //           this.utilisateurService.findUtilisateurById(idUtilisateur).subscribe(user => {
+  //             this.userService.setConnectedUser(user); // Cela va notifier le Header !
+  //             this.router.navigate(['utilisateurs']);
+  //           });
+  //         }
+  //       });
+  //   }
+  // }
 
 
   /**

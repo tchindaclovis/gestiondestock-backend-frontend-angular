@@ -12,7 +12,7 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur?.prenom }}</div>
+        <div class="col-md-11">{{ clientFournisseur?.statut }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
@@ -47,7 +47,8 @@
         </button>
       </div>
       <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link text-decoration-none text-danger" data-bs-toggle="modal"
+        <button type="button" class="btn btn-link text-decoration-none text-danger"
+                data-bs-toggle="modal"
                 [attr.data-bs-target]="'#modalDelete' + vente.id">
           <i class="fa-solid fa-trash-alt"></i>&nbsp;
           Supprimer
@@ -72,14 +73,17 @@
 
         <div class="modal-body">
           Êtes-vous sûr de vouloir supprimer la vente <strong>{{ vente.code }}</strong> ?
-          Cela supprimera également toutes les lignes associées.
+          Cela supprimera également toutes les lignes de vente associées.
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="fa-solid fa-ban"></i> Annuler
           </button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
+          <button type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                  (click)="confirmerEtSupprimer()">
             <i class="fa-solid fa-trash-can"></i>
             Supprimer
           </button>

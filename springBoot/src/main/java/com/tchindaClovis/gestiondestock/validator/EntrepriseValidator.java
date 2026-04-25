@@ -12,6 +12,7 @@ public class EntrepriseValidator {
         List< String> errors = new ArrayList<>();
         if(dto == null){
             errors.add("Veuillez renseigner le nom de l'entreprise");
+            errors.add("Veuillez renseigner le statut de l'entreprise");
             errors.add("Veuillez renseigner la description de l'entreprise");
             errors.add("Veuillez renseigner le Code Fiscal de l'entreprise");
             errors.add("Veuillez renseigner l'email de l'entreprise");
@@ -22,6 +23,9 @@ public class EntrepriseValidator {
 
         if(!StringUtils.hasLength(dto.getNom())){
             errors.add("Veuillez renseigner le nom de l'entreprise");
+        }
+        if(!StringUtils.hasLength(dto.getStatut())){
+            errors.add("Veuillez renseigner le statut de l'entreprise");
         }
         if(!StringUtils.hasLength(dto.getDescription())){
             errors.add("Veuillez renseigner la description de l'entreprise");

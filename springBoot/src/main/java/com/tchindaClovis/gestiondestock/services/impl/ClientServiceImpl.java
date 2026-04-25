@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.services.impl;
 
 import com.tchindaClovis.gestiondestock.dto.ClientDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
@@ -73,15 +74,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto findByPrenom(String prenom) {
-        if(!StringUtils.hasLength(prenom)){
-            log.error("Client PRENOM is null");
+    public ClientDto findByStatut(String statut) {
+        if(!StringUtils.hasLength(statut)){
+            log.error("Client STATUT is null");
             return null;
         }
-        Optional<Client> client = clientRepository.findClientByPrenom(prenom);
+        Optional<Client> client = clientRepository.findClientByStatut(statut);
         return Optional.of(ClientDto.fromEntity(client.get())).orElseThrow(() ->
                 new EntityNotFoundException(
-                        "Aucun client avec le PRENOM = " + prenom + "n'a ete trouve dans la BDD",
+                        "Aucun client avec le STATUT = " + statut + "n'a ete trouve dans la BDD",
                         ErrorCodes.CLIENT_NOT_FOUND)
         );
     }
@@ -89,6 +90,18 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ClientDto> findAll() {
         return clientRepository.findAll().stream()
+                .map(ClientDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ClientDto> findAllClientByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return clientRepository.findAllByIdEntreprise(idEntreprise).stream()
                 .map(ClientDto::fromEntity)
                 .collect(Collectors.toList());
     }

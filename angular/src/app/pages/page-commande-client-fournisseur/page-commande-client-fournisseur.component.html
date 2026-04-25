@@ -3,7 +3,7 @@
     <div class="col-md-8 p-0">
       <h1>
         <span *ngIf="listeCommandes.length > 0">
-          Commandes {{ origin }}s ({{ listeCommandes.length }})
+          Commandes & lignes commande {{ origin }} ({{ listeCommandes.length }} // {{ listeLigneCommandes.length }})
         </span>
         <span *ngIf="listeCommandes.length === 0">
           Aucune commande {{ origin }} disponible

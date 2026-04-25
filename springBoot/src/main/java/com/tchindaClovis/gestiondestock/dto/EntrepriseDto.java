@@ -14,6 +14,8 @@ public class EntrepriseDto {
 
     private String nom;
 
+    private String statut;
+
     private String description;
 
     private String codeFiscal;
@@ -42,6 +44,7 @@ public class EntrepriseDto {
         return EntrepriseDto.builder()
                 .id(entreprise.getId())
                 .nom(entreprise.getNom())
+                .statut(entreprise.getStatut())
                 .description(entreprise.getDescription())
                 .codeFiscal(entreprise.getCodeFiscal())
                 .photo(entreprise.getPhoto())
@@ -59,6 +62,7 @@ public class EntrepriseDto {
         Entreprise entreprise = new Entreprise();
         entreprise.setId(entrepriseDto.getId());
         entreprise.setNom(entrepriseDto.getNom());
+        entreprise.setStatut(entrepriseDto.getStatut());
         entreprise.setDescription(entrepriseDto.getDescription());
         entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
         entreprise.setPhoto(entrepriseDto.getPhoto());

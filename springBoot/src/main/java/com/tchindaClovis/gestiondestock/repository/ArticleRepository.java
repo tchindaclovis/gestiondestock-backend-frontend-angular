@@ -14,15 +14,4 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     // Cette méthode va trier par codeArticle descendant et prendre le premier (le plus grand)
     Optional<Article> findTopByOrderByCodeArticleDesc();
-
-
-//    @Query("select a from article where codearticle = :code and designation = :designation") //Requête JPQL
-//    List<Article> findByCustomQuery(@Param("code") String c, @Param("designation") String d); //que hybernate transforme en reqête native
-
-//    @Query(value = "select * from article where code = :code", nativeQuery = true) //Requête native
-//    List<Article> findByCustomNativeQuery(@Param("code") String c);
-
-//    List<Article> findByCodeArticleAndDesignation(String codeArticle, String designation); //requête hybernate ordinaire
-//    List<Article> findByCodeArticleIgnoreCaseAndDesignationIgnoreCase(String codeArticle, String designation); // ignoer la case pour les deux paramètres
-    
 }

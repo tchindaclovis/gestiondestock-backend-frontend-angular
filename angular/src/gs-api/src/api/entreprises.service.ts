@@ -145,7 +145,7 @@ export class EntreprisesService extends BaseService {
     /**
      * Rechercher une entreprise par code fiscal
      * Cette méthode permet de rechercher une entreprise par son code fiscal
-     * @endpoint get /gestiondestock/v1/entreprises/{codeFiscal}
+     * @endpoint get /gestiondestock/v1/entreprises/find/codefiscal/{codeFiscal}
      * @param codeFiscal 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -184,7 +184,7 @@ export class EntreprisesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/entreprises/${this.configuration.encodeParam({name: "codeFiscal", value: codeFiscal, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/entreprises/find/codefiscal/${this.configuration.encodeParam({name: "codeFiscal", value: codeFiscal, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EntrepriseDto>('get', `${basePath}${localVarPath}`,
             {
@@ -201,7 +201,7 @@ export class EntreprisesService extends BaseService {
     /**
      * Rechercher une entreprise par ID
      * Cette méthode permet de rechercher une entreprise par son ID
-     * @endpoint get /gestiondestock/v1/entreprises/{idEntreprise}
+     * @endpoint get /gestiondestock/v1/entreprises/find/identreprise/{idEntreprise}
      * @param idEntreprise 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -240,7 +240,7 @@ export class EntreprisesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/entreprises/${this.configuration.encodeParam({name: "idEntreprise", value: idEntreprise, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/entreprises/find/identreprise/${this.configuration.encodeParam({name: "idEntreprise", value: idEntreprise, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EntrepriseDto>('get', `${basePath}${localVarPath}`,
             {
@@ -257,14 +257,14 @@ export class EntreprisesService extends BaseService {
     /**
      * Rechercher une entreprise par nom
      * Cette méthode permet de rechercher une entreprise par son nom
-     * @endpoint get /gestiondestock/v1/entreprises/{nom}
+     * @endpoint get /gestiondestock/v1/entreprises/find/nomentreprise/{nom}
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findByNom(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<EntrepriseDto>;
-    public findByNom(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<EntrepriseDto>>;
-    public findByNom(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<EntrepriseDto>>;
-    public findByNom(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findByNom2(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<EntrepriseDto>;
+    public findByNom2(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<EntrepriseDto>>;
+    public findByNom2(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<EntrepriseDto>>;
+    public findByNom2(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -292,7 +292,7 @@ export class EntreprisesService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/entreprises/`;
+        let localVarPath = `/gestiondestock/v1/entreprises/find/nomentreprise/`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EntrepriseDto>('get', `${basePath}${localVarPath}`,
             {

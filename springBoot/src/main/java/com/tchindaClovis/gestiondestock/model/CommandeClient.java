@@ -32,8 +32,21 @@ public class CommandeClient extends AbstractEntity{
     private Client client;
 
 
-    @OneToMany(mappedBy = "commandeClient", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "commandeClient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude // <--- AJOUTEZ CECI
     private List<LigneCommandeClient> ligneCommandeClients;
+
+
+    @PrePersist
+    @PreUpdate // Ajouté pour vérifier aussi lors des modifications
+    protected void validateAndCreateDate() {
+        // 1. On définit une date limite à 1000 jours dans le futur (très suffisant pour une commande)
+        //    // plusSeconds() est une méthode directe de Instant qui ne demande pas d'import supplémentaire
+        Instant maxReasonableDate = Instant.now().plusSeconds(86400 * 1000);
+
+        // 2. Si la date est nulle OU délirante (trop loin dans le futur), on force NOW()
+        if (this.dateCommande == null || this.dateCommande.isAfter(maxReasonableDate)) {
+            this.dateCommande = Instant.now();
+        }
+    }
 }

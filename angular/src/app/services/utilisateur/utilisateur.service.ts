@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {UserService} from "../user/user.service";
-import {UtilisateurDto, UtilisateursService} from "../../../gs-api/src";
+import {ClientDto, UtilisateurDto, UtilisateursService} from "../../../gs-api/src";
 import {Observable, of} from "rxjs";
 
 @Injectable({
@@ -24,6 +24,13 @@ export class UtilisateurService {
 
   findAllUtilisateur(): Observable<UtilisateurDto[]>{  //renvoit un observable de listes d'utilisateurDto
     return this.utilisateursService.findAll1();
+  }
+
+  findAllUtilisateurByIdEntreprise(idEntreprise: number): Observable<UtilisateurDto[]> {
+    if (idEntreprise) {
+      return this.utilisateursService.findAllUtilisateurByIdEntreprise(idEntreprise);
+    }
+    return of([]);
   }
 
 

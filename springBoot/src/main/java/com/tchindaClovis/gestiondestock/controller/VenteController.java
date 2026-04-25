@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.VenteApi;
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneVenteDto;
 import com.tchindaClovis.gestiondestock.dto.VenteDto;
@@ -40,6 +41,12 @@ public class VenteController implements VenteApi {
     }
 
     @Override
+    public List<VenteDto> findAllVenteByIdEntreprise(Integer idEntreprise) {
+
+        return venteService.findAllVenteByIdEntreprise(idEntreprise);
+    }
+
+    @Override
     public ResponseEntity<List<LigneVenteDto>> findAllLignesVentesByVenteId(Integer idVente) {
         return ResponseEntity.ok(venteService.findAllLignesVentesByVenteId(idVente));
     }
@@ -47,5 +54,10 @@ public class VenteController implements VenteApi {
     @Override
     public void delete(Integer idVente) {
         venteService.delete(idVente);
+    }
+
+    @Override
+    public String getLastCodeVente() {
+        return venteService.getLastCodeVente();
     }
 }

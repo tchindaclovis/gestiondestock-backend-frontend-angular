@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.services.impl;
 
 import com.tchindaClovis.gestiondestock.dto.ChangerMotDePasseUtilisateurDto;
+import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.UtilisateurDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
@@ -105,12 +106,44 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public List<UtilisateurDto> findAllUtilisateurByIdEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return utilisateurRepository.findAllByEntrepriseId(idEntreprise).stream()
+                .map(UtilisateurDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void delete(Integer id) {
         if (id == null) {
             log.error("Utilisateur ID is null");
             return;
         }
         utilisateurRepository.deleteById(id);
+    }
+
+
+    @Override
+    public UtilisateurDto findByNom(String nom) {
+        return utilisateurRepository.findByNom(nom)
+                .map(UtilisateurDto::fromEntity)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Aucun utilisateur avec l'email = " + nom + " n'a été trouvé dans la BDD",
+                        ErrorCodes.UTILISATEUR_NOT_FOUND)
+                );
+    }
+
+    @Override
+    public UtilisateurDto findByStatut(String statut) {
+        return utilisateurRepository.findByStatut(statut)
+                .map(UtilisateurDto::fromEntity)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Aucun utilisateur avec le statut = " + statut + " n'a été trouvé dans la BDD",
+                        ErrorCodes.UTILISATEUR_NOT_FOUND)
+                );
     }
 
     @Override

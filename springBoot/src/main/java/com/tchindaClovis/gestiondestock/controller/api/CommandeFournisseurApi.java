@@ -1,9 +1,13 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -39,7 +43,11 @@ public interface CommandeFournisseurApi {
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/all")
     List<CommandeFournisseurDto> findAll();
 
-    @GetMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/lignesCommande/{idCommande}")
+    @GetMapping(value = APP_ROOT + "/commandefournisseurs/filter/entreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
+
+    @GetMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/lignescommande/{idCommande}")
     List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(@PathVariable("idCommande") Integer idCommande);
 
 
@@ -49,4 +57,14 @@ public interface CommandeFournisseurApi {
     @DeleteMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/article/{idCommande}/{idLigneCommande}")
     CommandeFournisseurDto deleteArticle(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande") Integer idLigneCommande);
 
+
+    @GetMapping(value = APP_ROOT + "/commandefournisseurs/lastcodecommandefournisseur")
+    @Operation(
+            summary  = "Récupérer le dernier code CommandeFournisseur enregistré",
+            description = "Cette méthode permet de récupérer le dernier code au format CMFxxxx",
+            responses = {
+                    @ApiResponse(responseCode  = "200", description  = "Le dernier code a été récupéré / CMF0000 par défaut")
+            }
+    )
+    String getLastCodeCommandeFournisseur();
 }

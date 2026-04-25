@@ -38,24 +38,19 @@ export class NouvelArticleComponent implements OnInit {
       .subscribe(article =>{
         this.articleDto = article;
         this.categorieDto = this.articleDto.category ? this.articleDto.category : {};
-
         // CORRECTION : Si l'article a une photo (URL MinIO), on l'assigne à imgUrl
         if (this.articleDto.photo && this.articleDto.photo.startsWith('http')) {
           this.imgUrl = this.articleDto.photo;
         }
       });
-
     }else {
-
       this.articleService.getLastCodeArticle().subscribe({
         next: async (res: any) => { // Ajoutez 'async' ici
           let rawValue = res;
-
           // Si la réponse est un Blob, on extrait son contenu textuel
           if (res instanceof Blob) {
             rawValue = await res.text();
           }
-
           console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "ART0013"
           this.articleDto.codeArticle = this.genererProchainCode(rawValue);
         },

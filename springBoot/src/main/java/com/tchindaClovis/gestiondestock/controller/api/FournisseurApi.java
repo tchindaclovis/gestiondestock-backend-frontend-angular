@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
 import com.tchindaClovis.gestiondestock.dto.ArticleDto;
+import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.EntrepriseDto;
 import com.tchindaClovis.gestiondestock.dto.FournisseurDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +35,7 @@ public interface FournisseurApi {
     )
     FournisseurDto save(@RequestBody FournisseurDto dto);
 
-    @GetMapping(value = APP_ROOT + "/fournisseurs/{idFournisseur}",
+    @GetMapping(value = APP_ROOT + "/fournisseurs/find/idfournisseur/{idFournisseur}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher un fournisseur par ID",
@@ -47,18 +48,31 @@ public interface FournisseurApi {
     )
     FournisseurDto findById(@PathVariable("idFournisseur") Integer id);
 
-//    @GetMapping(value = APP_ROOT + "/fournisseurs/{nom}",
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(
-//            summary = "Rechercher un fournisseur par nom",
-//            description = "Cette méthode permet de rechercher un fournisseur par son nom",
-//            responses = {
-//                @ApiResponse(responseCode = "200", description = "Le nom du fournisseur a été trouvé dans la BDD",
-//                    content = @Content(schema = @Schema(implementation = FournisseurDto.class))),
-//                @ApiResponse(responseCode = "404", description = "Aucun fournisseur trouvé avec le nom fourni")
-//            }
-//    )
-//    FournisseurDto findByNom(@PathVariable("nomFournisseur")  String nom);
+    @GetMapping(value = APP_ROOT + "/fournisseurs/find/nomfournisseur/{nom}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un fournisseur par nom",
+            description = "Cette méthode permet de rechercher un fournisseur par son nom",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Le nom du fournisseur a été trouvé dans la BDD",
+                    content = @Content(schema = @Schema(implementation = FournisseurDto.class))),
+                @ApiResponse(responseCode = "404", description = "Aucun fournisseur trouvé avec le nom fourni")
+            }
+    )
+    FournisseurDto findByNom(@PathVariable("nom")  String nom);
+
+    @GetMapping(value = APP_ROOT + "/fournisseurs/find/statutfournisseur/{statut}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un fournisseur par nom",
+            description = "Cette méthode permet de rechercher un fournisseur par son statut",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Le statut du fournisseur a été trouvé dans la BDD",
+                            content = @Content(schema = @Schema(implementation = FournisseurDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Aucun fournisseur trouvé avec le statut fourni")
+            }
+    )
+    FournisseurDto findByStatut(@PathVariable("statut")  String statut);
 
     @GetMapping(value = APP_ROOT + "/fournisseurs/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,6 +85,11 @@ public interface FournisseurApi {
             }
     )
     List<FournisseurDto> findAll();
+
+
+    @GetMapping(value = APP_ROOT + "/fournisseurs/filter/identreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<FournisseurDto> findAllFournisseurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
     @DeleteMapping(value = APP_ROOT + "/fournisseurs/delete/{idFournisseur}")
     @Operation(

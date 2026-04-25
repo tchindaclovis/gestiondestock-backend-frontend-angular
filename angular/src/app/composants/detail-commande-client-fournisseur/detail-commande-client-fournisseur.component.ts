@@ -14,11 +14,9 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
 
   @Input() commande: any = {};
 
-  @Input() clientFournisseur: any;
+  clientFournisseur: any;
 
-  listeCommandes: any = {};
 
-  @Output() suppressionTerminee = new EventEmitter<number>();
   @Output() suppressionResult = new EventEmitter<string>();
 
   constructor(
@@ -52,34 +50,11 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
   }
 
   modifierCommandeClientFournisseur(): void {
-    const route = this.origin === 'client' ? 'nouvellecommandeclient' : 'nouvellecommandefournisseur';
+    const route = (this.origin === 'client') ? 'nouvellecommandeclient' : 'nouvellecommandefournisseur';
     // On navigue vers la page de modification avec l'ID de la commande
     this.router.navigate([route, this.commande.id]);
   }
 
-
-  // confirmerEtSupprimer(): void {
-  //   if (this.commande && this.commande.id) {
-  //     const delete$ = this.origin === 'client'
-  //       ? this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
-  //       : this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id);
-  //
-  //     delete$.subscribe({
-  //       next: () => {
-  //         // 1. On informe le parent AVANT toute navigation
-  //         this.suppressionTerminee.emit(this.commande.id);
-  //         this.suppressionResult.emit('success');
-  //
-  //         // Note : On ne force plus la navigation ici car l'élément
-  //         // aura déjà disparu visuellement de la liste.
-  //       },
-  //       error: (err) => {
-  //         console.error("Erreur suppression:", err);
-  //         this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression');
-  //       }
-  //     });
-  //   }
-  // }
 
 
   confirmerEtSupprimer(): void {
@@ -105,7 +80,7 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
             }
           });
       }
-    } else {
+    } else if(this.origin === 'fournisseur') {
       if (this.commande && this.commande.id) {
         this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
           .subscribe({
@@ -128,23 +103,6 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     }
   }
 
-
-  // confirmerEtSupprimer(): void {
-  //   if (this.origin === 'client') {
-  //     // ATTENTION : On supprime la COMMANDE (commande.id), pas le client !
-  //     this.commandeClientFournisseurService.deleteCommandeClient(this.commande.id)
-  //       .subscribe({
-  //         next: () => this.suppressionResult.emit('success'),
-  //         error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
-  //       });
-  //   } else {
-  //     this.commandeClientFournisseurService.deleteCommandeFournisseur(this.commande.id)
-  //       .subscribe({
-  //         next: () => this.suppressionResult.emit('success'),
-  //         error: (err) => this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression')
-  //       });
-  //   }
-  // }
 }
 
 

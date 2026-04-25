@@ -33,7 +33,7 @@ public interface ArticleApi {
     )
     ArticleDto save(@RequestBody ArticleDto dto);
 
-    @GetMapping(value = APP_ROOT + "/articles/idArticle/{idArticle}",
+    @GetMapping(value = APP_ROOT + "/articles/find/idarticle/{idArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher un article par ID",
@@ -46,7 +46,7 @@ public interface ArticleApi {
     )
     ArticleDto findById(@PathVariable("idArticle") Integer id);
 
-    @GetMapping(value = APP_ROOT + "/articles/codeArticle/{codeArticle}",
+    @GetMapping(value = APP_ROOT + "/articles/find/codearticle/{codeArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher un article par code",
@@ -73,7 +73,7 @@ public interface ArticleApi {
     List<ArticleDto> findAll();
 
 
-    @GetMapping(value = APP_ROOT + "/articles/filter/entreprise/{idEntreprise}",
+    @GetMapping(value = APP_ROOT + "/articles/filter/identreprise/{idEntreprise}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<ArticleDto> findAllArticleByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
@@ -90,7 +90,7 @@ public interface ArticleApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(value = APP_ROOT + "/articles/filter/category/{idCategory}",
+    @GetMapping(value = APP_ROOT + "/articles/filter/idcategory/{idCategory}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory") Integer idCategory);
 

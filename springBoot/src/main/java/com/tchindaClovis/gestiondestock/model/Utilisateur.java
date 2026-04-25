@@ -16,11 +16,11 @@ import java.util.List;
 @Table(name = "Utilisateur")  //optionnel car par défaut le nom de la classe
 public class Utilisateur extends AbstractEntity{
 
-    @Column(name = "nomUtilisateur")
+    @Column(name = "nomutilisateur")
     private String nom;
 
-    @Column(name = "prenomUtilisateur")
-    private String prenom;
+    @Column(name = "statututilisateur")
+    private String statut;
 
     @Column(name = "email")
     private String email;

@@ -13,9 +13,15 @@
     <div class="row p-3 mb-2 mt-3 custom-border">
       <div class="col-md-5 border-end">
         <form>
-          <div class="mb-3">
-            <input type="text" class="form-control" name="codeVte" placeholder="Code vente"
-                   [(ngModel)]="codeVente">
+          <div class="row mb-3">
+            <div class="col-md-7">
+              <label>Code Vente (automatique)</label>
+            </div>
+            <div class="col-md-5">
+              <input type="text" class="form-control" name="codeVente" placeholder="Code vente"
+                     [(ngModel)]="codeVente"
+                     readonly>
+            </div>
           </div>
           <div class="mb-3">
             <input type="text" class="form-control" name="commentaireVte" placeholder="Commentaire"
@@ -29,8 +35,8 @@
                     [(ngModel)]="selectedClientFournisseur"
                     [compareWith]="compareFn">
               <option [ngValue]="null">Selectionner un {{ origin }}</option>
-              <option *ngFor="let obj of listClientsFournisseurs" [ngValue]="obj">
-                {{ obj.nom }}&nbsp;{{ obj.prenom }}
+              <option *ngFor="let obj of listClients" [ngValue]="obj">
+                {{ obj.nom }}&nbsp;{{ obj.statut }}
               </option>
             </select>
           </div>
@@ -46,7 +52,7 @@
           </div>
           <div class="row">
             <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-            <div class="col-md-11">{{ selectedClientFournisseur.prenom }}</div>
+            <div class="col-md-11">{{ selectedClientFournisseur.statut }}</div>
           </div>
           <div class="row">
             <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>

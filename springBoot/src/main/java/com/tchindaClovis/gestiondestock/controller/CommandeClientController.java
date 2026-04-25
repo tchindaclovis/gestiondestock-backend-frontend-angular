@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.CommandeClientApi;
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
@@ -72,6 +73,12 @@ public class CommandeClientController implements CommandeClientApi {
     }
 
     @Override
+    public List<CommandeClientDto> findAllCommandeClientByIdEntreprise(Integer idEntreprise) {
+
+        return commandeClientService.findAllCommandeClientByIdEntreprise(idEntreprise);
+    }
+
+    @Override
     public ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(Integer idCommande) {
         return ResponseEntity.ok(commandeClientService.findAllLignesCommandesClientByCommandeClientId(idCommande));
     }
@@ -80,5 +87,10 @@ public class CommandeClientController implements CommandeClientApi {
     public ResponseEntity delete(Integer id) {
         commandeClientService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public String getLastCodeCommandeClient() {
+        return commandeClientService.getLastCodeCommandeClient();
     }
 }

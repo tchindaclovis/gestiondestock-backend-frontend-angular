@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.FournisseurApi;
+import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.FournisseurDto;
 import com.tchindaClovis.gestiondestock.services.FournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,27 @@ public class FournisseurController implements FournisseurApi {
         return fournisseurService.findById(id);
     }
 
-//    @Override
-//    public FournisseurDto findByNom(String nom) {
-//
-//        return fournisseurService.findByNom(nom);
-//    }
+    @Override
+    public FournisseurDto findByNom(String nom) {
+        return fournisseurService.findByNom(nom);
+    }
 
+    @Override
+    public FournisseurDto findByStatut(String statut) {
+
+        return fournisseurService.findByStatut(statut);
+    }
 
     @Override
     public List<FournisseurDto> findAll() {
 
         return fournisseurService.findAll();
+    }
+
+    @Override
+    public List<FournisseurDto> findAllFournisseurByIdEntreprise(Integer idEntreprise) {
+
+        return fournisseurService.findAllFournisseurByIdEntreprise(idEntreprise);
     }
 
     @Override

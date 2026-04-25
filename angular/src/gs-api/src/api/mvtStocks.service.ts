@@ -278,7 +278,7 @@ export class MvtStocksService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/mvtstock/filter/article/{idArticle}
+     * @endpoint get /gestiondestock/v1/mvtstock/filter/idarticle/{idArticle}
      * @param idArticle 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -317,7 +317,7 @@ export class MvtStocksService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/mvtstock/filter/article/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/mvtstock/filter/idarticle/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<MvtStockDto>>('get', `${basePath}${localVarPath}`,
             {

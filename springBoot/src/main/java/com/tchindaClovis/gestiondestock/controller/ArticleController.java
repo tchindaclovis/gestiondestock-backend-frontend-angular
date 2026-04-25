@@ -55,7 +55,6 @@ public class ArticleController implements ArticleApi {
     }
 
 
-
     @Override
     public List<LigneVenteDto> findHistoriqueVentes(Integer idArticle) {
         return articleService.findHistoriqueVentes(idArticle);
@@ -80,7 +79,6 @@ public class ArticleController implements ArticleApi {
     public void delete(Integer id) {
         articleService.delete(id);
     }
-
 
 
     @Override

@@ -13,7 +13,7 @@ public class FournisseurDto {
 
     private String nom;
 
-    private String prenom;
+    private String statut;
 
     private String photo;
 
@@ -36,7 +36,7 @@ public class FournisseurDto {
         return FournisseurDto.builder()
                 .id(fournisseur.getId())
                 .nom(fournisseur.getNom())
-                .prenom(fournisseur.getPrenom())
+                .statut(fournisseur.getStatut())
                 .photo(fournisseur.getPhoto())
                 .email(fournisseur.getEmail())
                 .numTel(fournisseur.getNumTel())
@@ -52,7 +52,7 @@ public class FournisseurDto {
         Fournisseur fournisseur = new Fournisseur();
         fournisseur.setId(dto.getId());
         fournisseur.setNom(dto.getNom());
-        fournisseur.setPrenom(dto.getPrenom());
+        fournisseur.setStatut(dto.getStatut());
         fournisseur.setPhoto(dto.getPhoto());
         fournisseur.setEmail(dto.getEmail());
         fournisseur.setNumTel(dto.getNumTel());

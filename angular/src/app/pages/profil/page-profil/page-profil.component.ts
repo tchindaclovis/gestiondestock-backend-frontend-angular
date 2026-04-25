@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {PhotoService, UtilisateurDto} from "../../../../gs-api/src";
+import {UtilisateurDto} from "../../../../gs-api/src";
 import {UserService} from "../../../services/user/user.service";
 
 @Component({
@@ -16,7 +16,6 @@ export class PageProfilComponent implements OnInit {
   constructor(
     private router: Router,
   private userService: UserService,
-  private photoService: PhotoService,
   ) { }
 
   ngOnInit(): void {

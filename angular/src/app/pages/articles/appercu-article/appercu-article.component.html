@@ -24,6 +24,10 @@
         </div>
       </div>
       <div class="row mb-3">
+        <div class="col-md-6 text-center">
+          <label>Format conditionnement:</label>
+          <div class="appercu-form">{{ articleDto.format }} </div>
+        </div>
         <div class="col-md-3 text-center">
           <label>Prix achat unitaire HT:</label>
           <div class="appercu-form">{{ articleDto.prixUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
@@ -32,12 +36,12 @@
           <label>Prix vente unitaire HT:</label>
           <div class="appercu-form">{{ articleDto.prixVenteUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
+      </div>
+      <div class="row mb-3">
         <div class="col-md-6 text-center">
           <label>Taux TVA:</label>
           <div class="appercu-form">{{ articleDto.tauxTva }} %</div>
         </div>
-      </div>
-      <div class="row mb-3">
         <div class="col-md-3 text-center">
           <label>Prix achat unitaire TTC:</label>
           <div class="appercu-form">{{ articleDto.prixUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
@@ -46,16 +50,16 @@
           <label>Prix vente unitaire TTC:</label>
           <div class="appercu-form">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
         </div>
-        <div class="col-md-6 text-center">
-          <label>Désignation catégorie:</label>
-          <div class="appercu-form">{{ articleDto.category?.designation }}</div>
-        </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6 text-center">
           <label>Code Catégorie:</label>
           <div class="appercu-form">{{ articleDto.category?.code }}</div>
+        </div>
+        <div class="col-md-6 text-center">
+          <label>Désignation catégorie:</label>
+          <div class="appercu-form">{{ articleDto.category?.designation }}</div>
         </div>
       </div>
     </div>

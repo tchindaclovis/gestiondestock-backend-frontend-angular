@@ -240,7 +240,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'nouvellecommandeclient/:idCommande',
+        path: 'nouvellecommandeclient/:idCommandeClient',
         component: NouvelleCommandeClientFournisseurComponent,
         canActivate: [ApplicationGuardService],
         data: {
@@ -351,7 +351,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'nouvellecommandefournisseur/:idCommande',
+        path: 'nouvellecommandefournisseur/:idCommandeFournisseur',
         component: NouvelleCommandeClientFournisseurComponent,
         canActivate: [ApplicationGuardService],
         data: {
