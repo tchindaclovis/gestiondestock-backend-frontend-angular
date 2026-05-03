@@ -1,22 +1,22 @@
-<div class="d-flex bd-highlight">
-  <div class="p-2 flex-fill bd-highlight" *ngIf="isImporterVisible">
-    <button type="button" class="btn btn-warning">
+<div class="d-flex bd-highlight pt-1">
+  <div class=" flex-fill bd-highlight" *ngIf="isImporterVisible">
+    <button type="button" class="btn btn-warning pb-1 pt-1 mt-0">
       <i class="fa-solid fa-upload"></i>&nbsp;
-      Importer
+      <small>Importer</small>
     </button>
   </div>
 
-  <div class="p-2 flex-fill bd-highlight" *ngIf="isExporterVisible">
+  <div class=" flex-fill bd-highlight" *ngIf="isExporterVisible">
     <button type="button" class="btn btn-success">
       <i class="fa-solid fa-download"></i>&nbsp;
-      Exporter
+      <small>Exporter</small>
     </button>
   </div>
 
-  <div class="p-2 flex-fill bd-highlight" *ngIf="isNouveauVisible">
+  <div class="flex-fill bd-highlight" *ngIf="isNouveauVisible">
     <button type="button" class="btn btn-primary" (click)="bouttonNouveauClick()">
       <i class="fa-solid fa-plus"></i>&nbsp;
-      Nouveau
+      <small>Nouveau</small>
     </button>
   </div>
 </div>

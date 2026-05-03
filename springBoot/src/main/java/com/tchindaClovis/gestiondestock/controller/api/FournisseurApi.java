@@ -91,7 +91,8 @@ public interface FournisseurApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<FournisseurDto> findAllFournisseurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
-    @DeleteMapping(value = APP_ROOT + "/fournisseurs/delete/{idFournisseur}")
+    @DeleteMapping(value = APP_ROOT + "/fournisseurs/delete/{idFournisseur}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer un fournisseur",
             description = "Cette méthode permet de supprimer un fournisseur par son ID",

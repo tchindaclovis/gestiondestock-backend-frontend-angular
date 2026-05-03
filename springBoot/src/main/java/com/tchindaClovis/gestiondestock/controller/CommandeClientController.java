@@ -1,13 +1,11 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.CommandeClientApi;
-import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
 import com.tchindaClovis.gestiondestock.services.CommandeClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -25,7 +25,14 @@ public class MvtStockController implements MvtStockApi {
 
     @Override
     public List<MvtStockDto> mvtStockArticle(Integer idArticle) {
-            return mvtStockService.mvtStockArticle(idArticle);
+
+        return mvtStockService.mvtStockArticle(idArticle);
+    }
+
+    @Override
+    public List<MvtStockDto> findAllMvtsByEntreprise(Integer idEntreprise) {
+
+        return mvtStockService.findAllMvtsByEntreprise(idEntreprise);
     }
 
     @Override
@@ -49,9 +56,20 @@ public class MvtStockController implements MvtStockApi {
     }
 
     @Override
+    public MvtStockDto correctionStockPosVenteRed(MvtStockDto dto) {
+        return mvtStockService.correctionStockPosVenteRed(dto);
+    }
+
+    @Override
     public MvtStockDto correctionStockNeg(MvtStockDto dto) {
             return mvtStockService.correctionStockNeg(dto);
     }
+
+    @Override
+    public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
+        return mvtStockService.correctionStockNegVenteAug(dto);
+    }
+
 }
 
 

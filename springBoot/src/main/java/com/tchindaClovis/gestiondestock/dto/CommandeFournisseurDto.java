@@ -1,6 +1,4 @@
 package com.tchindaClovis.gestiondestock.dto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tchindaClovis.gestiondestock.model.CommandeClient;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
 import lombok.Builder;

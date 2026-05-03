@@ -1,33 +1,43 @@
 <!--Container principal organisé en ligne Bootstrap
   row → permet de structurer le contenu en colonnes-->
-<div class="row">
+<div class="row  fontSise">
   <!--Colonne gauche (8/12) Contient la barre de recherche-->
-  <div class="col-md-6">
+  <div class="col-md-2  border-none">
+    <!-- Auteur / signature -->
+    <small class="form-text text-auted">
+      By Clovis TCHINDA
+    </small>
+  </div>
+  <div class="col-md-4  border-none">
+    <!-- Nom de l'application -->
+    <h5>Gestion de stock V2.0</h5>
+
     <!--input-group → composant Bootstrap pour associer
       un champ input avec un élément (icône, bouton, etc.)
       flex-nowrap → empêche le retour à la ligne-->
-    <div class="input-group">
-      <!--Champ de saisie texte form-control → style Bootstrap
-        placeholder → texte indicatif
-        aria-* → accessibilité (lecture par lecteurs d’écran)-->
-      <input
-        type="text" class="form-control" placeholder="Username"
-        aria-label="Username" aria-describedby="addon-wrapping">
-      <!--input-group-prepend → ajoute un élément AVANT ou APRÈS l’input
-        Ici on ajoute une icône de recherche-->
-      <div class="input-group-prepend">
-        <!--input-group-text → style Bootstrap pour icône/texte
-          obj-height → classe CSS personnalisée (probablement hauteur personnalisée)-->
-        <span
-          class="input-group-text col-md-12 obj-height"
-          id="addon-wrapping">
-          <!--Icône FontAwesome (loupe)fa-solid → style plein
-            fa-magnifying-glass → icône recherche-->
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-      </div>
-    </div>
+<!--    <div class="input-group">-->
+<!--      &lt;!&ndash;Champ de saisie texte form-control → style Bootstrap-->
+<!--        placeholder → texte indicatif-->
+<!--        aria-* → accessibilité (lecture par lecteurs d’écran)&ndash;&gt;-->
+<!--      <input-->
+<!--        type="text" class="form-control" placeholder="Username"-->
+<!--        aria-label="Username" aria-describedby="addon-wrapping">-->
+<!--      &lt;!&ndash;input-group-prepend → ajoute un élément AVANT ou APRÈS l’input-->
+<!--        Ici on ajoute une icône de recherche&ndash;&gt;-->
+<!--      <div class="input-group-prepend">-->
+<!--        &lt;!&ndash;input-group-text → style Bootstrap pour icône/texte-->
+<!--          obj-height → classe CSS personnalisée (probablement hauteur personnalisée)&ndash;&gt;-->
+<!--        <span-->
+<!--          class="input-group-text  obj-height"-->
+<!--          id="addon-wrapping">-->
+<!--          &lt;!&ndash;Icône FontAwesome (loupe)fa-solid → style plein-->
+<!--            fa-magnifying-glass → icône recherche&ndash;&gt;-->
+<!--          <i class="fa-solid fa-magnifying-glass"></i>-->
+<!--        </span>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
+
   <!--Colonne droite (4/12) Contient les informations utilisateur connecté-->
   <div class="col-md-4">
     <div class="row">
@@ -39,56 +49,57 @@
         <span *ngIf="connectedUser !== null">
           <!--Interpolation Angular {{ }}
             Affiche dynamiquement le nom de l’utilisateur connecté-->
-          Bonjour {{ connectedUser.nom }}&nbsp;
+          Bienvenue {{ connectedUser.nom }}&nbsp;
         </span>
       </div>
       <!--Partie image profil (3/12)-->
-      <div class="col-md-3 text-center border rounded">
+      <div class="col-md-3 text-center border-none">
         <!--routerLink → navigation Angular sans rechargement de page
           Redirige vers la route /profil-->
         <a href="javascript:void(0);" [routerLink]="['/profil']">
           <!--Image utilisateur rounded-circle → rend l’image circulaire (Bootstrap)
             favicon.ico → image temporaire (à remplacer par photo utilisateur)-->
           <img [src]="connectedUser?.photo || 'assets/profil.png'"
-                width="90px" height="40px"/>
+                width="90px" height="35px"/>
 <!--          <img src="favicon.ico" class="rounded-circle"/>-->
         </a>
       </div>
     </div>
   </div>
 
-  <div class="col-md-2 text-end logout-card">
-      <button type="button" class="btn btn-link souligner-au-survol text-danger" data-bs-toggle="modal"
+  <div class="col-md-2 text-end logout-card flex-fill bd-highlight">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal"
               [attr.data-bs-target]="'#modalLogoutUser' + connectedUser?.id">
-        <i class="fa-solid fa-right-from-bracket"></i>&nbsp;Deconnexion
+        <i class="fa-solid fa-right-from-bracket"></i>
       </button>
   </div>
+</div>
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalLogoutUser{{ connectedUser?.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
-       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">x</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Etes-vous sûr de vouloir vous déconnecter?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-ban"></i>Annuler</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onLogout()">
-            <i class="fa-solid fa-right-from-bracket"></i>Oui</button>
-        </div>
+<!-- Modal -->
+<div class="modal fade" id="modalLogoutUser{{ connectedUser?.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Etes-vous sûr de vouloir vous déconnecter {{ connectedUser?.id }}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fa-solid fa-ban"></i>Annuler</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>Oui</button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 

@@ -31,39 +31,37 @@ export class PageMvtstockComponent implements OnInit {
     // this.findAllMvtStockArt()
   }
 
-
-  // findAllMvtStockArt(): void {
-  //   this.listeMvtStocks.forEach(article =>{
-  //     this.findMvtStockArt(article.id)
-  //   });
-  // }
-  //
-  //
-  // findMvtStockArt(idArticle: number): void {
-  //     this.mvtStockService.mvtStockArticle(idArticle)
-  //       .subscribe(list => {
-  //         this.mapMouvementsStock.set(idArticle, list); //la clé est l'idArticle et la valeur est la liste des mouvements de stock
-  //       });
-  // }
-
-
   findAllArticlesAndMvts(): void {
-    // On récupère l'id de l'entreprise de l'utilisateur connecté
     const idEntreprise = this.connectedUser?.entreprise?.id;
-    if (idEntreprise) {
-      this.articleService.findAllArticlesByIdEntreprise(idEntreprise)
-        .subscribe(articles => {
-          this.listArticle = articles;
-          // Pour chaque article récupéré, on charge ses mouvements de stock
-          articles.forEach(art => {
-            if (art.id) {
-              this.findMvtsArticle(art.id);
-            }
-          });
-      });
-    }
-  }
+    if (!idEntreprise) return;
 
+    // Utilisation de forkJoin pour attendre que les deux appels soient finis
+    // OU charger les articles, puis charger TOUS les mouvements d'un coup
+    this.articleService.findAllArticlesByIdEntreprise(idEntreprise).subscribe(articles => {
+      this.listArticle = articles;
+
+      // UNE SEULE REQUÊTE au lieu d'une boucle foreach
+      // 1. On s'assure que l'entreprise est définie
+      this.mvtStockService.findAllMvtsByEntreprise(idEntreprise).subscribe(allMvts => {
+        // On vide la map
+        this.mapMouvementsStock.clear();
+
+        // On ventile les mouvements reçus dans la Map par ID d'article
+        allMvts.forEach(mvt => {
+          // On vérifie que l'article et son ID existent bien avant de continuer
+          const artId = mvt.article?.id;
+
+          if (artId !== undefined && artId !== null) {
+            // Ici, TypeScript sait que artId est obligatoirement un 'number'
+            if (!this.mapMouvementsStock.has(artId)) {
+              this.mapMouvementsStock.set(artId, []);
+            }
+            this.mapMouvementsStock.get(artId)?.push(mvt);
+          }
+        });
+      });
+    });
+  }
 
 
   findMvtsArticle(idArticle: number): void {
@@ -86,20 +84,6 @@ export class PageMvtstockComponent implements OnInit {
       });
   }
 
-
-  // findMvtsArticle(idArticle: number): void {
-  //   this.mvtStockService.mvtStockArticle(idArticle).subscribe(mvts => {
-  //     // On crée une nouvelle instance de Map pour forcer le rafraîchissement
-  //     this.mapMouvementsStock.set(idArticle, mvts);
-  //     this.mapMouvementsStock = new Map(this.mapMouvementsStock);
-  //   });
-  // }
-
-  // findMvtsArticle(idArticle: number): void {
-  //   this.mvtStockService.mvtStockArticle(idArticle).subscribe(mvts => {
-  //     this.mapMouvementsStock.set(idArticle, mvts);
-  //   });
-  // }
 
   handleCorrection(result: string): void {
     if (result === 'success') {

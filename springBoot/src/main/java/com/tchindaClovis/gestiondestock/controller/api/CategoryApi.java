@@ -174,7 +174,8 @@ public interface CategoryApi {
     )
     List<CategoryDto> findAll();
 
-    @DeleteMapping(value = APP_ROOT + "/categories/delete/{idCategory}")
+    @DeleteMapping(value = APP_ROOT + "/categories/delete/{idCategory}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer une categorie",
             description = "Cette méthode permet de supprimer une categorie par son ID",

@@ -1,7 +1,6 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.CommandeFournisseurApi;
-import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;

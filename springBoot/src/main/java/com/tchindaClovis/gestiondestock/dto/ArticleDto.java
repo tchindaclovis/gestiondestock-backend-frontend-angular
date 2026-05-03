@@ -1,6 +1,5 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.tchindaClovis.gestiondestock.model.Article;
-import com.tchindaClovis.gestiondestock.model.Entreprise;
 import lombok.Builder;
 import lombok.Data;
 
@@ -32,6 +31,8 @@ public class ArticleDto {
 
     private BigDecimal marge;
 
+    private BigDecimal quantiteAlert;
+
     private String photo;
 
     private CategoryDto category;
@@ -55,6 +56,7 @@ public class ArticleDto {
                 .prixUnitaireTtc(article.getPrixUnitaireTtc())
                 .prixVenteUnitaireTtc(article.getPrixVenteUnitaireTtc())
                 .marge(article.getMarge())
+                .quantiteAlert(article.getQuantiteAlert())
                 .photo(article.getPhoto())
                 .idEntreprise(article.getIdEntreprise())
                 .category(CategoryDto.fromEntity(article.getCategory()))
@@ -77,6 +79,7 @@ public class ArticleDto {
         article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
         article.setPrixVenteUnitaireTtc(articleDto.getPrixVenteUnitaireTtc());
         article.setMarge(articleDto.getMarge());
+        article.setQuantiteAlert(articleDto.getQuantiteAlert());
         article.setPhoto(articleDto.getPhoto());
         article.setIdEntreprise(articleDto.getIdEntreprise());
         article.setCategory(CategoryDto.toEntity(articleDto.getCategory()));

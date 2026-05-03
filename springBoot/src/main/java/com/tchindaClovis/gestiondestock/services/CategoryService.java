@@ -1,7 +1,6 @@
 package com.tchindaClovis.gestiondestock.services;
 
 import com.tchindaClovis.gestiondestock.dto.CategoryDto;
-import com.tchindaClovis.gestiondestock.model.Category;
 
 import java.util.List;
 

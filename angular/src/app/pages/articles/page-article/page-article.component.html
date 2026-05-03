@@ -1,66 +1,74 @@
-<!--Colonne principale contenant toute la page
-  p-lg-2 → padding sur grands écrans-->
-<div class="col p-lg-2">
-  <!-- ===================== -->
-  <!-- HEADER DE LA PAGE -->
-  <!-- ===================== -->
-  <div class="row ms-3 me-3 page_title">
-    <!--Partie gauche (8/12) / Titre de la page-->
-    <div class="col-md-8 p-0">
-      <h1>
-        <span *ngIf="listArticle.length > 0">Liste des articles ( {{ listArticle.length }} )</span>
-        <span *ngIf="listArticle.length === 0">Aucun article disponible</span>
-      </h1>
+<div class="row ">
+  <!--Colonne principale contenant toute la page
+    p-lg-2 → padding sur grands écrans-->
+  <div class="col-md-9">
+    <!-- ===================== -->
+    <!-- HEADER DE LA PAGE -->
+    <!-- ===================== -->
+    <div class="row ms-3 me-3 page_title">
+      <!--Partie gauche (8/12) / Titre de la page-->
+      <div class="col-md-8 p-0">
+        <h4>
+          <span *ngIf="listArticle.length > 0">Liste des articles ( {{ listArticle.length }} )</span>
+          <span *ngIf="listArticle.length === 0">Aucun article disponible</span>
+        </h4>
+      </div>
+      <!--Partie droite (4/12)
+        Contient le bouton d’ajout d’un nouvel article
+        text-end → aligne le bouton à droite-->
+      <div class="col-md-4 text-end">
+        <!--Composant personnalisé app-boutton-action
+          (clickEvent) → EventEmitter personnalisé
+          Lorsque l’événement est déclenché,
+          la méthode nouvelArticle() du composant parent est appelée-->
+        <app-boutton-action
+          (clickEvent)="nouvelArticle()">
+        </app-boutton-action>
+      </div>
+      <!--Message d’erreur
+        *ngIf → affiché uniquement si errorMsg contient une valeur
+        alert-danger → style Bootstrap rouge-->
+      <div class="alert alert-danger" *ngIf="errorMsg">
+        {{ errorMsg }}
+      </div>
     </div>
-    <!--Partie droite (4/12)
-      Contient le bouton d’ajout d’un nouvel article
-      text-end → aligne le bouton à droite-->
-    <div class="col-md-4 text-end">
-      <!--Composant personnalisé app-boutton-action
-        (clickEvent) → EventEmitter personnalisé
-        Lorsque l’événement est déclenché,
-        la méthode nouvelArticle() du composant parent est appelée-->
-      <app-boutton-action
-        (clickEvent)="nouvelArticle()">
-      </app-boutton-action>
+    <!-- ===================== -->
+    <!-- LISTE DES ARTICLES -->
+    <!-- ===================== -->
+    <div class="row ms-3 me-3  scroll-commandes">
+      <div class="col-md-12 mt-1 ps-3 pe-3">
+        <!--*ngFor → directive structurelle Angular
+          Parcourt le tableau listArticle
+          Pour chaque élément :
+          - article contient l’article courant
+          - On instancie un composant app-detail-article
+          [articleDto] → Input
+          On passe les données de l’article au composant enfant
+          (suppressionResult) → Output
+          EventEmitter du composant enfant
+          Permet de notifier le parent lorsqu’un article est supprimé-->
+        <app-detail-article
+          *ngFor="let article of listArticle"
+          [articleDto]="article"
+          (suppressionResult)="handleSuppression($event)">
+        </app-detail-article>
+      </div>
     </div>
-    <!--Message d’erreur
-      *ngIf → affiché uniquement si errorMsg contient une valeur
-      alert-danger → style Bootstrap rouge-->
-    <div class="alert alert-danger" *ngIf="errorMsg">
-      {{ errorMsg }}
+    <!-- ===================== -->
+    <!-- PAGINATION -->
+    <!-- ===================== -->
+    <div class="row  ms-3 me-3 page_moving">
+      <div class="text-center">
+        <!--Composant de pagination personnalisé
+          Gère la navigation entre les pages
+          (peut contenir page actuelle, nombre total, etc.)-->
+        <app-pagination></app-pagination>
+      </div>
     </div>
   </div>
-  <!-- ===================== -->
-  <!-- LISTE DES ARTICLES -->
-  <!-- ===================== -->
-  <div class="col mt-1 mb-1 ms-3 me-3 ps-3 pe-3 article_list">
-    <!--*ngFor → directive structurelle Angular
-      Parcourt le tableau listArticle
-      Pour chaque élément :
-      - article contient l’article courant
-      - On instancie un composant app-detail-article
-      [articleDto] → Input
-      On passe les données de l’article au composant enfant
-      (suppressionResult) → Output
-      EventEmitter du composant enfant
-      Permet de notifier le parent lorsqu’un article est supprimé-->
-    <app-detail-article
-      *ngFor="let article of listArticle"
-      [articleDto]="article"
-      (suppressionResult)="handleSuppression($event)">
-    </app-detail-article>
-  </div>
-  <!-- ===================== -->
-  <!-- PAGINATION -->
-  <!-- ===================== -->
-  <div class="row mt-1 mb-1 ms-3 me-3 page_moving">
-    <div class="text-center">
-      <!--Composant de pagination personnalisé
-        Gère la navigation entre les pages
-        (peut contenir page actuelle, nombre total, etc.)-->
-      <app-pagination></app-pagination>
-    </div>
+
+  <div class="col-md-3">
+    Zone de recherche
   </div>
 </div>
 

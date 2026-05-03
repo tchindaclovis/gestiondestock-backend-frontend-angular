@@ -43,10 +43,10 @@ export class AuthenticationsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<AuthenticationResponse>;
-    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpResponse<AuthenticationResponse>>;
-    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpEvent<AuthenticationResponse>>;
-    public authenticate(authenticationRequest: AuthenticationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<any> {
+    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AuthenticationResponse>;
+    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AuthenticationResponse>>;
+    public authenticate(authenticationRequest: AuthenticationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AuthenticationResponse>>;
+    public authenticate(authenticationRequest: AuthenticationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (authenticationRequest === null || authenticationRequest === undefined) {
             throw new Error('Required parameter authenticationRequest was null or undefined when calling authenticate.');
         }
@@ -57,7 +57,7 @@ export class AuthenticationsService extends BaseService {
         localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);

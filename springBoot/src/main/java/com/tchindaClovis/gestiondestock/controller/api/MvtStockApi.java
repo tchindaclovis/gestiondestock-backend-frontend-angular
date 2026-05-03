@@ -1,11 +1,14 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
 import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;
+
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
 import java.math.BigDecimal;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,26 +17,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "MvtStocks", description = "API de gestion des mvtStocks")
 public interface MvtStockApi {
 
-    @GetMapping(APP_ROOT + "/mvtstock/stockreel/{idArticle}")
+    @GetMapping(value =APP_ROOT + "/mvtstock/stockreel/{idArticle}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     BigDecimal stockReelArticle(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(APP_ROOT + "/mvtstock/filter/idarticle/{idArticle}")
+    @GetMapping(value = APP_ROOT + "/mvtstock/filter/idarticle/{idArticle}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     List<MvtStockDto> mvtStockArticle(@PathVariable("idArticle") Integer idArticle);
 
-    @GetMapping(APP_ROOT + "/mvtstock/all")
+    @GetMapping(value = APP_ROOT + "/mvtstock/filter/identreprise/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<MvtStockDto> findAllMvtsByEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
+
+    @GetMapping(value = APP_ROOT + "/mvtstock/all",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     List<MvtStockDto> findAllMvtStock();
 
-    @PostMapping(APP_ROOT + "/mvtstock/entree")
+    @PostMapping(value = APP_ROOT + "/mvtstock/entree",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto entreeStock(@RequestBody MvtStockDto dto);
 
-    @PostMapping(APP_ROOT + "/mvtstock/sortie")
+    @PostMapping(value = APP_ROOT + "/mvtstock/sortie",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto sortieStock(@RequestBody MvtStockDto dto);
 
-    @PostMapping(APP_ROOT + "/mvtstock/correctionpos")
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionpos",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockPos(@RequestBody MvtStockDto dto);
 
-    @PostMapping(APP_ROOT + "/mvtstock/correctionneg")
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionposventered",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto correctionStockPosVenteRed(@RequestBody MvtStockDto dto);
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionneg",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockNeg(@RequestBody MvtStockDto dto);
+
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionnegventeaug",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto correctionStockNegVenteAug(@RequestBody MvtStockDto dto);
 
 }
 

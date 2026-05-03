@@ -24,7 +24,9 @@ export namespace MvtStockDto {
         Entree: 'ENTREE',
         Sortie: 'SORTIE',
         CorrectionPos: 'CORRECTION_POS',
-        CorrectionNeg: 'CORRECTION_NEG'
+        CorrectionNeg: 'CORRECTION_NEG',
+        CorrectionPosVenteRed: 'CORRECTION_POS_VENTE_RED',
+        CorrectionNegVenteAug: 'CORRECTION_NEG_VENTE_AUG'
     } as const;
     export type TypeMvtEnum = typeof TypeMvtEnum[keyof typeof TypeMvtEnum];
     export const SourceMvtEnum = {

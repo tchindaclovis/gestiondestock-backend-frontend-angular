@@ -1,6 +1,5 @@
 package com.tchindaClovis.gestiondestock.model;
 
-import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import jakarta.persistence.*;
 import lombok.*;
 

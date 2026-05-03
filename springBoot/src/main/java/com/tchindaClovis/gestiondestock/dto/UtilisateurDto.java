@@ -1,11 +1,9 @@
 package com.tchindaClovis.gestiondestock.dto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tchindaClovis.gestiondestock.model.*;
+import com.tchindaClovis.gestiondestock.model.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

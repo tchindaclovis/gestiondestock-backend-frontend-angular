@@ -1,12 +1,9 @@
 package com.tchindaClovis.gestiondestock.dto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tchindaClovis.gestiondestock.model.Client;
+import com.tchindaClovis.gestiondestock.model.EPaymentType;
 import com.tchindaClovis.gestiondestock.model.Vente;
 import lombok.Builder;
 import lombok.Data;
-
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 @Data
 @Builder
@@ -18,7 +15,9 @@ public class VenteDto {
 
     private Instant dateVente;
 
-    private String commentaire;
+//    private String commentaire;
+
+    private EPaymentType paymentType;
 
     private ClientDto client;
 
@@ -35,7 +34,8 @@ public class VenteDto {
                 .id(vente.getId())
                 .code(vente.getCode())
                 .dateVente(vente.getDateVente())
-                .commentaire(vente.getCommentaire())
+//                .commentaire(vente.getCommentaire())
+                .paymentType(vente.getPaymentType())
                 .client(ClientDto.fromEntity(vente.getClient()))
                 .idEntreprise(vente.getIdEntreprise())
                 .build();
@@ -49,7 +49,8 @@ public class VenteDto {
         vente.setId(venteDto.getId());
         vente.setCode(venteDto.getCode());
         vente.setDateVente(venteDto.getDateVente());
-        vente.setCommentaire(venteDto.getCommentaire());
+//        vente.setCommentaire(venteDto.getCommentaire());
+        vente.setPaymentType(venteDto.getPaymentType());
         vente.setClient(ClientDto.toEntity(venteDto.getClient()));
         vente.setIdEntreprise(venteDto.getIdEntreprise());
 

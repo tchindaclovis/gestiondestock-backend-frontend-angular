@@ -53,7 +53,7 @@ export class DetailClientFournisseurComponent implements OnInit {
     }
   }
 
-  appercuArticle(): void {
+  appercuClientFournisseur(): void {
     if(this.origin === 'client'){
       this.router.navigate(['appercuclient', this.clientFournisseur.id]);
     } else if(this.origin === 'fournisseur'){

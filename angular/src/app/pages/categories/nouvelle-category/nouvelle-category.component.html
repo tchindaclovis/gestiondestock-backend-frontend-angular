@@ -1,47 +1,106 @@
-<div class="col pt-3 pb-3 p-5">
-  <div class="col-md-12">
-    <div class="col-md-12 mb-3">
-      <h2>Nouvelle categorie</h2>
-    </div>
+<div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
 
-    <div class="col-md-12">
-      <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
-        <div *ngFor="let msg of errorMsg">
-          <span >{{ msg }}</span>
-        </div>
+      <div class="modal-header">
+        <h5 class="modal-title">Nouvelle catégorie</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancelClick()"></button>
       </div>
-      <form action="">
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Code category" aria-label="Code category" name="codeCat"
-            [(ngModel)]="categoryDto.code">
+
+      <div class="modal-body p-4">
+        <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
+          <div *ngFor="let msg of errorMsg">
+            <span>{{ msg }}</span>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Designation" aria-label="Designation" name="designationCat"
-            [(ngModel)]="categoryDto.designation">
+
+        <form>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Code catégorie</label>
+              <input type="text" class="form-control" placeholder="Ex: CAT-001" name="codeCat"
+                     [(ngModel)]="categoryDto.code">
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Description" aria-label="Description" name="descriptionCat"
-            [(ngModel)]="categoryDto.description">
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Désignation</label>
+              <input type="text" class="form-control" placeholder="Désignation" name="designationCat"
+                     [(ngModel)]="categoryDto.designation">
+            </div>
           </div>
-        </div>
-      </form>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" placeholder="Description de la catégorie" name="descriptionCat"
+                        [(ngModel)]="categoryDto.description" rows="3"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="cancelClick()">
+          <i class="fa-solid fa-ban"></i>&nbsp;Annuler
+        </button>
+        <button type="button" class="btn btn-primary" (click)="enregistrerCategory()">
+          <i class="fa-solid fa-save"></i>&nbsp;Enregistrer
+        </button>
+      </div>
+
     </div>
-  </div>
-  <div class="col-md-12 text-end">
-    <button class="btn btn-danger me-3" (click)="cancelClick()">
-      <i class="fa-solid fa-ban"></i>&nbsp;
-      Annuler
-    </button>
-    <button class="btn btn-primary" (click)="enregistrerCategory()">
-      <i class="fa-solid fa-save"></i>&nbsp;
-      Enregistrer
-    </button>
   </div>
 </div>
+
+
+
+
+
+
+<!--<div class="col pt-3 pb-3 p-5">-->
+<!--  <div class="col-md-12">-->
+<!--    <div class="col-md-12 mb-3">-->
+<!--      <h2>Nouvelle categorie</h2>-->
+<!--    </div>-->
+
+<!--    <div class="col-md-12">-->
+<!--      <div class="alert alert-danger" *ngIf="errorMsg.length > 0">-->
+<!--        <div *ngFor="let msg of errorMsg">-->
+<!--          <span >{{ msg }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <form action="">-->
+<!--        <div class="row mb-3">-->
+<!--          <div class="col">-->
+<!--            <input type="text" class="form-control" placeholder="Code category" aria-label="Code category" name="codeCat"-->
+<!--            [(ngModel)]="categoryDto.code">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="row mb-3">-->
+<!--          <div class="col">-->
+<!--            <input type="text" class="form-control" placeholder="Designation" aria-label="Designation" name="designationCat"-->
+<!--            [(ngModel)]="categoryDto.designation">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="row mb-3">-->
+<!--          <div class="col">-->
+<!--            <input type="text" class="form-control" placeholder="Description" aria-label="Description" name="descriptionCat"-->
+<!--            [(ngModel)]="categoryDto.description">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-md-12 text-end">-->
+<!--    <button class="btn btn-danger me-3" (click)="cancelClick()">-->
+<!--      <i class="fa-solid fa-ban"></i>&nbsp;-->
+<!--      Annuler-->
+<!--    </button>-->
+<!--    <button class="btn btn-primary" (click)="enregistrerCategory()">-->
+<!--      <i class="fa-solid fa-save"></i>&nbsp;-->
+<!--      Enregistrer-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 
 

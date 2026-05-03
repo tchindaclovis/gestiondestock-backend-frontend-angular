@@ -1,7 +1,6 @@
 package com.tchindaClovis.gestiondestock.services.impl;
 
 import com.tchindaClovis.gestiondestock.dto.ClientDto;
-import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;

@@ -1,30 +1,33 @@
 <!--photo article-->
 <div class="row mb-1 custom-border">
-  <div class="col-md-1 border-end p-1 text-center">
+  <div class="col-md-1 border-end  text-center ps-1 pt-1 ">
     <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'"
-         width="100px" height="100px"
+         width="70px" height="70px"
          style="object-fit: cover; border-radius: 4px;"
          alt="Photo article">
   </div>
 
 <!--  details article-->
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.codeArticle }} / {{ articleDto.designation }}</div>
+        <div class="col-md-11"><small>{{ articleDto.codeArticle }} / {{ articleDto.designation }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-tape blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.format }}</div>
+        <div class="col-md-11"><small>{{ articleDto.format }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixVenteUnitaireHt | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr'}}</div>
+        <div class="col-md-11">
+          <small>
+            {{ articleDto.prixVenteUnitaireHt |
+            currency:'XAF':'symbol':'1.0-0':'fr'}} //
+            {{ articleDto.prixVenteUnitaireTtc |
+            currency:'XAF':'symbol':'1.0-0':'fr'}}
+          </small>
+        </div>
       </div>
     </div>
   </div>
@@ -32,15 +35,15 @@
 <!--  detail categories-->
   <div class="col-md-4 border-end mb-1 mt-1">
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-1">
         <i class="fa-solid fa-flag blue-color"></i>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-11">
         <div class="row">
-          <div class="col-md-12">{{ articleDto.category?.code }}</div>
-          <div class="col-md-12">{{ articleDto.category?.designation }}</div>
+          <div class="col-md-12"><small>{{ articleDto.category?.code }}</small></div>
+          <div class="col-md-12"><small>{{ articleDto.category?.designation }}</small></div>
           <div class="col-md-11">
-            {{ articleDto?.description | slice:0:30 }}
+            <small>{{ articleDto?.description | slice:0:30 }}</small>
             <span *ngIf="(articleDto?.description?.length ?? 0) > 30">...</span>
           </div>
 <!--     ou   <div class="col-md-11" *ngIf="articleDto">-->
@@ -53,29 +56,34 @@
   </div>
 
 <!--  boutons action-->
-  <div class="col-md-3 mb-1 mt-1">
-    <div class="row">
+  <div class="col-md-3 ">
+    <div class="row pt-3 pb-0">
       <div class="col-md-4">
-                  <!--btn-outline-primary-->
-        <button type="button" class="btn btn-link souligner-au-survol" (click)="modifierArticle()">
-          <i class="fa-solid fa-pencil"></i>&nbsp;Modifier
+        <button type="button" class="btn btn-link souligner-au-survol"
+                (click)="modifierArticle()"
+                title="Modifier">
+          <small>
+            <i class="fa fa-edit icon-color-edit"></i>
+<!--            <i class="fa-solid fa-pencil"></i>-->
+          </small>
         </button>
       </div>
       <div class="col-md-4">
-                  <!--btn-outline-danger-->
-        <button type="button" class="btn btn-link souligner-au-survol text-danger" data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDeleteArt' + articleDto.id">
-          <i class="fa-solid fa-trash-can"></i>&nbsp;Supprimer
+        <button type="button" class="btn btn-link souligner-au-survol"
+                (click)="appercuArticle()"
+                title="Aperçu">
+          <small><i class="fa-solid fa-eye"></i></small>
         </button>
       </div>
       <div class="col-md-4">
-                  <!--btn-outline-info-->
-        <button type="button" class="btn  btn-link souligner-au-survol" (click)="appercuArticle()">
-          <i class="fa-solid fa-list"></i>&nbsp;Appercu
+        <button type="button" class="btn btn-link souligner-au-survol text-danger"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalDelete' + articleDto.id"
+                title="Supprimer">
+          <small><i class="fa-solid fa-trash-can"></i></small>
         </button>
       </div>
     </div>
-  </div>
 
   <!-- Modal de suppression -->
   <div class="modal fade"

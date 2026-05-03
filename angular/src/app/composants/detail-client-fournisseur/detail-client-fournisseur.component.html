@@ -1,73 +1,79 @@
 <!--photo article-->
-<div class="row mb-1 mr-0 custom-border">
-  <div class="col-md-1 border-end p-1 text-center">
+<div class="row mb-1 custom-border">
+  <div class="col-md-1 border-end  text-center ps-1 pt-1">
     <img [src]="clientFournisseur.photo ? clientFournisseur.photo : 'assets/product.png'"
-         width="100px" height="100px">
+         width="70px" height="70px">
   </div>
 
   <!--  details client ou fournisseur-->
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.nom }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur.nom }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.statut }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur.statut }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.numTel }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur.numTel }}</small></div>
       </div>
     </div>
   </div>
 
   <!--  detail adresse client ou fournisseur-->
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-house blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.adresse?.adresse1 }}&nbsp;
-          {{ clientFournisseur.adresse?.adresse2 }}
+        <div class="col-md-11"><small>{{ clientFournisseur.adresse?.adresse1 }}&nbsp;
+          {{ clientFournisseur.adresse?.adresse2 }}</small>
         </div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-location-dot blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.adresse?.codePostale}}&nbsp;
-          {{ clientFournisseur.adresse?.ville }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur.adresse?.codePostale}}&nbsp;
+          {{ clientFournisseur.adresse?.ville }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-earth-africa blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur.adresse?.pays }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur.adresse?.pays }}</small></div>
       </div>
     </div>
   </div>
 
   <!--  boutons action-->
-  <div class="col-md-3 mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-4">
-        <!--btn-outline-primary-->
-        <button type="button" class="btn btn-link souligner-au-survol" (click)="modifierClientFournisseur()">
-          <i class="fa-solid fa-pencil"></i>&nbsp;Modifier
+  <div class="col-md-3 ">
+    <div class="row pt-3 pb-0">
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol"
+                (click)="modifierClientFournisseur()"
+                title="Modifier">
+          <small>
+            <i class="fa fa-edit icon-color-edit"></i>
+<!--            <i class="fa-solid fa-pencil"></i>-->
+          </small>
         </button>
       </div>
-      <div class="col-md-4">
-        <!--btn-outline-danger-->
-        <button type="button" class="btn btn-link souligner-au-survol text-danger" data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id">
-          <i class="fa-solid fa-trash-can"></i>&nbsp;Supprimer
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol"
+                (click)="appercuClientFournisseur()"
+                title="Aperçu">
+          <small><i class="fa-solid fa-eye"></i></small>
         </button>
       </div>
-      <div class="col-md-4">
-        <!--btn-outline-info-->
-        <button type="button" class="btn  btn-link souligner-au-survol" (click)="appercuArticle()">
-          <i class="fa-solid fa-list"></i>&nbsp;Appercu
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol text-danger"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id"
+                title="Supprimer">
+          <small><i class="fa-solid fa-trash-can"></i></small>
         </button>
       </div>
     </div>
-  </div>
+
 
   <!-- Modal -->
   <div class="modal fade" id="modalDelete{{ clientFournisseur.id }}"
@@ -78,7 +84,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">x</span>
+            <span aria-hidden="true"></span>
           </button>
         </div>
         <div class="modal-body">

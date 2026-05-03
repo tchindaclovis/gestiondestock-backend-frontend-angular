@@ -32,7 +32,8 @@ public interface UtilisateurApi {
     UtilisateurDto save(@RequestBody UtilisateurDto dto);
 
 
-    @PostMapping(APP_ROOT + "/utilisateurs/update/password")
+    @PostMapping(value = APP_ROOT + "/utilisateurs/update/password",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     UtilisateurDto changerMotDePasse(@RequestBody ChangerMotDePasseUtilisateurDto dto);
 
 
@@ -50,7 +51,8 @@ public interface UtilisateurApi {
     UtilisateurDto findById(@PathVariable("idUtilisateur") Integer id);
 
 
-    @GetMapping(APP_ROOT + "/utilisateurs/find/nomutilisateur/{nom}")
+    @GetMapping(value = APP_ROOT + "/utilisateurs/find/nomutilisateur/{nom}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     UtilisateurDto findByNom(@PathVariable("nom") String nom);
 
 
@@ -69,7 +71,8 @@ public interface UtilisateurApi {
     UtilisateurDto findByStatut(@PathVariable("statutUtilisateur")  String statut);
 
 
-    @GetMapping(APP_ROOT + "/utilisateurs/find/emailutilisateur/{email}")
+    @GetMapping(value = APP_ROOT + "/utilisateurs/find/emailutilisateur/{email}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UtilisateurDto> findByEmail(@PathVariable("email") String email);
 
 
@@ -90,7 +93,8 @@ public interface UtilisateurApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<UtilisateurDto> findAllUtilisateurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
-    @DeleteMapping(value = APP_ROOT + "/utilisateurs/delete/{idUtilisateur}")
+    @DeleteMapping(value = APP_ROOT + "/utilisateurs/delete/{idUtilisateur}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer un utilisateur",
             description = "Cette méthode permet de supprimer un utilisateur par son ID",

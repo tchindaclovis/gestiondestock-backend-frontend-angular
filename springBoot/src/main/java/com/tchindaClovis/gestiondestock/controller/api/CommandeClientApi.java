@@ -1,6 +1,5 @@
 package com.tchindaClovis.gestiondestock.controller.api;
 
-import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.CommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
@@ -17,32 +16,39 @@ import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;
 
 @Tag(name = "CommandeClients", description = "API de gestion des commandeClients")
 public interface CommandeClientApi {
-    @PostMapping(value = APP_ROOT + "/commandeclients/create")
+    @PostMapping(value = APP_ROOT + "/commandeclients/create",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
 
-    @PatchMapping(APP_ROOT + "/commandesclients/update/etat/{idCommandeClient}/{etatCommande}")
+    @PatchMapping(value = APP_ROOT + "/commandesclients/update/etat/{idCommandeClient}/{etatCommande}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateEtatCommande(@PathVariable("idCommandeClient") Integer idCommandeClient,
                                                          @PathVariable("etatCommande") EEtatCommande etatCommande);
 
-    @PatchMapping(APP_ROOT + "/commandesclients/update/quantite/{idCommandeClient}/{idLigneCommande}/{quantite}")
+    @PatchMapping(value = APP_ROOT + "/commandesclients/update/quantite/{idCommandeClient}/{idLigneCommande}/{quantite}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateQuantiteCommande(@PathVariable("idCommandeClient") Integer idCommandeClient,
                                                              @PathVariable("idLigneCommande") Integer idLigneCommande,
                                                              @PathVariable("quantite") BigDecimal quantite);
 
-    @PatchMapping(APP_ROOT + "/commandesclients/update/client/{idCommandeClient}/{idClient}")
+    @PatchMapping(value = APP_ROOT + "/commandesclients/update/client/{idCommandeClient}/{idClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateClient(@PathVariable("idCommandeClient") Integer idCommandeClient,
                                                    @PathVariable("idClient") Integer idClient);
 
-    @PatchMapping(APP_ROOT + "/commandesclients/update/article/{idCommandeClient}/{idLigneCommande}/{idArticle}")
+    @PatchMapping(value = APP_ROOT + "/commandesclients/update/article/{idCommandeClient}/{idLigneCommande}/{idArticle}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateArticle(@PathVariable("idCommandeClient") Integer idCommandeClient,
                                                     @PathVariable("idLigneCommande") Integer idLigneCommande,
                                                     @PathVariable("idArticle") Integer idArticle);
 
-    @DeleteMapping(APP_ROOT + "/commandesclients/delete/article/{idCommandeClient}/{idLigneCommande}")
+    @DeleteMapping(value = APP_ROOT + "/commandesclients/delete/article/{idCommandeClient}/{idLigneCommande}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> deleteArticle(@PathVariable("idCommandeClient") Integer idCommandeClient,
                                                     @PathVariable("idLigneCommande") Integer idLigneCommande);
 
-    @GetMapping(value = APP_ROOT + "/commandeclients/{idCommandeClient}")
+    @GetMapping(value = APP_ROOT + "/commandeclients/{idCommandeClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> findById(@PathVariable("idCommandeClient") Integer id);
 
 //    @GetMapping("/id/{id}") // Ajoutez /id/
@@ -57,21 +63,25 @@ public interface CommandeClientApi {
 //    public ResponseEntity<CommandeClientDto> findByCode(@PathVariable("code") String code) {
 //        return ResponseEntity.ok(service.findByCode(code));
 //    }
-    @GetMapping(value = APP_ROOT + "/commandeclients/all")
+    @GetMapping(value = APP_ROOT + "/commandeclients/all",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<CommandeClientDto>> findAll();
 
     @GetMapping(value = APP_ROOT + "/commandeclient/filter/entreprise/{idEntreprise}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<CommandeClientDto> findAllCommandeClientByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
-    @GetMapping(APP_ROOT + "/commandesclients/lignesCommande/{idCommandeClient}")
+    @GetMapping(value = APP_ROOT + "/commandesclients/lignesCommande/{idCommandeClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(@PathVariable("idCommandeClient") Integer idCommandeClient);
 
-    @DeleteMapping(value = APP_ROOT + "/commandeclients/delete/{idCommandeClient}")
+    @DeleteMapping(value = APP_ROOT + "/commandeclients/delete/{idCommandeClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity delete(@PathVariable("idCommandeClient") Integer id);
 
 
-    @GetMapping(value = APP_ROOT + "/commandeclients/lastcodecommandeclient")
+    @GetMapping(value = APP_ROOT + "/commandeclients/lastcodecommandeclient",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary  = "Récupérer le dernier code CommandeClient enregistré",
             description = "Cette méthode permet de récupérer le dernier code au format CMCxxxx",

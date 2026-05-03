@@ -22,6 +22,7 @@ export interface ArticleDto {
     prixUnitaireTtc?: number;
     prixVenteUnitaireTtc?: number;
     marge?: number;
+    quantiteAlert?: number;
     photo?: string;
     category?: CategoryDto;
     idEntreprise?: number;

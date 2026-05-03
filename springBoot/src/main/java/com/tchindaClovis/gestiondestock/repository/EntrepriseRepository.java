@@ -1,7 +1,5 @@
 package com.tchindaClovis.gestiondestock.repository;
 
-import com.tchindaClovis.gestiondestock.model.Client;
-import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.Entreprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 

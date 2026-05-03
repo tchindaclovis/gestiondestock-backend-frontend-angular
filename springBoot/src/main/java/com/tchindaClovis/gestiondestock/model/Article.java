@@ -43,6 +43,9 @@ public class Article extends AbstractEntity{
     @Column(name = "marge")
     private BigDecimal marge;
 
+    @Column(name = "quantitealert")
+    private BigDecimal quantiteAlert;
+
     @Column(name = "photo",length = 1024)
     private String photo;  //String parce que ça ne sera pas stocké dans la BDD mais dans le cloud
 

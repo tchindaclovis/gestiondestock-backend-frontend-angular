@@ -1,8 +1,5 @@
 package com.tchindaClovis.gestiondestock.repository;
 
-import aj.org.objectweb.asm.commons.Remapper;
-import com.tchindaClovis.gestiondestock.dto.UtilisateurDto;
-import com.tchindaClovis.gestiondestock.model.Client;
 import com.tchindaClovis.gestiondestock.model.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

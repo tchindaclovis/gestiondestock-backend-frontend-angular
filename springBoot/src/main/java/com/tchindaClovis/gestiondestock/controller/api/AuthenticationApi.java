@@ -4,6 +4,7 @@ import static com.tchindaClovis.gestiondestock.utils.Constants.AUTHENTICATION_EN
 import com.tchindaClovis.gestiondestock.dto.auth.AuthenticationRequest;
 import com.tchindaClovis.gestiondestock.dto.auth.AuthenticationResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "Authentications", description = "API de gestion des authentication")
 public interface AuthenticationApi {
 
-    @PostMapping(AUTHENTICATION_ENDPOINT + "/authenticate")
+    @PostMapping(value =AUTHENTICATION_ENDPOINT + "/authenticate",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request);
 
 }

@@ -5,29 +5,30 @@
   <!--row Bootstrap → structure la page en colonnes
     min-height-800 → hauteur minimale personnalisée
     no-flex-wrap → empêche les colonnes de passer à la ligne-->
-  <div class="row min-height-800 no-flex-wrap">
+
+    <!-- ====================== -->
+    <!-- HEADER -->
+    <!-- ====================== -->
+    <!--Carte contenant le header de l'application
+      min-height-60 → hauteur minimale personnalisée-->
+  <div class="col-md-12 card p-1 mb-1" style="max-height:50px" >
+    <!--Composant Angular du header Contient généralement :
+      - utilisateur connecté - recherche - notifications-->
+    <app-header></app-header>
+  </div>
+
+  <div class="row ms-0" style="min-height:735px">
     <!-- ====================== -->
     <!-- SIDEBAR / MENU GAUCHE -->
     <!-- ====================== -->
     <!--col-md-2 → sidebar occupant 2 colonnes sur 12
       card → style Bootstrap carte mr-2 → marge à droite-->
-    <div class="card col-md-2 mr-2">
-      <div class="col pl-0 pr-0">
+    <div class="col-md-2 card">
         <!--Carte contenant le titre de l'application-->
-        <div class="card mt-3 mb-2 border-none">
-          <!-- Nom de l'application -->
-          <h4>Gestion de stock V2.0</h4>
-          <!-- Auteur / signature -->
-          <small class="form-text text-auted">
-            By Clovis Tchinda
-          </small>
-        </div>
         <!--Composant Angular du menu
           Ce composant contient la navigation latérale-->
-        <div>
           <app-menu></app-menu>
-        </div>
-      </div>
+
     </div>
 
     <!-- ====================== -->
@@ -36,27 +37,17 @@
     <!--col-md-10 → zone principale occupant 10 colonnes
       background-grey → couleur de fond personnalisée
       border-none → suppression des bordures-->
-    <div class="card col-md-10 pl-0 pr-0 background-grey border-none">
+    <div class="col-md-10 pl-0 pr-0 background-grey border-none">
       <!--Organisation verticale avec Flexbox
         flex-column → empile les éléments verticalement
         justify-content-between → espace entre header / contenu / footer-->
       <div class="col pl-0 pr-0 d-flex flex-column justify-content-between">
         <!-- ====================== -->
-        <!-- HEADER -->
-        <!-- ====================== -->
-        <!--Carte contenant le header de l'application
-          min-height-60 → hauteur minimale personnalisée-->
-        <div class="card p-3 max-height-80 mb-2">
-          <!--Composant Angular du header Contient généralement :
-            - utilisateur connecté - recherche - notifications-->
-          <app-header></app-header>
-        </div>
-        <!-- ====================== -->
         <!-- CONTENU DYNAMIQUE -->
         <!-- ====================== -->
         <!--Zone centrale où s'affichent les pages
           via le système de routing Angular-->
-        <div class="card mb-2" style="min-height:280px">
+        <div class="card mb-2" style="min-height:705px">
           <!--Composant Loader Permet d'afficher un indicateur de chargement
             pendant les appels API-->
           <app-loader></app-loader>
@@ -68,12 +59,14 @@
         <!-- FOOTER -->
         <!-- ====================== -->
         <!--Footer de l'application min-height-80 → hauteur minimale-->
-        <div class="card min-height-80 text-center">
+        <div class="card text-center" style="min-height:25px">
           <span>
-            <!-- Nom de l'organisation -->
-            Elitepro Dev | All Right Reserved
-            <!-- Affichage dynamique de l'année -->
-            &copy; {{ currentYear }}
+            <small>
+              <!-- Nom de l'organisation -->
+              Elitepro Dev | All Right Reserved
+              <!-- Affichage dynamique de l'année -->
+              &copy; {{ currentYear }}
+            </small>
           </span>
         </div>
       </div>

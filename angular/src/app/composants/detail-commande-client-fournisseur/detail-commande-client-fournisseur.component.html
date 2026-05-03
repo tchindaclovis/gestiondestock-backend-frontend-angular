@@ -1,100 +1,116 @@
 <!--photo article-->
-<div class="row mb-1 mr-0 border">
-  <div class="col-md-1 border-end p-1 text-center mb-1 mt-1">
+<div class="row mb-1 border">
+  <div class="col-md-1 border-end  text-center ps-1 pt-1">
     <img [src]="clientFournisseur.photo ? clientFournisseur.photo: 'assets/product.png'"
-          width="100px" height="100px">
+          width="70px" height="70px">
   </div>
 
   <!--  details client ou fournisseur-->
-  <div class="col-md-5 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur?.nom }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur?.nom }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur?.statut }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur?.statut }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
-        <div class="col-md-11">{{ clientFournisseur?.numTel }}</div>
+        <div class="col-md-11"><small>{{ clientFournisseur?.numTel }}</small></div>
       </div>
     </div>
   </div>
 
   <!--  details commandes-->
-  <div class="col-md-3 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end ">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
-        <div class="col-md-11">{{ commande?.code }}</div>
+        <div class="col-md-11"><small>{{ commande?.code }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11">{{ commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</div>
+        <div class="col-md-11"><small>{{ commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
-        <div class="col-md-11">{{ commande?.etatCommande }}</div>
+        <div class="col-md-11"><small>{{ commande?.etatCommande }}</small></div>
       </div>
     </div>
   </div>
 
   <!--  boutons action-->
-  <div class="col-md-3 mb-1 mt-1">
-    <div class="row">
-      <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol" (click)="modifierCommandeClientFournisseur()">
-          <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;
-          Modifier
+  <div class="col-md-3 ">
+    <div class="row pt-3 pb-0">
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link text-decoration-none"
+                (click)="modifierCommandeClientFournisseur()"
+                title="Modifier">
+          <small>
+            <i class="fa fa-edit icon-color-edit"></i>
+<!--            <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;-->
+          </small>
         </button>
       </div>
-      <div class="col-md-6 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol text-danger"
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link text-decoration-none text-primary"
                 data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDelete' + commande.id">
-          <i class="fa-solid fa-trash-alt"></i>&nbsp;
-          Supprimer
+                [attr.data-bs-target]="'#modalConfirm' + commande.id"
+                title="Confirmer">
+          <small>
+            <i class="fa-solid fa-clipboard-check"></i>&nbsp;
+          </small>
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" [id]="'modalDelete' + commande.id"
-       data-bs-backdrop="static"
-       data-bs-keyboard="false"
-       tabindex="-1"
-       aria-labelledby="staticBackdropLabel"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-<!--            <span aria-hidden="true">x</span>-->
-          </button>
-        </div>
-        <div class="modal-body">
-          Etes-vous sûr de vouloir supprimer cette commande {{ origin }} <strong>{{ commande.code }}</strong>?
-          Cela supprimera également toutes les lignes associées.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-ban"></i>Annuler
-          </button>
-          <button type="button"
-                  class="btn btn-danger"
-                  data-bs-dismiss="modal"
-                  (click)="confirmerEtSupprimer()">
-            <i class="fa-solid fa-trash-can"></i>
-            Supprimer
-          </button>
-        </div>
+      <div class="col-md-4 text-center">
+        <button type="button" class="btn btn-link text-decoration-none text-danger"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalDelete' + commande.id"
+                title="Supprimer">
+          <small>
+            <i class="fa-solid fa-trash-alt"></i>&nbsp;
+          </small>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" [id]="'modalDelete' + commande.id"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!--            <span aria-hidden="true">x</span>-->
+        </button>
+      </div>
+      <div class="modal-body">
+        Etes-vous sûr de vouloir supprimer cette commande {{ origin }} <strong>{{ commande.code }}</strong>?
+        Cela supprimera également toutes les lignes associées.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fa-solid fa-ban"></i>Annuler
+        </button>
+        <button type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+                (click)="confirmerEtSupprimer()">
+          <i class="fa-solid fa-trash-can"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 

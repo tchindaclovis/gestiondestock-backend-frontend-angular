@@ -1,45 +1,93 @@
-<div class="row mb-1 mr-0 border">
-  <div class="col-md-1 border-end p-1 text-center">
-    <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'" width="100px" height="100px">
+<div class="row mb-1 border">
+  <div class="col-md-1 border-end  text-center  ps-1 pt-1">
+    <img [src]="articleDto.photo ? articleDto.photo : 'assets/product.png'" width="70px" height="70px">
   </div>
 
-  <div class="col-md-4 border-end mb-1 mt-1">
+  <div class="col-md-4 border-end">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.codeArticle }}</div>
+        <div class="col-md-11"><small>{{ articleDto.codeArticle }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.designation }}</div>
+        <div class="col-md-11"><small>{{ articleDto.designation }}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">{{ articleDto.prixVenteUnitaireTtc | currency:'XAF':'symbol':'1.0-0':'fr' }}</div>
+        <div class="col-md-11">
+          <small>
+            {{ articleDto.prixVenteUnitaireTtc |
+            currency:'XAF':'symbol':'1.0-0':'fr' }}
+          </small>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="col-md-3 border-end mb-1 mt-1">
     <div class="col-md-10 text-center">
-      <h3 class="text-muted">Stock actuel</h3>
-      <h3 [ngClass]="{
-          'text-danger': stockGlobal <= 0,
-          'text-warning': stockGlobal <= 10 && stockGlobal > 0,
-          'text-success': stockGlobal > 10
+      <h5 class="text-muted">Stock actuel</h5>
+      <h4 [ngClass]="{
+          'text-danger': stockGlobal <= (articleDto.quantiteAlert ?? 0),
+          'text-success': stockGlobal > (articleDto.quantiteAlert ?? 0)
           }">
         {{ stockGlobal | number:'1.0-0':'fr' }}
-      </h3>
+      </h4>
     </div>
   </div>
 
-  <div class="col-md-3 mb-1 mt-1 text-center">
-    <button type="button" class="btn btn-link text-decoration-none text-danger" data-bs-toggle="modal"
-            [attr.data-bs-target]="'#modalCorrection' + articleDto.id">
-      <i class="fa-solid fa-up-down"></i>&nbsp;Correction de stock
+  <div class="col-md-2 mb-1 mt-1 text-center border-end">
+    <button [ngClass]="{
+          'text-primary': (articleDto.quantiteAlert ?? 0) == 0,
+          'text-success': (articleDto.quantiteAlert ?? 0) > 0
+          }"
+            type="button" class="btn btn-link  text-primary souligner-au-survol"
+            data-bs-toggle="modal"
+            [attr.data-bs-target]="'#modalQuantiteAlert' + articleDto.id">
+      <small><i class="fa-solid fa-bell"></i>Fixer la quantité d'alerte</small>
     </button>
   </div>
 
+  <div class="col-md-2 mb-1 mt-1 text-center">
+    <button type="button" class="btn btn-link  text-primary souligner-au-survol"
+            data-bs-toggle="modal"
+            [attr.data-bs-target]="'#modalCorrection' + articleDto.id">
+      <small><i class="fa-solid fa-up-down"></i>Correction de stock</small>
+    </button>
+  </div>
+
+  <!--Modal quantité d'alerte-->
+  <div class="modal fade" [id]="'modalQuantiteAlert' + articleDto.id"
+       data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Fixer la quantité d'alert de : {{ articleDto.designation }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group mb-3">
+              <label>Quantité d'alert</label>
+              <input type="number" class="form-control" name="quantitealert" placeholder="Ex: 10"
+                     [(ngModel)]="articleDto.quantiteAlert">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-ban"></i>&nbsp;Annuler
+          </button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="enregistrerQuantiteAlert()">
+            <i class="fas fa-save"></i>&nbsp;Enregistrer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <!--Modal de correction-->
@@ -66,8 +114,24 @@
               <select class="form-select form-control" name="typeMvt" [(ngModel)]="mvtStockDto.typeMvt">
                 <option value="CORRECTION_POS">Correction positive (Ajout)</option>
                 <option value="CORRECTION_NEG">Correction négative (Retrait)</option>
+                <option value="CORRECTION_POS_VENTE_RED">Correction positive (Ajout) vente</option>
+                <option value="CORRECTION_NEG_VENTE_AUG">Correction négative (Retrait) vente</option>
+<!--                <option [ngValue]="undefined" selected disabled>Sélectionner le type de mouvement</option>-->
+<!--                <option *ngFor="let type of typeMvtsOptions" [value]="type">-->
+<!--                  {{ type.replace('_', ' ') | titlecase }}-->
+<!--                </option>-->
               </select>
             </div>
+
+<!--            <div class="col-md-12">-->
+<!--              <label class="form-label small fw-bold">Source du mouvement</label>-->
+<!--              <select class="form-select" name="sourceMvt" [(ngModel)]="mvtStockDto.sourceMvt">-->
+<!--                <option [ngValue]="undefined" selected disabled>Sélectionner la source du mouvement</option>-->
+<!--                <option *ngFor="let source of sourceMvtsOptions" [value]="source">-->
+<!--                  {{ source.replace('_', ' ') | titlecase }}-->
+<!--                </option>-->
+<!--              </select>-->
+<!--            </div>-->
           </form>
         </div>
 

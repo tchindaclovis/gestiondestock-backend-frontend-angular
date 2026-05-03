@@ -94,7 +94,8 @@ public interface ArticleApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory") Integer idCategory);
 
-    @DeleteMapping(value = APP_ROOT + "/articles/delete/{idArticle}")
+    @DeleteMapping(value = APP_ROOT + "/articles/delete/{idArticle}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer un article",
             description = "Cette méthode permet de supprimer un article par son ID",
@@ -105,7 +106,8 @@ public interface ArticleApi {
     void delete(@PathVariable("idArticle") Integer id);
 
 
-    @GetMapping(value = APP_ROOT + "/articles/lastcodearticle")
+    @GetMapping(value = APP_ROOT + "/articles/lastcodearticle",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary  = "Récupérer le dernier code article enregistré",
             description = "Cette méthode permet de récupérer le dernier code au format ARTxxxx",

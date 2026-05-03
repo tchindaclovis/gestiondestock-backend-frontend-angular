@@ -1,7 +1,10 @@
 import {Component, Input, OnInit, Output, EventEmitter, SimpleChanges} from '@angular/core';
-import { ArticleDto, MvtStockDto } from '../../../gs-api/src';
+import {ArticleDto, VenteDto} from '../../../gs-api/src';
 import { MvtstockService } from '../../services/mvtstock/mvtstock.service';
 import {Router} from "@angular/router";
+import { MvtStockDto } from "../../../gs-api/src/model/mvtStockDto";
+import {ArticleService} from "../../services/article/article.service";
+
 
 @Component({
   selector: 'app-detail-mvtstock-article',
@@ -17,7 +20,8 @@ export class DetailMvtstockArticleComponent implements OnInit {
   // Objet local pour le formulaire
   mvtStockDto: MvtStockDto = {
     quantite: 0,
-    typeMvt: 'CORRECTION_POS' // Valeur par défaut
+    typeMvt: 'CORRECTION_POS', // Valeur par défaut
+    sourceMvt: 'VENTE'
   };
 
   // @Output() suppressionResult = new EventEmitter<string>();
@@ -25,9 +29,15 @@ export class DetailMvtstockArticleComponent implements OnInit {
   // Émetteur pour demander au parent de rafraîchir la liste/stock après correction
   @Output() correctionStockEvent = new EventEmitter<string>();
 
+  // Déclarez la variable sans l'initialiser avec Object.values ici
+  sourceMvtsOptions: string[] = [];
+  typeMvtsOptions: string[] = [];
+
+
   constructor(
     private router: Router,
     private mvtstockService: MvtstockService, // Injectez le service de mouvements
+    private articleService:ArticleService
 
   ) { }
 
@@ -35,6 +45,13 @@ export class DetailMvtstockArticleComponent implements OnInit {
   // INITIALISATION
   // ==============================
   ngOnInit(): void {
+    // Initialisez la liste ici pour éviter les erreurs de compilation
+    if (MvtStockDto.TypeMvtEnum) {
+      this.typeMvtsOptions = Object.values(MvtStockDto.TypeMvtEnum);
+    }
+    if (MvtStockDto.SourceMvtEnum) {
+      this.sourceMvtsOptions = Object.values(MvtStockDto.SourceMvtEnum);
+    }
     this.chargerStock();
   }
 
@@ -90,6 +107,10 @@ export class DetailMvtstockArticleComponent implements OnInit {
     const call = this.mvtStockDto.typeMvt === 'CORRECTION_POS'
       ? this.mvtstockService.correctionStockPos(this.mvtStockDto)
       : this.mvtstockService.correctionStockNeg(this.mvtStockDto);
+
+    // const call = this.mvtStockDto.typeMvt === 'CORRECTION_POS'
+    //   ? this.mvtstockService.correctionStockPos(this.mvtStockDto)
+    //   : this.mvtstockService.correctionStockNeg(this.mvtStockDto);
 
     call.subscribe({
       next: () => {
@@ -151,6 +172,7 @@ export class DetailMvtstockArticleComponent implements OnInit {
   //   }
   // }
 
+
   private handleSuccess(): void {
     // Réinitialisation du formulaire
     this.mvtStockDto = {
@@ -159,6 +181,22 @@ export class DetailMvtstockArticleComponent implements OnInit {
     };
   }
 
+  enregistrerQuantiteAlert(): void {
+    // On vérifie que l'article et son ID existent bien
+    if (this.articleDto && this.articleDto.id) {
+      this.articleService.enregistrerArticle(this.articleDto)
+        .subscribe({
+          next: (res) => {
+            // Optionnel : Tu peux ajouter un petit message de succès ou un toast ici
+            console.log('Quantité d\'alerte mise à jour avec succès', res);
+          },
+          error: (err) => {
+            // Gestion de l'erreur (affichage dans la console ou via un service d'alerte)
+            console.error('Erreur lors de la mise à jour de la quantité d\'alerte', err);
+          }
+        });
+    }
+  }
 }
 
 

@@ -15,9 +15,19 @@ export interface VenteDto {
     id?: number;
     code?: string;
     dateVente?: string;
-    commentaire?: string;
+    paymentType?: VenteDto.PaymentTypeEnum;
     client?: ClientDto;
     idEntreprise?: number;
     ligneVentes?: Array<LigneVenteDto>;
 }
+export namespace VenteDto {
+    export const PaymentTypeEnum = {
+        OrangeMoney: 'ORANGE_MONEY',
+        MobileMoney: 'MOBILE_MONEY',
+        BankTransfer: 'BANK_TRANSFER',
+        Cash: 'CASH'
+    } as const;
+    export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnum];
+}
+
 

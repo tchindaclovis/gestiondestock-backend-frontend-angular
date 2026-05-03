@@ -88,7 +88,8 @@ public interface ClientApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<ClientDto> findAllClientByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
-    @DeleteMapping(value = APP_ROOT + "/clients/delete/{idClient}")
+    @DeleteMapping(value = APP_ROOT + "/clients/delete/{idClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer un client",
             description = "Cette méthode permet de supprimer un client par son ID",

@@ -1,5 +1,6 @@
-package com.tchindaClovis.gestiondestock.controller.api;
+package com.tchindaClovis.gestiondestock.controller;
 
+import com.tchindaClovis.gestiondestock.controller.api.LigneCmdFournisseurApi;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.services.LigneCmdClientService;

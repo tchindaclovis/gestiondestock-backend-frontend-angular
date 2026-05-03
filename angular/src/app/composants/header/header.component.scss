@@ -1,16 +1,25 @@
 .logout-card {
-  button{
-    background: #9b9595;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 120px;
-    font-size: 10px;
-    i{
-      font-size:15px ;
 
+  button{
+    border-radius: 8px;
+    text-align: center;
+    width: 40px;
+    max-height: 35px;
+
+    i{
+      font-size:20px ;
+      padding-right: 5px;
     }
   }
+}
+
+.fontSise{
+  font-size:13px ;
+}
+
+.input-group{
+  font-size:13px ;
+
 }
 
 

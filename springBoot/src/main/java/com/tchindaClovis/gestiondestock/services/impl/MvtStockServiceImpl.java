@@ -8,7 +8,6 @@ package com.tchindaClovis.gestiondestock.services.impl;
  */
 
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
-import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.model.ETypeMvtStock;
@@ -126,6 +125,19 @@ public class MvtStockServiceImpl implements MvtStockService {
     }
 
 
+    @Override
+    public List<MvtStockDto> findAllMvtsByEntreprise(Integer idEntreprise) {
+        if (idEntreprise == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return mvtStockRepository.findAllByIdEntreprise(idEntreprise)
+                .stream()
+                .map(MvtStockDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
     /*
      * ================================
      * ENTRÉE EN STOCK
@@ -167,6 +179,12 @@ public class MvtStockServiceImpl implements MvtStockService {
         return entreePositive(dto, ETypeMvtStock.CORRECTION_POS);
     }
 
+    @Override
+    public MvtStockDto correctionStockPosVenteRed(MvtStockDto dto) {
+
+        return entreePositive(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED);
+    }
+
 
     /*
      * ================================
@@ -179,6 +197,12 @@ public class MvtStockServiceImpl implements MvtStockService {
     public MvtStockDto correctionStockNeg(MvtStockDto dto) {
 
         return sortieNegative(dto, ETypeMvtStock.CORRECTION_NEG);
+    }
+
+    @Override
+    public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
+
+        return sortieNegative(dto, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG);
     }
 
 

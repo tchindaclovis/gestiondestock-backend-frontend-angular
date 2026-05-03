@@ -1,6 +1,5 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
 import lombok.Builder;
 import lombok.Data;

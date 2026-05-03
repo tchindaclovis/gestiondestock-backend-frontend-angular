@@ -19,8 +19,12 @@ public class Vente extends AbstractEntity {
     @Column(name = "datevente")
     private Instant dateVente;
 
-    @Column(name = "commentaire")
-    private String commentaire;
+//    @Column(name = "commentaire")
+//    private String commentaire;
+
+    @Column(name = "paymenttype")
+    @Enumerated(EnumType.STRING)
+    private EPaymentType paymentType;
 
     @ManyToOne
     @JoinColumn(name = "idclient")

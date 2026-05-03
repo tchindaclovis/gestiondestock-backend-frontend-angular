@@ -6,14 +6,11 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;
 
 @Tag(name = "Ventes", description = "API de gestion des ventes")
@@ -80,7 +77,8 @@ public interface VenteApi {
     ResponseEntity<List<LigneVenteDto>> findAllLignesVentesByVenteId(@PathVariable("idVente") Integer idVente);
 
 
-    @DeleteMapping(value = APP_ROOT + "/ventes/delete/{idVente}")
+    @DeleteMapping(value = APP_ROOT + "/ventes/delete/{idVente}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer une vente",
             description = "Cette méthode permet de supprimer une vente par son ID",
@@ -91,7 +89,8 @@ public interface VenteApi {
     void delete(@PathVariable("idVente") Integer id);
 
 
-    @GetMapping(value = APP_ROOT + "/ventes/lastcodevente")
+    @GetMapping(value = APP_ROOT + "/ventes/lastcodevente",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary  = "Récupérer le dernier code vente enregistré",
             description = "Cette méthode permet de récupérer le dernier code au format CVTxxxx",

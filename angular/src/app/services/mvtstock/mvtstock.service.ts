@@ -54,6 +54,9 @@ export class MvtstockService {
     return this.mvtStocksService.correctionStockPos(mvtStockDto);
   }
 
+  correctionStockPosVenteRed(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.correctionStockPosVenteRed(mvtStockDto);
+  }
   /**
    * Équivalent de correctionStockNeg(MvtStockDto dto)
    */
@@ -61,11 +64,23 @@ export class MvtstockService {
     return this.mvtStocksService.correctionStockNeg(mvtStockDto);
   }
 
+  correctionStockNegVenteAug(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.correctionStockNegVenteAug(mvtStockDto);
+  }
+
 
 
   findAllMvtStock(): Observable<MvtStockDto[]>{  //renvoit un observable de listes d'articleDto
     return this.mvtStocksService.findAllMvtStock();
   }
+
+  findAllMvtsByEntreprise(idEntreprise: number): Observable<MvtStockDto[]>{
+    if(idEntreprise){
+      return this.mvtStocksService.findAllMvtsByEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
+
 }
 
 

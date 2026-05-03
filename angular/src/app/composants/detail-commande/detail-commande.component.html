@@ -1,21 +1,27 @@
 <div class="row mb-1 mr-0 border">
   <div class="col-md-2 border-end mb-1 mt-1 text-center">
-    {{ ligneCommande.article?.codeArticle }}
+    <small>{{ ligneCommande.article?.codeArticle }}</small>
   </div>
   <div class="col-md-4 border-end mb-1 mt-1 text-center">
-    {{ ligneCommande.article?.designation }}
+    <small>{{ ligneCommande.article?.designation }}</small>
   </div>
 
   <div class="col-md-2 border-end mb-1 mt-1 text-center">
-    {{ ligneCommande.quantite | number:'1.0-0':'fr' }}
+    <small>{{ ligneCommande.quantite | number:'1.0-0':'fr' }}</small>
   </div>
 
   <div class="col-md-2 border-end mb-1 mt-1 text-center">
     <span *ngIf="this.origin === 'client'">
-      {{ (ligneCommande.prixVenteUnitaireTtc) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+      <small>
+        {{ (ligneCommande.prixVenteUnitaireTtc) |
+        currency:'XAF':'symbol':'1.0-0':'fr'  }}
+      </small>
     </span>
     <span *ngIf="this.origin === 'fournisseur'">
-      {{ (ligneCommande.prixUnitaireTtc) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+      <small>
+        {{ (ligneCommande.prixUnitaireTtc) |
+        currency:'XAF':'symbol':'1.0-0':'fr'  }}
+      </small>
     </span>
 <!--    {{ (ligneCommande.prixUnitaire ||-->
 <!--    ligneCommande.prixUnitaireTtc ||-->

@@ -1,14 +1,10 @@
 package com.tchindaClovis.gestiondestock.services.impl;
 
-import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.FournisseurDto;
-import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
-import com.tchindaClovis.gestiondestock.model.Client;
-import com.tchindaClovis.gestiondestock.model.CommandeClient;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.Fournisseur;
 import com.tchindaClovis.gestiondestock.repository.CommandeFournisseurRepository;

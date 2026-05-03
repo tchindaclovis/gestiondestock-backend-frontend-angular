@@ -1,10 +1,10 @@
 package com.tchindaClovis.gestiondestock.services.impl;
 
 import com.tchindaClovis.gestiondestock.dto.*;
+import com.tchindaClovis.gestiondestock.model.*;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
-import com.tchindaClovis.gestiondestock.model.*;
 import com.tchindaClovis.gestiondestock.repository.ArticleRepository;
 import com.tchindaClovis.gestiondestock.repository.LigneVenteRepository;
 import com.tchindaClovis.gestiondestock.repository.VenteRepository;
@@ -20,7 +20,9 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,89 +47,250 @@ public class VenteServiceImpl implements VenteService {
     @Override
     @Transactional
     public VenteDto save(VenteDto dto) {
-        validateVente(dto); // Votre validation existante
+        validateVente(dto);
 
+        // On récupère l'ancienne vente si c'est une mise à jour
+        Map<Integer, BigDecimal> anciennesLignesMap = new HashMap<>();
         Vente venteToSave;
 
         if (dto.getId() != null) {
-            // --- CAS MISE À JOUR ---
-            // On force le chargement des lignes avec FETCH
-            venteToSave = (Vente) venteRepository.findByIdWithLignes(dto.getId())
+            venteToSave = venteRepository.findByIdWithLignes(dto.getId())
                     .orElseThrow(() -> new EntityNotFoundException("Vente introuvable", ErrorCodes.VENTE_NOT_FOUND));
 
-            // 1. COMPENSATION DES STOCKS (Annulation des anciens stocks)
+            // On remplit la Map : ID Article -> Quantité
             if (venteToSave.getLigneVentes() != null) {
-                // Comme on a utilisé JOIN FETCH, cette liste est chargée et accessible
-                venteToSave.getLigneVentes().forEach(this::updateMvtStockAnnulation);
+                venteToSave.getLigneVentes().forEach(lig ->
+                        anciennesLignesMap.put(lig.getArticle().getId(), lig.getQuantite())
+                );
             }
 
-            // 2. MISE À JOUR DES INFOS GÉNÉRALES
+            // On met à jour les infos générales
             venteToSave.setCode(dto.getCode());
-            venteToSave.setCommentaire(dto.getCommentaire());
+            venteToSave.setPaymentType(dto.getPaymentType());
             venteToSave.setDateVente(dto.getDateVente());
-            venteToSave.setIdEntreprise(dto.getIdEntreprise());
+//            venteToSave.setIdEntreprise(dto.getIdEntreprise());
 
-            // 3. NETTOYAGE DES LIGNES
-            // On supprime physiquement en BDD
-//            ligneVenteRepository.deleteByVenteId(dto.getId());
-            // Au lieu de supprimer manuellement avec le repository, on vide la collection
+            // Au lieu de supprimer manuellement avec le repository, on vide la collection Java pour éviter les conflits d'état
             // orphanRemoval = true dans l'entité s'occupera de la suppression en base
-            // On vide la collection Java pour éviter les conflits d'état
+            // On nettoie les anciennes lignes pour Hibernate
             venteToSave.getLigneVentes().clear();
-
-            // On synchronise pour que Hibernate sache que la vente est "propre"
             venteRepository.saveAndFlush(venteToSave);
-
         } else {
-            // --- CAS CRÉATION ---
             venteToSave = VenteDto.toEntity(dto);
-            if (venteToSave.getLigneVentes() == null) {
-                venteToSave.setLigneVentes(new ArrayList<>());
-            }
         }
 
-        // 4. ATTACHEMENT DES NOUVELLES LIGNES
+        // Préparer la liste des nouvelles lignes pour la sauvegarde
         if (dto.getLigneVentes() != null) {
-            // Initialiser la liste si elle est nulle pour éviter un NPE
             if (venteToSave.getLigneVentes() == null) {
                 venteToSave.setLigneVentes(new ArrayList<>());
             }
 
             for (LigneVenteDto ligDto : dto.getLigneVentes()) {
                 LigneVente lig = LigneVenteDto.toEntity(ligDto);
-                lig.setId(null); // <--- FORCE LE NULL : C'est la clé pour éviter l'Optimistic Locking
-                lig.setVente(venteToSave); // Lien vers le parent
-                lig.setIdEntreprise(dto.getIdEntreprise()); // Important pour vos filtres
-
-                // On ajoute à la collection du parent pour que le Cascade/Save fonctionne
+                lig.setId(null);
+                lig.setVente(venteToSave);
+                lig.setIdEntreprise(dto.getIdEntreprise());
                 venteToSave.getLigneVentes().add(lig);
-            }
-        }
 
-        // 5. SAUVEGARDE FINALE ET NOUVEAUX STOCKS
-        // On fait un saveAndFlush pour forcer l'écriture des LigneVente en BDD
-        Vente savedVente = venteRepository.saveAndFlush(venteToSave);
+                // LOGIQUE DIFFÉRENTIELLE DES STOCKS
+                Integer articleId = ligDto.getArticle().getId();
+                BigDecimal nouvelleQte = ligDto.getQuantite();
 
-        // 6. MISE À JOUR DES STOCKS
-        if (savedVente.getLigneVentes() != null) {
-            for (LigneVente lig : savedVente.getLigneVentes()) {
-                // Sécurité : on s'assure que l'article est bien présent avant de mouvementer le stock
-                if (lig.getArticle() == null && lig.getArticle().getId() != null) {
-                    // Recharger l'article si nécessaire ou s'assurer que le mapper le fait
-                    lig.setArticle(articleRepository.findById(lig.getArticle().getId()).orElse(null));
-                }
+                if (anciennesLignesMap.containsKey(articleId)) {
+                    // Cas : Mise à jour de quantité
+                    BigDecimal ancienneQte = anciennesLignesMap.get(articleId);
+                    int comparaison = nouvelleQte.compareTo(ancienneQte);
 
-                // On vérifie que la quantité n'est pas nulle
-                if (lig.getQuantite() != null && lig.getQuantite().compareTo(BigDecimal.ZERO) != 0) {
-                    updateMvtStock(lig);
+                    if (comparaison > 0) {
+                        // Augmentation : on sort la différence
+                        BigDecimal diff = nouvelleQte.subtract(ancienneQte);
+                        modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG);
+                    } else if (comparaison < 0) {
+                        // Diminution : on rentre la différence (valeur absolue)
+                        BigDecimal diff = ancienneQte.subtract(nouvelleQte);
+                        modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_POS_VENTE_RED);
+                    }
+                    // Si égal, on ne fait rien.
+
+                    // On retire de la map pour identifier ce qui reste à supprimer à la fin
+                    anciennesLignesMap.remove(articleId);
                 } else {
-                    log.warn("Ligne de vente ignorée pour le stock : Quantité nulle pour l'article {}",
-                            lig.getArticle() != null ? lig.getArticle().getId() : "Inconnu");
+                    // Cas : Nouvelle ligne ajoutée
+                    modifierStockIndividuel(lig, nouvelleQte, ETypeMvtStock.SORTIE);
                 }
             }
         }
 
+        // GÉRER LES SUPPRESSIONS (Articles restants dans la Map)
+        anciennesLignesMap.forEach((idArt, qteInitiale) -> {
+            // On simule une ligne pour la restitution du stock
+            LigneVente ligneSupprimee = new LigneVente();
+            ligneSupprimee.setArticle(articleRepository.findById(idArt).orElse(null));
+            ligneSupprimee.setQuantite(qteInitiale);
+            ligneSupprimee.setIdEntreprise(dto.getIdEntreprise());
+
+            updateMvtStockAnnulation(ligneSupprimee);
+        });
+
+        Vente savedVente = venteRepository.saveAndFlush(venteToSave);
         return VenteDto.fromEntity(savedVente);
+    }
+
+    /**
+     * Méthode utilitaire pour générer un mouvement de stock spécifique (différentiel)
+     */
+    private void modifierStockIndividuel(LigneVente lig, BigDecimal qte, ETypeMvtStock type) {
+        if (qte.compareTo(BigDecimal.ZERO) <= 0) return;
+
+        MvtStockDto mvt = MvtStockDto.builder()
+                .article(ArticleDto.fromEntity(lig.getArticle()))
+                .dateMvt(Instant.now())
+                .typeMvt(type)
+                .sourceMvt(ESourceMvtStock.VENTE)
+                .quantite(qte)
+                .idEntreprise(lig.getIdEntreprise())
+                .build();
+
+        if (type == ETypeMvtStock.CORRECTION_NEG_VENTE_AUG) {
+            mvtStockService.sortieStock(mvt);
+        } else {
+            mvtStockService.entreeStock(mvt);
+        }
+    }
+
+    /**
+     * Méthode pour réintégrer les stocks lors de l'annulation/modification d'une ligne
+     */
+    private void updateMvtStockAnnulation(LigneVente ligne) {
+        MvtStockDto mvtStockDto = MvtStockDto.builder()
+                .article(ArticleDto.fromEntity(ligne.getArticle()))
+                .dateMvt(Instant.now())
+                .typeMvt(ETypeMvtStock.ENTREE) // Ou CORRECTION_POS selon votre enum
+                .sourceMvt(ESourceMvtStock.VENTE)
+                .quantite(ligne.getQuantite()) // On remet la quantité initiale en stock
+                .idEntreprise(ligne.getIdEntreprise())
+                .build();
+        mvtStockService.entreeStock(mvtStockDto);
+    }
+
+
+
+//    @Override
+//    @Transactional
+//    public VenteDto save(VenteDto dto) {
+//        validateVente(dto); // Votre validation existante
+//
+//        // On ne vérifie le stock que pour les nouvelles quantités demandées
+//        verifierStockDisponible(dto);
+//
+//        Vente venteToSave;
+//
+//        if (dto.getId() != null) {
+//            // --- CAS MISE À JOUR ---
+//            // On force le chargement des lignes avec FETCH
+//            venteToSave = (Vente) venteRepository.findByIdWithLignes(dto.getId())
+//                    .orElseThrow(() -> new EntityNotFoundException("Vente introuvable", ErrorCodes.VENTE_NOT_FOUND));
+//
+//            // 1. COMPENSATION DES STOCKS (Annulation des anciens stocks)
+//            if (venteToSave.getLigneVentes() != null) {
+//                // Comme on a utilisé JOIN FETCH, cette liste est chargée et accessible
+//                venteToSave.getLigneVentes().forEach(this::updateMvtStockAnnulation);
+//            }
+//
+//            // 2. MISE À JOUR DES INFOS GÉNÉRALES
+//            venteToSave.setCode(dto.getCode());
+//            venteToSave.setPaymentType(dto.getPaymentType());
+//            venteToSave.setDateVente(dto.getDateVente());
+//            venteToSave.setIdEntreprise(dto.getIdEntreprise());
+//
+//            // 3. NETTOYAGE DES LIGNES
+//            // On supprime physiquement en BDD
+////            ligneVenteRepository.deleteByVenteId(dto.getId());
+//            // Au lieu de supprimer manuellement avec le repository, on vide la collection
+//            // orphanRemoval = true dans l'entité s'occupera de la suppression en base
+//            // On vide la collection Java pour éviter les conflits d'état
+//            venteToSave.getLigneVentes().clear();
+//
+//            // On synchronise pour que Hibernate sache que la vente est "propre"
+//            venteRepository.saveAndFlush(venteToSave);
+//
+//        } else {
+//            // --- CAS CRÉATION ---
+//            venteToSave = VenteDto.toEntity(dto);
+//            if (venteToSave.getLigneVentes() == null) {
+//                venteToSave.setLigneVentes(new ArrayList<>());
+//            }
+//        }
+//
+//        // 4. ATTACHEMENT DES NOUVELLES LIGNES
+//        if (dto.getLigneVentes() != null) {
+//            // Initialiser la liste si elle est nulle pour éviter un NPE
+//            if (venteToSave.getLigneVentes() == null) {
+//                venteToSave.setLigneVentes(new ArrayList<>());
+//            }
+//
+//            for (LigneVenteDto ligDto : dto.getLigneVentes()) {
+//                LigneVente lig = LigneVenteDto.toEntity(ligDto);
+//                lig.setId(null); // <--- FORCE LE NULL : C'est la clé pour éviter l'Optimistic Locking
+//                lig.setVente(venteToSave); // Lien vers le parent
+//                lig.setIdEntreprise(dto.getIdEntreprise()); // Important pour vos filtres
+//
+//                // On ajoute à la collection du parent pour que le Cascade/Save fonctionne
+//                venteToSave.getLigneVentes().add(lig);
+//            }
+//        }
+//
+//        // 5. SAUVEGARDE FINALE ET NOUVEAUX STOCKS
+//        // On fait un saveAndFlush pour forcer l'écriture des LigneVente en BDD
+//        Vente savedVente = venteRepository.saveAndFlush(venteToSave);
+//
+//        // 6. MISE À JOUR DES STOCKS
+//        if (savedVente.getLigneVentes() != null) {
+//            for (LigneVente lig : savedVente.getLigneVentes()) {
+//                // Sécurité : on s'assure que l'article est bien présent avant de mouvementer le stock
+//                if (lig.getArticle() == null && lig.getArticle().getId() != null) {
+//                    // Recharger l'article si nécessaire ou s'assurer que le mapper le fait
+//                    lig.setArticle(articleRepository.findById(lig.getArticle().getId()).orElse(null));
+//                }
+//
+//                // On vérifie que la quantité n'est pas nulle
+//                if (lig.getQuantite() != null && lig.getQuantite().compareTo(BigDecimal.ZERO) != 0) {
+//                    updateMvtStock(lig);
+//                } else {
+//                    log.warn("Ligne de vente ignorée pour le stock : Quantité nulle pour l'article {}",
+//                            lig.getArticle() != null ? lig.getArticle().getId() : "Inconnu");
+//                }
+//            }
+//        }
+//
+//        return VenteDto.fromEntity(savedVente);
+//    }
+
+
+    /**
+     * Vérifie si le stock est suffisant pour chaque article de la vente
+     */
+    private void verifierStockDisponible(VenteDto dto) {
+        List<String> stockErrors = new ArrayList<>();
+
+        if (dto.getLigneVentes() != null) {
+            for (LigneVenteDto lig : dto.getLigneVentes()) {
+                if (lig.getArticle() != null && lig.getArticle().getId() != null) {
+                    // On récupère la quantité actuelle en stock pour cet article
+                    // Hypothèse : vous avez une méthode dans mvtStockService pour cela
+                    BigDecimal stockActuel = mvtStockService.stockReelArticle(lig.getArticle().getId());
+
+                    if (stockActuel.compareTo(lig.getQuantite()) < 0) {
+                        stockErrors.add("Stock insuffisant pour l'article " + lig.getArticle().getCodeArticle()
+                                + " (Disponible: " + stockActuel + ", Demandé: " + lig.getQuantite() + ")");
+                    }
+                }
+            }
+        }
+
+        if (!stockErrors.isEmpty()) {
+            throw new InvalidEntityException("Stock insuffisant", ErrorCodes.VENTE_NOT_VALID, stockErrors);
+        }
     }
 
 
@@ -149,25 +312,22 @@ public class VenteServiceImpl implements VenteService {
             log.error("Échec de validation de la vente : {}", errors);
             throw new InvalidEntityException("Vente invalide", ErrorCodes.VENTE_NOT_VALID, errors);
         }
+
+
     }
 
 
-    /**
-     * Méthode pour réintégrer les stocks lors de l'annulation/modification d'une ligne
-     */
-    private void updateMvtStockAnnulation(LigneVente ligne) {
+    private void updateMvtStock(LigneVente lig) {
         MvtStockDto mvtStockDto = MvtStockDto.builder()
-                .article(ArticleDto.fromEntity(ligne.getArticle()))
+                .article(ArticleDto.fromEntity(lig.getArticle()))
                 .dateMvt(Instant.now())
-                .typeMvt(ETypeMvtStock.ENTREE) // Ou CORRECTION_POS selon votre enum
+                .typeMvt(ETypeMvtStock.SORTIE)
                 .sourceMvt(ESourceMvtStock.VENTE)
-                .quantite(ligne.getQuantite()) // On remet la quantité initiale en stock
-                .idEntreprise(ligne.getIdEntreprise())
+                .quantite(lig.getQuantite())
+                .idEntreprise(lig.getIdEntreprise())
                 .build();
-        mvtStockService.entreeStock(mvtStockDto);
+        mvtStockService.sortieStock(mvtStockDto);
     }
-
-
 
     @Override
     public VenteDto findById(Integer id) {
@@ -244,6 +404,21 @@ public class VenteServiceImpl implements VenteService {
     }
 
 
+    @Override
+    public String getLastCodeVente() {
+        // CORRECTION : Utilisez l'instance "venteRepository" (minuscule)
+        // et extrayez le code de l'objet Vente
+        return venteRepository.findTopByOrderByCodeDesc()
+                .map(Vente::getCode) // On transforme l'Vente en String (son code)
+                .orElse("CVT0000");           // Valeur par défaut si aucun vente n'existe
+    }
+}
+
+
+
+
+
+
 //    @Override
 //    public void delete(Integer id) {
 //        if (id == null) {
@@ -283,26 +458,3 @@ public class VenteServiceImpl implements VenteService {
 //        }
 //        venteRepository.deleteById(id);
 //    }
-
-    private void updateMvtStock(LigneVente lig) {
-        MvtStockDto mvtStockDto = MvtStockDto.builder()
-                .article(ArticleDto.fromEntity(lig.getArticle()))
-                .dateMvt(Instant.now())
-                .typeMvt(ETypeMvtStock.SORTIE)
-                .sourceMvt(ESourceMvtStock.VENTE)
-                .quantite(lig.getQuantite())
-                .idEntreprise(lig.getIdEntreprise())
-                .build();
-        mvtStockService.sortieStock(mvtStockDto);
-    }
-
-
-    @Override
-    public String getLastCodeVente() {
-        // CORRECTION : Utilisez l'instance "venteRepository" (minuscule)
-        // et extrayez le code de l'objet Vente
-        return venteRepository.findTopByOrderByCodeDesc()
-                .map(Vente::getCode) // On transforme l'Vente en String (son code)
-                .orElse("CVT0000");           // Valeur par défaut si aucun vente n'existe
-    }
-}

@@ -6,7 +6,6 @@ import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
 import com.tchindaClovis.gestiondestock.model.*;
-import com.tchindaClovis.gestiondestock.model.ESourceMvtStock;
 import com.tchindaClovis.gestiondestock.repository.ArticleRepository;
 import com.tchindaClovis.gestiondestock.repository.ClientRepository;
 import com.tchindaClovis.gestiondestock.repository.CommandeClientRepository;

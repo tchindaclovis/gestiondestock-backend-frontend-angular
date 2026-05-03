@@ -86,7 +86,8 @@ public interface EntrepriseApi {
     )
     List<EntrepriseDto> findAll();
 
-    @DeleteMapping(value = APP_ROOT + "/entreprises/delete/{idEntreprise}")
+    @DeleteMapping(value = APP_ROOT + "/entreprises/delete/{idEntreprise}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Supprimer une entreprise",
             description = "Cette méthode permet de supprimer une entreprise par son ID",

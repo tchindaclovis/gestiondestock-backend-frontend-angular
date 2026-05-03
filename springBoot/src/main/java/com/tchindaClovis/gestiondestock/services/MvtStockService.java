@@ -14,12 +14,18 @@ public interface MvtStockService {
 
     List<MvtStockDto> mvtStockArticle(Integer idArticle);
 
+    List<MvtStockDto> findAllMvtsByEntreprise(Integer idEntreprise);
+
     MvtStockDto entreeStock(MvtStockDto dto);
 
     MvtStockDto sortieStock(MvtStockDto dto);
 
     MvtStockDto correctionStockPos(MvtStockDto dto);
 
+    MvtStockDto correctionStockPosVenteRed(MvtStockDto dto);
+
     MvtStockDto correctionStockNeg(MvtStockDto dto);
+
+    MvtStockDto correctionStockNegVenteAug(MvtStockDto dto);
 
 }

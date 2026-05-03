@@ -42,6 +42,8 @@ export class NouvelleVenteComponent implements OnInit {
   listeLignesVente: Array<any> = [];
   totalVente = 0;
   articleNotYetSelected = false;
+  // On récupère les valeurs de l'énumération pour l'itérer dans le HTML
+  paymentTypesOptions = Object.values(VenteDto.PaymentTypeEnum);
 
   constructor(
     private router: Router,
@@ -310,7 +312,7 @@ export class NouvelleVenteComponent implements OnInit {
       id: this.idVente,
       [this.origin]: this.selectedClientFournisseur,
       code: this.codeVente,
-      commentaire: this.commentaire,
+      paymentType: this.venteDto.paymentType,
       dateVente: new Date().getTime(),
       idEntreprise: idEnt,
       ['ligneVentes']: lignesPourBackend
