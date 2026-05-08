@@ -51,8 +51,8 @@ export class NouvelArticleComponent implements OnInit {
           if (res instanceof Blob) {
             rawValue = await res.text();
           }
-          console.log('Valeur textuelle extraite :', rawValue); // Devrait afficher "ART0013"
-          this.articleDto.codeArticle = this.genererProchainCode(rawValue);
+          console.log('Valeur textuelle extraite :', res); // Devrait afficher "ART0013"
+          this.articleDto.codeArticle = this.genererProchainCode(res);
         },
         error: (err) => {
           console.error('Erreur API :', err);

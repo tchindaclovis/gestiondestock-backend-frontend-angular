@@ -105,18 +105,19 @@ public class VenteServiceImpl implements VenteService {
                         // Augmentation : on sort la différence
                         BigDecimal diff = nouvelleQte.subtract(ancienneQte);
                         modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG);
-                    } else if (comparaison < 0) {
+                    }
+                    else if (comparaison < 0) {
                         // Diminution : on rentre la différence (valeur absolue)
                         BigDecimal diff = ancienneQte.subtract(nouvelleQte);
                         modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_POS_VENTE_RED);
                     }
-                    // Si égal, on ne fait rien.
+                        // Si inférieur ou égal, on ne fait rien.
 
                     // On retire de la map pour identifier ce qui reste à supprimer à la fin
                     anciennesLignesMap.remove(articleId);
                 } else {
                     // Cas : Nouvelle ligne ajoutée
-                    modifierStockIndividuel(lig, nouvelleQte, ETypeMvtStock.SORTIE);
+                    modifierStockIndividuel(lig, nouvelleQte, ETypeMvtStock.SORTIE_VTE);
                 }
             }
         }
@@ -148,18 +149,21 @@ public class VenteServiceImpl implements VenteService {
                 .typeMvt(type)
                 .sourceMvt(ESourceMvtStock.VENTE)
                 .quantite(qte)
+                .codeSource(lig.getVente().getCode()) // ON PASSE LE CODE ICI
                 .idEntreprise(lig.getIdEntreprise())
                 .build();
 
         if (type == ETypeMvtStock.CORRECTION_NEG_VENTE_AUG) {
-            mvtStockService.sortieStock(mvt);
-        } else {
-            mvtStockService.entreeStock(mvt);
+            mvtStockService.correctionStockNegVenteAug(mvt);
+        } else  if (type == ETypeMvtStock.CORRECTION_POS_VENTE_RED){
+            mvtStockService.correctionStockPosVenteRed1(mvt);
+        }else{
+            mvtStockService.sortieStockVte(mvt);
         }
     }
 
     /**
-     * Méthode pour réintégrer les stocks lors de l'annulation/modification d'une ligne
+     * Méthode pour réintégrer les stocks lors de l'annulation/modification/suppression d'une ligne
      */
     private void updateMvtStockAnnulation(LigneVente ligne) {
         MvtStockDto mvtStockDto = MvtStockDto.builder()
@@ -168,6 +172,7 @@ public class VenteServiceImpl implements VenteService {
                 .typeMvt(ETypeMvtStock.ENTREE) // Ou CORRECTION_POS selon votre enum
                 .sourceMvt(ESourceMvtStock.VENTE)
                 .quantite(ligne.getQuantite()) // On remet la quantité initiale en stock
+                .codeSource(ligne.getVente().getCode()) // ON PASSE LE CODE ICI
                 .idEntreprise(ligne.getIdEntreprise())
                 .build();
         mvtStockService.entreeStock(mvtStockDto);

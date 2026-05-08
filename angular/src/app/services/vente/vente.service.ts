@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import {UserService} from "../user/user.service";
-import {
-  ArticleDto,
-  ArticlesService,
-  CommandeClientDto,
-  LigneCommandeClientDto, LigneVenteDto, UtilisateurDto,
-  VenteDto,
-  VentesService
-} from "../../../gs-api/src";
+import {LigneVenteDto, VenteDto, VentesService} from "../../../gs-api/src";
 import {from, map, Observable, of, switchMap} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +11,8 @@ export class VenteService {
 
   constructor(
     private userService: UserService,
-    private ventesService: VentesService
+    private ventesService: VentesService,
+    private http: HttpClient                  // <--- Vérifie bien le "private" ici
   ) { }
 
   enregistrerVente(venteDto: VenteDto): Observable<VenteDto>{
@@ -74,6 +69,14 @@ export class VenteService {
   }
 
   getLastCodeVente(): Observable<string> {
-    return this.ventesService.getLastCodeVente();
+    // On récupère l'URL de base depuis le service généré ou on la définit
+    const url = 'http://localhost:8081/gestiondestock/v1/ventes/lastcodevente';
+
+    // L'option { responseType: 'text' } est CRUCIALRE ici
+    return this.http.get(url, { responseType: 'text' });
   }
+
+  // getLastCodeVente(): Observable<string> {
+  //   return this.ventesService.getLastCodeVente();
+  // }
 }

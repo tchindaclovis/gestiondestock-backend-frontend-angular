@@ -20,9 +20,16 @@ public interface MvtStockService {
 
     MvtStockDto sortieStock(MvtStockDto dto);
 
+    MvtStockDto sortieStockVte(MvtStockDto dto);
+
     MvtStockDto correctionStockPos(MvtStockDto dto);
 
     MvtStockDto correctionStockPosVenteRed(MvtStockDto dto);
+    MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto);
+
+    MvtStockDto correctionStockPosVenteRed2(MvtStockDto dto);
+
+    MvtStockDto correctionStockNegRetourFournisseur(MvtStockDto dto);
 
     MvtStockDto correctionStockNeg(MvtStockDto dto);
 

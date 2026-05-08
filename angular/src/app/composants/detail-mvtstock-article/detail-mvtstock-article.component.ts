@@ -99,35 +99,62 @@ export class DetailMvtstockArticleComponent implements OnInit {
 
 
   enregistrerCorrection(): void {
-    if (!this.articleDto.id || !this.mvtStockDto.quantite) return;
+  if (!this.articleDto.id || !this.mvtStockDto.quantite) return;
 
-    this.mvtStockDto.article = this.articleDto;
-    this.mvtStockDto.dateMvt = new Date().toISOString();
+  this.mvtStockDto.article = this.articleDto;
+  this.mvtStockDto.dateMvt = new Date().toISOString();
 
-    const call = this.mvtStockDto.typeMvt === 'CORRECTION_POS'
-      ? this.mvtstockService.correctionStockPos(this.mvtStockDto)
-      : this.mvtstockService.correctionStockNeg(this.mvtStockDto);
+// AJOUTE CETTE LIGNE :
+    // On récupère l'idEntreprise de l'article (car l'article appartient à l'entreprise)
+    this.mvtStockDto.idEntreprise = this.articleDto.idEntreprise;
+
+  let call;
+  // Utilisation du switch case pour déterminer l'appel au service
+  switch (this.mvtStockDto.typeMvt) {
+    case 'CORRECTION_POS':
+      call = this.mvtstockService.correctionStockPos(this.mvtStockDto);
+      break;
+    case 'CORRECTION_NEG':
+      call = this.mvtstockService.correctionStockNeg(this.mvtStockDto);
+      break;
+    case 'CORRECTION_POS_VENTE_RED':
+      call = this.mvtstockService.correctionStockPosVenteRed(this.mvtStockDto);
+      break;
+
+    case 'CORRECTION_NEG_VENTE_AUG':
+      call = this.mvtstockService.correctionStockNegVenteAug(this.mvtStockDto);
+      break;
+
+    case 'CORRECTION_NEG_RETOUR_FOURNISSEUR':
+      call = this.mvtstockService.correctionStockNegRetourFournisseur(this.mvtStockDto);
+      break;
+
+    default:
+      // Optionnel : gérer un cas par défaut ou une erreur
+      console.warn('Type de mouvement non reconnu');
+      return; // On sort de la méthode si le type est inconnu
+  }
 
     // const call = this.mvtStockDto.typeMvt === 'CORRECTION_POS'
     //   ? this.mvtstockService.correctionStockPos(this.mvtStockDto)
     //   : this.mvtstockService.correctionStockNeg(this.mvtStockDto);
 
-    call.subscribe({
-      next: () => {
-        // 1. Réinitialiser le formulaire local
-        this.handleSuccess();
+  // Exécution de l'appel API
+  call.subscribe({
+    next: () => {
+      // 1. Réinitialiser le formulaire local
+      this.handleSuccess();
 
-        // 2. Recharger le stock global de cet article précisément
-        this.chargerStock();
+      // 2. Recharger le stock global de cet article précisément
+      this.chargerStock();
 
-        // 3. Notifier le parent pour qu'il recharge la liste des mouvements
-        // On passe l'ID de l'article pour que le parent sache qui mettre à jour
-        this.correctionStockEvent.emit('success');
-      },
-      error: (err) => console.error("Erreur lors de la correction", err)
-    });
-  }
-
+      // 3. Notifier le parent pour qu'il recharge la liste des mouvements
+      // On passe l'ID de l'article pour que le parent sache qui mettre à jour
+      this.correctionStockEvent.emit('success');
+    },
+    error: (err) => console.error("Erreur lors de la correction", err)
+  });
+}
 
   // enregistrerCorrection(): void {
   //   if (!this.articleDto.id || !this.mvtStockDto.quantite) {
@@ -153,8 +180,40 @@ export class DetailMvtstockArticleComponent implements OnInit {
   //       },
   //       error: (err) => console.error(err)
   //     });
-  //   } else {
+  //   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_NEG'){
   //     this.mvtstockService.correctionStockNeg(this.mvtStockDto).subscribe({
+  //       next: () => {
+  //         this.handleSuccess();
+  //         // 1. On émet d'abord le succès pour les éventuels composants parents
+  //         // On prévient le parent pour mettre à jour l'affichage du stock actuel
+  //         this.correctionStockEvent.emit('success');
+  //         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
+  //         setTimeout(() => {
+  //           // 3. Navigation vers la liste des ventes
+  //           // Cela déclenchera le rechargement du composant de la liste
+  //           this.router.navigate(['mvtstock']);
+  //         }, 300);
+  //       },
+  //       error: (err) => console.error(err)
+  //     });
+  //   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_POS_VENTE_RED'){
+  //     this.mvtstockService.correctionStockPosVenteRed(this.mvtStockDto).subscribe({
+  //       next: () => {
+  //         this.handleSuccess();
+  //         // 1. On émet d'abord le succès pour les éventuels composants parents
+  //         // On prévient le parent pour mettre à jour l'affichage du stock actuel
+  //         this.correctionStockEvent.emit('success');
+  //         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
+  //         setTimeout(() => {
+  //           // 3. Navigation vers la liste des ventes
+  //           // Cela déclenchera le rechargement du composant de la liste
+  //           this.router.navigate(['mvtstock']);
+  //         }, 300);
+  //       },
+  //       error: (err) => console.error(err)
+  //     });
+  //   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_NEG_VENTE_AUG'){
+  //     this.mvtstockService.correctionStockNegVenteAug(this.mvtStockDto).subscribe({
   //       next: () => {
   //         this.handleSuccess();
   //         // 1. On émet d'abord le succès pour les éventuels composants parents
@@ -198,6 +257,9 @@ export class DetailMvtstockArticleComponent implements OnInit {
     }
   }
 }
+
+
+
 
 
 

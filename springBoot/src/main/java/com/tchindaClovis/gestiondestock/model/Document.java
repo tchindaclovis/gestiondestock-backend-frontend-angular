@@ -1,8 +1,6 @@
 package com.tchindaClovis.gestiondestock.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Document")  //optionnel car par défaut le nom de la classe
 public class Document extends AbstractEntity{
 

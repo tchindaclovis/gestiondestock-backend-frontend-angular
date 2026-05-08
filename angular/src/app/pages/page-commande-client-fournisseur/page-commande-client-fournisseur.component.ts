@@ -48,6 +48,7 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
     let serviceCall: Observable<any>;
 
     const idEntreprise = this.connectedUser?.entreprise?.id;
+    console.log('ID Entreprise détecté:', idEntreprise); // 1. Vérifier l'ID
     if (idEntreprise) {
       serviceCall = (this.origin === 'client') ?
         this.commandeClientFournisseurService.findAllCommandeClientByIdEntreprise(idEntreprise) :
@@ -55,6 +56,7 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
 
 
       serviceCall.subscribe(cmd => {
+        console.log('Commandes reçues de l\'API:', cmd); // 2. Voir si c'est []
         this.listeCommandes = cmd;
         // Initialiser la Map avec des tableaux vides pour CHAQUE commande immédiatement
         this.listeCommandes.forEach(c => {

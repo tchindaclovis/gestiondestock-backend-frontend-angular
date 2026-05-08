@@ -1,10 +1,8 @@
 package com.tchindaClovis.gestiondestock.dto;
 
 import com.tchindaClovis.gestiondestock.model.Document;
-import com.tchindaClovis.gestiondestock.model.Document;
 import com.tchindaClovis.gestiondestock.model.EEtatDocument;
 import com.tchindaClovis.gestiondestock.model.ETypeDocument;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 

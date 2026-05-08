@@ -16,9 +16,7 @@ import com.tchindaClovis.gestiondestock.validator.ArticleValidator;
 import com.tchindaClovis.gestiondestock.validator.CommandeClientValidator;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,115 +98,133 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 
 
+        // On récupère l'ancienne commandeClient si c'est une mise à jour
+        Map<Integer, BigDecimal> anciennesLignesMap = new HashMap<>();
         CommandeClient commandeClientToSave;
 
         if (dto.getId() != null) {
-            // --- CAS MISE À JOUR ---
-            // On force le chargement des lignes avec FETCH
-            commandeClientToSave = (CommandeClient) commandeClientRepository.findByIdWithLignes(dto.getId())
+            commandeClientToSave = commandeClientRepository.findByIdWithLignes(dto.getId())
                     .orElseThrow(() -> new EntityNotFoundException("CommandeClient introuvable", ErrorCodes.COMMANDE_CLIENT_NOT_FOUND));
 
-            // 1. COMPENSATION DES STOCKS (Annulation des anciens stocks)
+            // On remplit la Map : ID Article -> Quantité
             if (commandeClientToSave.getLigneCommandeClients() != null) {
-                // Comme on a utilisé JOIN FETCH, cette liste est chargée et accessible
-                commandeClientToSave.getLigneCommandeClients().forEach(this::updateMvtStockAnnulation);
+                commandeClientToSave.getLigneCommandeClients().forEach(lig ->
+                        anciennesLignesMap.put(lig.getArticle().getId(), lig.getQuantite())
+                );
             }
 
-            // 2. MISE À JOUR DES INFOS GÉNÉRALES
+            // On met à jour les infos générales
             commandeClientToSave.setCode(dto.getCode());
             commandeClientToSave.setDateCommande(dto.getDateCommande());
-            commandeClientToSave.setIdEntreprise(dto.getIdEntreprise());
+//            commandeClientToSave.setIdEntreprise(dto.getIdEntreprise());
 
-            // 3. NETTOYAGE DES LIGNES
-            // On supprime physiquement en BDD
-//            ligneVenteRepository.deleteByVenteId(dto.getId());
-            // Au lieu de supprimer manuellement avec le repository, on vide la collection
+            // Au lieu de supprimer manuellement avec le repository, on vide la collection Java pour éviter les conflits d'état
             // orphanRemoval = true dans l'entité s'occupera de la suppression en base
-            // On vide la collection Java pour éviter les conflits d'état
+            // On nettoie les anciennes lignes pour Hibernate
             commandeClientToSave.getLigneCommandeClients().clear();
-
-            // On synchronise pour que Hibernate sache que la commandeClient est "propre"
             commandeClientRepository.saveAndFlush(commandeClientToSave);
-
         } else {
-            // --- CAS CRÉATION ---
             commandeClientToSave = CommandeClientDto.toEntity(dto);
-            if (commandeClientToSave.getLigneCommandeClients() == null) {
-                commandeClientToSave.setLigneCommandeClients(new ArrayList<>());
-            }
         }
 
-        // 4. ATTACHEMENT DES NOUVELLES LIGNES
+        // Préparer la liste des nouvelles lignes pour la sauvegarde
         if (dto.getLigneCommandeClients() != null) {
-            // Initialiser la liste si elle est nulle pour éviter un NPE
             if (commandeClientToSave.getLigneCommandeClients() == null) {
                 commandeClientToSave.setLigneCommandeClients(new ArrayList<>());
             }
 
             for (LigneCommandeClientDto ligDto : dto.getLigneCommandeClients()) {
                 LigneCommandeClient lig = LigneCommandeClientDto.toEntity(ligDto);
-                lig.setId(null); // <--- FORCE LE NULL : C'est la clé pour éviter l'Optimistic Locking
-                lig.setCommandeClient(commandeClientToSave); // Lien vers le parent
-                lig.setIdEntreprise(dto.getIdEntreprise()); // Important pour vos filtres
-
-                // On ajoute à la collection du parent pour que le Cascade/Save fonctionne
+                lig.setId(null);
+                lig.setCommandeClient(commandeClientToSave);
+                lig.setIdEntreprise(dto.getIdEntreprise());
                 commandeClientToSave.getLigneCommandeClients().add(lig);
-            }
-        }
 
-        // 5. SAUVEGARDE FINALE ET NOUVEAUX STOCKS
-        // On fait un saveAndFlush pour forcer l'écriture des LigneVente en BDD
-        CommandeClient savedCommandeClient = commandeClientRepository.saveAndFlush(commandeClientToSave);
+                // LOGIQUE DIFFÉRENTIELLE DES STOCKS
+                Integer articleId = ligDto.getArticle().getId();
+                BigDecimal nouvelleQte = ligDto.getQuantite();
 
-        // 6. MISE À JOUR DES STOCKS
-        if (savedCommandeClient.getLigneCommandeClients() != null) {
-            for (LigneCommandeClient lig : savedCommandeClient.getLigneCommandeClients()) {
-                // Sécurité : on s'assure que l'article est bien présent avant de mouvementer le stock
-                if (lig.getArticle() == null && lig.getArticle().getId() != null) {
-                    // Recharger l'article si nécessaire ou s'assurer que le mapper le fait
-                    lig.setArticle(articleRepository.findById(lig.getArticle().getId()).orElse(null));
-                }
+                if (anciennesLignesMap.containsKey(articleId)) {
+                    // Cas : Mise à jour de quantité
+                    BigDecimal ancienneQte = anciennesLignesMap.get(articleId);
+                    int comparaison = nouvelleQte.compareTo(ancienneQte);
 
-                // On vérifie que la quantité n'est pas nulle
-                if (lig.getQuantite() != null && lig.getQuantite().compareTo(BigDecimal.ZERO) != 0) {
-                    updateMvtStock(lig);
+                    if (comparaison > 0) {
+                        // Augmentation : on sort la différence
+                        BigDecimal diff = nouvelleQte.subtract(ancienneQte);
+                        modifierStockIndividuel(lig, diff, ETypeMvtStock.SORTIE);
+                    }
+                    else if (comparaison < 0) {
+                        // Diminution : on rentre la différence (valeur absolue)
+                        BigDecimal diff = ancienneQte.subtract(nouvelleQte);
+                        modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_POS_VENTE_RED);
+                    }
+                    // Si inférieur ou égal, on ne fait rien.
+
+                    // On retire de la map pour identifier ce qui reste à supprimer à la fin
+                    anciennesLignesMap.remove(articleId);
                 } else {
-                    log.warn("Ligne de commandeClient ignorée pour le stock : Quantité nulle pour l'article {}",
-                            lig.getArticle() != null ? lig.getArticle().getId() : "Inconnu");
+                    // Cas : Nouvelle ligne ajoutée
+                    modifierStockIndividuel(lig, nouvelleQte, ETypeMvtStock.SORTIE);
                 }
             }
         }
+
+        // GÉRER LES SUPPRESSIONS (Articles restants dans la Map)
+        anciennesLignesMap.forEach((idArt, qteInitiale) -> {
+            // On simule une ligne pour la restitution du stock
+            LigneCommandeClient ligneSupprimee = new LigneCommandeClient();
+            ligneSupprimee.setArticle(articleRepository.findById(idArt).orElse(null));
+            ligneSupprimee.setQuantite(qteInitiale);
+            ligneSupprimee.setIdEntreprise(dto.getIdEntreprise());
+
+            updateMvtStockAnnulation(ligneSupprimee);
+        });
+
+        CommandeClient savedCommandeClient = commandeClientRepository.saveAndFlush(commandeClientToSave);
         return CommandeClientDto.fromEntity(savedCommandeClient);
     }
 
+    /**
+     * Méthode utilitaire pour générer un mouvement de stock spécifique (différentiel)
+     */
+    private void modifierStockIndividuel(LigneCommandeClient lig, BigDecimal qte, ETypeMvtStock type) {
+        if (qte.compareTo(BigDecimal.ZERO) <= 0) return;
+
+        MvtStockDto mvt = MvtStockDto.builder()
+                .article(ArticleDto.fromEntity(lig.getArticle()))
+                .dateMvt(Instant.now())
+                .typeMvt(type)
+                .sourceMvt(ESourceMvtStock.COMMANDE_CLIENT)
+                .quantite(qte)
+                .codeSource(lig.getCommandeClient().getCode()) // ON PASSE LE CODE ICI
+                .idEntreprise(lig.getIdEntreprise())
+                .build();
+
+        if (type == ETypeMvtStock.SORTIE) {
+            mvtStockService.sortieStock(mvt);
+        } else  if (type == ETypeMvtStock.CORRECTION_POS_VENTE_RED){
+            mvtStockService.correctionStockPosVenteRed2(mvt);
+        }else{
+            mvtStockService.sortieStock(mvt);
+        }
+    }
 
     /**
-     * Méthode pour réintégrer les stocks lors de l'annulation/modification d'une ligne
+     * Méthode pour réintégrer les stocks lors de l'annulation/modification/suppression d'une ligne
      */
     private void updateMvtStockAnnulation(LigneCommandeClient ligne) {
         MvtStockDto mvtStockDto = MvtStockDto.builder()
                 .article(ArticleDto.fromEntity(ligne.getArticle()))
                 .dateMvt(Instant.now())
                 .typeMvt(ETypeMvtStock.ENTREE) // Ou CORRECTION_POS selon votre enum
-                .sourceMvt(ESourceMvtStock.VENTE)
+                .sourceMvt(ESourceMvtStock.COMMANDE_CLIENT)
                 .quantite(ligne.getQuantite()) // On remet la quantité initiale en stock
+                .codeSource(ligne.getCommandeClient().getCode()) // ON PASSE LE CODE ICI
                 .idEntreprise(ligne.getIdEntreprise())
                 .build();
         mvtStockService.entreeStock(mvtStockDto);
     }
-
-    private void updateMvtStock(LigneCommandeClient lig) {
-        MvtStockDto mvtStockDto = MvtStockDto.builder()
-                .article(ArticleDto.fromEntity(lig.getArticle()))
-                .dateMvt(Instant.now())
-                .typeMvt(ETypeMvtStock.SORTIE)
-                .sourceMvt(ESourceMvtStock.VENTE)
-                .quantite(lig.getQuantite())
-                .idEntreprise(lig.getIdEntreprise())
-                .build();
-        mvtStockService.sortieStock(mvtStockDto);
-    }
-
 
 //    @Override
 //    @Transactional

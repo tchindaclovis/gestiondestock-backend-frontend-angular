@@ -3,17 +3,18 @@ import {UserService} from "../user/user.service";
 import {ArticleDto, ArticlesService, CategoryDto} from "../../../gs-api/src";
 import {Observable, of} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
-  private http: any;
   private baseUrl: any;
 
   constructor(
     private userService: UserService,
-    private articlesService: ArticlesService
+    private articlesService: ArticlesService, // Service généré par OpenAPI
+    private http: HttpClient                  // <--- Vérifie bien le "private" ici
   ) { }
 
 
@@ -58,7 +59,19 @@ export class ArticleService {
     return of([]);
   }
 
+  // getLastCodeArticle(): Observable<string> {
+  //   return this.articlesService.getLastCodeArticle();
+  // }
+
+  /**
+   * Correction : On court-circuite le service généré pour cet appel spécifique
+   * afin de spécifier que la réponse est du TEXTE pur et non du JSON.
+   */
   getLastCodeArticle(): Observable<string> {
-    return this.articlesService.getLastCodeArticle();
+    // On récupère l'URL de base depuis le service généré ou on la définit
+    const url = 'http://localhost:8081/gestiondestock/v1/articles/lastcodearticle';
+
+    // L'option { responseType: 'text' } est CRUCIALRE ici
+    return this.http.get(url, { responseType: 'text' });
   }
 }

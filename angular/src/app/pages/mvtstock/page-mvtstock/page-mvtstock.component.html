@@ -1,6 +1,6 @@
 <div class="row ">
   <div class="col-md-9">
-    <div class="row ms-3 me-3 pt-1 pb-1 page_title">
+    <div class="row ms-3 me-3 pb-1 page_title">
       <div class="col-md-8 p-0">
         <h4>
           <span *ngIf="totalMouvements > 0">Liste des mouvements de stock ( {{ totalMouvements }} )</span>
@@ -43,22 +43,28 @@
 
                 <div class="row mb-1 mr-0 border">
 
+                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+                    <h6>Code cmd/vte</h6>
+                  </div>
+
+                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+                    <h6>Date mvmt</h6>
+                  </div>
+
+                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+                    <h6>Qté mvt</h6>
+                  </div>
                   <div class="col-md-3 border-end mb-1 mt-1 text-center">
-                    <h6>Date mouvement</h6>
+                    <h6>Type mvt</h6>
                   </div>
-                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
-                    <h6>Quantité mvt</h6>
-                  </div>
-                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
-                    <h6>Type mouvement</h6>
-                  </div>
-                  <div class="col-md-5 mb-1 mt-1 text-center">
-                    <h6>Source mouvement</h6>
+                  <div class="col-md-3 mb-1 mt-1 text-center">
+                    <h6>Source mvt</h6>
                   </div>
                 </div>
 
                 <ng-container *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
                   <app-detail-mvtstock
+
                     *ngFor="let mouvement of listeMvts"
                     [mvtStockDto]="mouvement">
                   </app-detail-mvtstock>

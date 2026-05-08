@@ -11,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "CommandeFournisseur")  //optionnel car par défaut le nom de la classe
-public class CommandeFournisseur extends AbstractEntity{
+public class CommandeFournisseur extends Document{
 
     @Column(name = "code")
     private String code;
@@ -23,8 +23,8 @@ public class CommandeFournisseur extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private EEtatCommande etatCommande;
 
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @ManyToOne
     @JoinColumn(name = "idfournisseur")

@@ -59,6 +59,14 @@ export class PageVenteComponent implements OnInit {
     }
   }
 
+
+  findAllLigneVenteByVente(): void {
+    this.listeVentes.forEach(vte => {
+      this.findLignesVenteByVente(vte.id);
+    });
+  }
+
+
   findAllLigneVente(): void {
     // On récupère l'id de l'entreprise de l'utilisateur connecté
     const idEntreprise = this.connectedUser?.entreprise?.id;
@@ -71,12 +79,6 @@ export class PageVenteComponent implements OnInit {
     }
   }
 
-
-  findAllLigneVenteByVente(): void {
-    this.listeVentes.forEach(vte => {
-      this.findLignesVenteByVente(vte.id);
-    });
-  }
 
   findLignesVenteByVente(idVente: number): void {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"

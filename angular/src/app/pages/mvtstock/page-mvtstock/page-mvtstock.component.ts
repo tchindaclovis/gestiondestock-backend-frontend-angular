@@ -3,6 +3,7 @@ import {ArticleDto, MvtStockDto, UtilisateurDto} from "../../../../gs-api/src";
 import { ArticleService } from "../../../services/article/article.service";
 import { MvtstockService } from "../../../services/mvtstock/mvtstock.service";
 import {UserService} from "../../../services/user/user.service";
+import {VenteService} from "../../../services/vente/vente.service";
 
 @Component({
   selector: 'app-page-mvtstock',
@@ -14,6 +15,7 @@ export class PageMvtstockComponent implements OnInit {
   connectedUser: UtilisateurDto | null = null;
   listArticle: Array<ArticleDto> = [];
   listeMvts: Array<any> = [];
+
   // Map pour stocker les mouvements par ID d'article : Key = idArticle, Value = MvtStockDto[]
   mapMouvementsStock = new Map<number, Array<MvtStockDto>>();
   errorMsg = '';
@@ -21,18 +23,21 @@ export class PageMvtstockComponent implements OnInit {
   constructor(
     private userService: UserService,
     private mvtStockService: MvtstockService,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private venteService: VenteService,
   ) { }
 
   ngOnInit(): void {
     // 1. IL FAUT RÉCUPÉRER L'UTILISATEUR CONNECTÉ ICI
     this.connectedUser = this.userService.getConnectedUser();
     this.findAllArticlesAndMvts();
-    // this.findAllMvtStockArt()
+    // findAllVentes();
   }
 
   findAllArticlesAndMvts(): void {
     const idEntreprise = this.connectedUser?.entreprise?.id;
+    console.log("ID Entreprise utilisé :", idEntreprise);
+
     if (!idEntreprise) return;
 
     // Utilisation de forkJoin pour attendre que les deux appels soient finis
@@ -45,6 +50,16 @@ export class PageMvtstockComponent implements OnInit {
       this.mvtStockService.findAllMvtsByEntreprise(idEntreprise).subscribe(allMvts => {
         // On vide la map
         this.mapMouvementsStock.clear();
+
+        // allMvts.forEach(mvt => {
+        //   const artId = mvt.article?.id;
+        //   if (artId !== undefined && artId !== null) {
+        //     const currentMvts = this.mapMouvementsStock.get(artId) || [];
+        //     // On utilise le spread operator [...] pour créer une NOUVELLE référence de tableau
+        //     this.mapMouvementsStock.set(artId, [...currentMvts, mvt]);
+        //   }
+        // });
+
 
         // On ventile les mouvements reçus dans la Map par ID d'article
         allMvts.forEach(mvt => {
@@ -59,29 +74,9 @@ export class PageMvtstockComponent implements OnInit {
             this.mapMouvementsStock.get(artId)?.push(mvt);
           }
         });
+
       });
     });
-  }
-
-
-  findMvtsArticle(idArticle: number): void {
-    this.mvtStockService.mvtStockArticle(idArticle)
-      .subscribe((res: any) => {
-
-        // Testez si c'est un Blob
-        if (res instanceof Blob) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const jsonRes = JSON.parse(reader.result as string);
-            this.mapMouvementsStock.set(idArticle, jsonRes);
-          };
-          reader.readAsText(res);
-        } else {
-          // Si c'est déjà un tableau
-          this.mapMouvementsStock.set(idArticle, res);
-        }
-
-      });
   }
 
 
@@ -90,9 +85,10 @@ export class PageMvtstockComponent implements OnInit {
       // On appelle simplement la méthode qui charge vos ventes
       // Cela mettra à jour la liste 'ventes' et Angular rafraîchira l'écran instantanément
       this.findAllArticlesAndMvts();
-    } else {
-      // // Optionnel : afficher un message d'erreur si le signal n'est pas 'success'
-      // this.errorMsg = result;
+      // 2. Optionnel : On peut aussi forcer le rafraîchissement de la liste globale
+      this.findAllMvtStock()
+
+      console.log('Mouvements mis à jour avec succès');
     }
   }
 

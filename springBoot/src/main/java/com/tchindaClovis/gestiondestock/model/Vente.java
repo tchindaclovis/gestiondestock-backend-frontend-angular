@@ -11,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Vente")
-public class Vente extends AbstractEntity {
+public class Vente extends Document {
 
     @Column(name = "code")
     private String code;
@@ -30,8 +30,8 @@ public class Vente extends AbstractEntity {
     @JoinColumn(name = "idclient")
     private Client client;
 
-    @Column(name = "identreprise")
-    private Integer idEntreprise;
+//    @Column(name = "identreprise")
+//    private Integer idEntreprise;
 
 //    @OneToMany(mappedBy = "vente", fetch = FetchType.LAZY) // Gardez LAZY par défaut
 //    private List<LigneVente> ligneVentes;

@@ -8,6 +8,7 @@ import {
 } from "../../../gs-api/src";
 import {from, map, Observable, of, switchMap} from "rxjs";
 import {UserService} from "../user/user.service";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class CommandeclientfournisseurService {
   constructor(
     private commandeClientsService: CommandeClientsService,
     private commandeFournisseursService: CommandeFournisseursService,
-    private userService: UserService
+    private userService: UserService,
+    private http: HttpClient                  // <--- Vérifie bien le "private" ici
   ) { }
 
 
@@ -54,11 +56,29 @@ export class CommandeclientfournisseurService {
 
   findAllCommandeClientByIdEntreprise(idEntreprise: number): Observable<CommandeClientDto[]> {
     if (idEntreprise) {
-      return this.commandeClientsService.findAllCommandeClientByIdEntreprise(idEntreprise);
+      return this.commandeClientsService.findAllCommandeClientByIdEntreprise(idEntreprise).pipe(
+        map(data => {
+          // Si les données arrivent déjà sous forme d'objet (JSON), on les retourne telles quelles
+          return data;
+        })
+      );
+      // return this.commandeClientsService.findAllCommandeClientByIdEntreprise(idEntreprise);
     }
     return of([]);
   }
 
+  findAllCommandeFournisseurByIdEntreprise(idEntreprise: number): Observable<CommandeFournisseurDto[]> {
+    if (idEntreprise) {
+      return this.commandeFournisseursService.findAllCommandeFournisseurByIdEntreprise(idEntreprise).pipe(
+        map(data => {
+          // Si les données arrivent déjà sous forme d'objet (JSON), on les retourne telles quelles
+          return data;
+        })
+      );
+      // return this.commandeFournisseursService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
+    }
+    return of([]);
+  }
 
 
   // findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
@@ -75,14 +95,6 @@ export class CommandeclientfournisseurService {
         return of(data);
       })
     );
-  }
-
-
-  findAllCommandeFournisseurByIdEntreprise(idEntreprise: number): Observable<CommandeFournisseurDto[]> {
-    if (idEntreprise) {
-      return this.commandeFournisseursService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
-    }
-    return of([]);
   }
 
 
@@ -155,11 +167,19 @@ export class CommandeclientfournisseurService {
   }
 
   getLastCodeCommandeClient(): Observable<string> {
-    return this.commandeClientsService.getLastCodeCommandeClient();
+    // On récupère l'URL de base depuis le service généré ou on la définit
+    const url = 'http://localhost:8081/gestiondestock/v1/commandeclients/lastcodecommandeclient';
+
+    // L'option { responseType: 'text' } est CRUCIALRE ici
+    return this.http.get(url, { responseType: 'text' });
   }
 
   getLastCodeCommandeFournisseur(): Observable<string> {
-    return this.commandeFournisseursService.getLastCodeCommandeFournisseur();
+    // On récupère l'URL de base depuis le service généré ou on la définit
+    const url = 'http://localhost:8081/gestiondestock/v1/commandefournisseurs/lastcodecommandefournisseur';
+
+    // L'option { responseType: 'text' } est CRUCIALRE ici
+    return this.http.get(url, { responseType: 'text' });
   }
 }
 

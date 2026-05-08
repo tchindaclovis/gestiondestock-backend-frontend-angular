@@ -20,6 +20,9 @@ public class MvtStock extends AbstractEntity {
     @Column(name = "quantite")
     private BigDecimal quantite;
 
+    @Column(name = "codecorrection")
+    private String codeCorrection;
+
     @Column(name = "typemvtstock")
     @Enumerated(EnumType.STRING)
     private ETypeMvtStock typeMvt;
@@ -27,6 +30,9 @@ public class MvtStock extends AbstractEntity {
     @Column(name = "sourcemvt")  //pour ressortir la destination du mouvement de stock
     @Enumerated(EnumType.STRING)
     private ESourceMvtStock sourceMvt;
+
+    @Column(name = "code_source") // Le champ magique pour Angular
+    private String codeSource;
 
     @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
     private Integer idEntreprise;  //rien à voir avec les règle UML
