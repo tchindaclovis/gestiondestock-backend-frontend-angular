@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.dto;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
+import com.tchindaClovis.gestiondestock.model.EEtatDocument;
 import lombok.Builder;
 import lombok.Data;
 import java.time.Instant;
@@ -17,6 +18,7 @@ public class CommandeFournisseurDto {
     private Instant dateCommande;
 
     private EEtatCommande etatCommande;
+    private EEtatDocument etat;
 
     private FournisseurDto fournisseur;
 
@@ -35,6 +37,7 @@ public class CommandeFournisseurDto {
                 .code(commandeFournisseur.getCode())
                 .dateCommande(commandeFournisseur.getDateCommande())
                 .etatCommande(commandeFournisseur.getEtatCommande())
+                .etat(commandeFournisseur.getEtat())
                 .idEntreprise(commandeFournisseur.getIdEntreprise())
                 .fournisseur(FournisseurDto.fromEntity(commandeFournisseur.getFournisseur()))
                 .build();
@@ -50,6 +53,7 @@ public class CommandeFournisseurDto {
         commandeFournisseur.setDateCommande(commandeFournisseurDto.getDateCommande());
         commandeFournisseur.setIdEntreprise(commandeFournisseurDto.getIdEntreprise());
         commandeFournisseur.setEtatCommande(commandeFournisseurDto.getEtatCommande());
+        commandeFournisseur.setEtat(commandeFournisseurDto.getEtat());
         commandeFournisseur.setFournisseur(FournisseurDto.toEntity(commandeFournisseurDto.getFournisseur()));
 
         return commandeFournisseur;

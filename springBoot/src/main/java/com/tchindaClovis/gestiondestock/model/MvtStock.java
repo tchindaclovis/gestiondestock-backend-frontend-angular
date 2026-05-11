@@ -12,7 +12,7 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "MvtStock")  //optionnel car par défaut le nom de la classe
-public class MvtStock extends AbstractEntity {
+public class MvtStock extends Document {
 
     @Column(name = "dateMvt")
     private Instant dateMvt;
@@ -20,8 +20,8 @@ public class MvtStock extends AbstractEntity {
     @Column(name = "quantite")
     private BigDecimal quantite;
 
-    @Column(name = "codecorrection")
-    private String codeCorrection;
+//    @Column(name = "codecorrection")
+//    private String codeCorrection;
 
     @Column(name = "typemvtstock")
     @Enumerated(EnumType.STRING)
@@ -34,8 +34,8 @@ public class MvtStock extends AbstractEntity {
     @Column(name = "code_source") // Le champ magique pour Angular
     private String codeSource;
 
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @ManyToOne
     @JoinColumn(name = "article")

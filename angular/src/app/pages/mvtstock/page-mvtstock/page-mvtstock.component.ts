@@ -34,6 +34,39 @@ export class PageMvtstockComponent implements OnInit {
     // findAllVentes();
   }
 
+
+  // // Dans page-mvtstock.component.ts
+  // findAllArticlesAndMvts(): void {
+  //   const idEntreprise = this.connectedUser?.entreprise?.id;
+  //   if (!idEntreprise) return;
+  //
+  //   this.articleService.findAllArticlesByIdEntreprise(idEntreprise).subscribe(articles => {
+  //     this.listArticle = articles;
+  //
+  //     this.mvtStockService.findAllMvtsByEntreprise(idEntreprise).subscribe(allMvts => {
+  //       // 1. Utiliser une Map temporaire
+  //       const tempMap = new Map<number, Array<MvtStockDto>>();
+  //
+  //       allMvts.forEach(mvt => {
+  //         // Forcer la conversion en Number au cas où le backend renvoie un String
+  //         const artId = Number(mvt.article?.id);
+  //
+  //         if (!isNaN(artId)) {
+  //           if (!tempMap.has(artId)) {
+  //             tempMap.set(artId, []);
+  //           }
+  //           tempMap.get(artId)?.push(mvt);
+  //         }
+  //       });
+  //
+  //       // 2. Réassigner la Map entière pour déclencher la détection de changement
+  //       this.mapMouvementsStock = new Map(tempMap);
+  //       console.log('Map mise à jour :', this.mapMouvementsStock);
+  //     });
+  //   });
+  // }
+
+
   findAllArticlesAndMvts(): void {
     const idEntreprise = this.connectedUser?.entreprise?.id;
     console.log("ID Entreprise utilisé :", idEntreprise);
@@ -45,39 +78,62 @@ export class PageMvtstockComponent implements OnInit {
     this.articleService.findAllArticlesByIdEntreprise(idEntreprise).subscribe(articles => {
       this.listArticle = articles;
 
-      // UNE SEULE REQUÊTE au lieu d'une boucle foreach
-      // 1. On s'assure que l'entreprise est définie
       this.mvtStockService.findAllMvtsByEntreprise(idEntreprise).subscribe(allMvts => {
-        // On vide la map
-        this.mapMouvementsStock.clear();
+        // 1. On travaille sur une Map locale temporaire
+        const tempMap = new Map<number, Array<MvtStockDto>>();
 
-        // allMvts.forEach(mvt => {
-        //   const artId = mvt.article?.id;
-        //   if (artId !== undefined && artId !== null) {
-        //     const currentMvts = this.mapMouvementsStock.get(artId) || [];
-        //     // On utilise le spread operator [...] pour créer une NOUVELLE référence de tableau
-        //     this.mapMouvementsStock.set(artId, [...currentMvts, mvt]);
-        //   }
-        // });
-
-
-        // On ventile les mouvements reçus dans la Map par ID d'article
         allMvts.forEach(mvt => {
-          // On vérifie que l'article et son ID existent bien avant de continuer
           const artId = mvt.article?.id;
-
           if (artId !== undefined && artId !== null) {
-            // Ici, TypeScript sait que artId est obligatoirement un 'number'
-            if (!this.mapMouvementsStock.has(artId)) {
-              this.mapMouvementsStock.set(artId, []);
+            if (!tempMap.has(artId)) {
+              tempMap.set(artId, []);
             }
-            this.mapMouvementsStock.get(artId)?.push(mvt);
+            tempMap.get(artId)?.push(mvt);
           }
         });
 
+        // 2. ON ASSIGNE LA NOUVELLE MAP (Cela déclenche le rafraîchissement Angular)
+        this.mapMouvementsStock = tempMap;
       });
+
     });
   }
+
+
+  // findAllArticlesAndMvts(): void {
+//   const idEntreprise = this.connectedUser?.entreprise?.id;
+//   console.log("ID Entreprise utilisé :", idEntreprise);
+//
+//   if (!idEntreprise) return;
+//
+//   // Utilisation de forkJoin pour attendre que les deux appels soient finis
+//   // OU charger les articles, puis charger TOUS les mouvements d'un coup
+//   this.articleService.findAllArticlesByIdEntreprise(idEntreprise).subscribe(articles => {
+//     this.listArticle = articles;
+//
+//     // UNE SEULE REQUÊTE au lieu d'une boucle foreach
+//     // 1. On s'assure que l'entreprise est définie
+//     this.mvtStockService.findAllMvtsByEntreprise(idEntreprise).subscribe(allMvts => {
+//       // On vide la map
+//       this.mapMouvementsStock.clear();
+//
+//       // On ventile les mouvements reçus dans la Map par ID d'article
+//       allMvts.forEach(mvt => {
+//         // On vérifie que l'article et son ID existent bien avant de continuer
+//         const artId = mvt.article?.id;
+//
+//         if (artId !== undefined && artId !== null) {
+//           // Ici, TypeScript sait que artId est obligatoirement un 'number'
+//           if (!this.mapMouvementsStock.has(artId)) {
+//             this.mapMouvementsStock.set(artId, []);
+//           }
+//           this.mapMouvementsStock.get(artId)?.push(mvt);
+//         }
+//       });
+//
+//     });
+//   });
+// }
 
 
   handleCorrection(result: string): void {
@@ -109,7 +165,6 @@ export class PageMvtstockComponent implements OnInit {
     return total;
   }
 }
-
 
 
 

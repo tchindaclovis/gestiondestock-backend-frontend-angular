@@ -13,6 +13,7 @@ import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.model.ESourceMvtStock;
 import com.tchindaClovis.gestiondestock.model.ETypeMvtStock;
 import com.tchindaClovis.gestiondestock.model.MvtStock;
+import com.tchindaClovis.gestiondestock.model.Vente;
 import com.tchindaClovis.gestiondestock.repository.MvtStockRepository;
 import com.tchindaClovis.gestiondestock.services.ArticleService;
 import com.tchindaClovis.gestiondestock.services.MvtStockService;
@@ -21,6 +22,7 @@ import com.tchindaClovis.gestiondestock.validator.MvtStockValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -194,6 +196,12 @@ public class MvtStockServiceImpl implements MvtStockService {
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.CORRECTION_STOCK);
     }
 
+    @Override
+    public MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto) {
+
+        return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE);
+    }
+
 
     @Override
     public MvtStockDto correctionStockNegRetourFournisseur(MvtStockDto dto) {
@@ -202,9 +210,9 @@ public class MvtStockServiceImpl implements MvtStockService {
     }
 
     @Override
-    public MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto) {
+    public MvtStockDto correctionStockNegRetourFournisseur1(MvtStockDto dto) {
 
-        return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE);
+        return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_RETOUR_FOURNISSEUR, ESourceMvtStock.CORRECTION_STOCK);
     }
 
 
@@ -373,6 +381,33 @@ public class MvtStockServiceImpl implements MvtStockService {
 //                mvtStockRepository.save(MvtStockDto.toEntity(dto))
 //        );
 //    }
+
+
+
+    @Override
+    public String getLastCodeCorrection() {
+        // On demande le dernier enregistrement avec la source CORRECTION_STOCK
+        // PageRequest.of(0, 1) permet de ne récupérer qu'un seul résultat (le top 1)
+        List<String> codes = mvtStockRepository.findLastCodeBySource(
+                ESourceMvtStock.CORRECTION_STOCK, PageRequest.of(0, 1)
+        );
+
+        if (codes.isEmpty()) {
+            return "CCS0000"; // Valeur par défaut si la base est vide
+        }
+        return codes.get(0);
+    }
+
+
+//    @Override
+//    public String getLastCodeCorrection() {
+//        // CORRECTION : Utilisez l'instance "venteRepository" (minuscule)
+//        // et extrayez le code de l'objet Vente
+//        return mvtStockRepository.findTopByOrderByCodeCorrectionDesc()
+//                .map(MvtStock::getCodeCorrection) // On transforme l'Vente en String (son code)
+//                .orElse("CCS0000");           // Valeur par défaut si aucun vente n'existe
+//    }
+
 
 
 }

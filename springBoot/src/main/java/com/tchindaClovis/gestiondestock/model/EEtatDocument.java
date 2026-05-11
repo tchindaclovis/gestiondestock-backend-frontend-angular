@@ -1,15 +1,15 @@
 package com.tchindaClovis.gestiondestock.model;
 
 public enum EEtatDocument {
-    PRO_FORMAT, VALIDEE,VENDUE, LIVREE,ANNULEE;
+    PRO_FORMAT, CONFIRMEE,VENDUE, LIVREE,ANNULEE;
 
     @Override
     public String toString() {
         switch (this) {
             case PRO_FORMAT:
                 return "EtatDocument.PRO_FORMAT";
-            case VALIDEE:
-                return "EtatDocument.VALIDEE";
+            case CONFIRMEE:
+                return "EtatDocument.CONFIRMEE";
             case VENDUE:
                 return "EtatDocument.VENDUE";
             case LIVREE:

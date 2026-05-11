@@ -545,10 +545,10 @@ export class CommandeFournisseursService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeFournisseur === null || idCommandeFournisseur === undefined) {
             throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling updateEtatCommande1.');
         }
@@ -582,7 +582,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/etat/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'BROUILLON' | 'EN_PREPARATION' | 'VALIDEE' | 'LIVREE'", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/etat/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('patch', `${basePath}${localVarPath}`,
             {

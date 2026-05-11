@@ -16,6 +16,7 @@ export interface CommandeFournisseurDto {
     code?: string;
     dateCommande?: string;
     etatCommande?: CommandeFournisseurDto.EtatCommandeEnum;
+    etat?: CommandeFournisseurDto.EtatEnum;
     fournisseur?: FournisseurDto;
     idEntreprise?: number;
     ligneCommandeFournisseurs?: Array<LigneCommandeFournisseurDto>;
@@ -23,12 +24,21 @@ export interface CommandeFournisseurDto {
 }
 export namespace CommandeFournisseurDto {
     export const EtatCommandeEnum = {
-        Brouillon: 'BROUILLON',
-        EnPreparation: 'EN_PREPARATION',
-        Validee: 'VALIDEE',
-        Livree: 'LIVREE'
+        ProFormat: 'PRO_FORMAT',
+        Confirmee: 'CONFIRMEE',
+        Vendu: 'VENDU',
+        Livree: 'LIVREE',
+        Annulee: 'ANNULEE'
     } as const;
     export type EtatCommandeEnum = typeof EtatCommandeEnum[keyof typeof EtatCommandeEnum];
+    export const EtatEnum = {
+        EtatDocumentProFormat: 'EtatDocument.PRO_FORMAT',
+        EtatDocumentConfirmee: 'EtatDocument.CONFIRMEE',
+        EtatDocumentVendue: 'EtatDocument.VENDUE',
+        EtatDocumentLivree: 'EtatDocument.LIVREE',
+        EtatDocumentAnnulee: 'EtatDocument.ANNULEE'
+    } as const;
+    export type EtatEnum = typeof EtatEnum[keyof typeof EtatEnum];
 }
 
 

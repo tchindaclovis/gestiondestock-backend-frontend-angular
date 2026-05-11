@@ -31,8 +31,12 @@ public interface MvtStockService {
 
     MvtStockDto correctionStockNegRetourFournisseur(MvtStockDto dto);
 
+    MvtStockDto correctionStockNegRetourFournisseur1(MvtStockDto dto);
+
     MvtStockDto correctionStockNeg(MvtStockDto dto);
 
     MvtStockDto correctionStockNegVenteAug(MvtStockDto dto);
+
+    String getLastCodeCorrection();
 
 }

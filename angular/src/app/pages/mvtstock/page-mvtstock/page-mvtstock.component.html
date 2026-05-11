@@ -62,9 +62,28 @@
                   </div>
                 </div>
 
+
+<!--                <div *ngIf="mapMouvementsStock.get(article.id!) as listeMvts; else noMvt">-->
+<!--                  <app-detail-mvtstock-->
+<!--                    *ngFor="let mouvement of listeMvts"-->
+<!--                    [mvtStockDto]="mouvement">-->
+<!--                  </app-detail-mvtstock>-->
+<!--                  &lt;!&ndash; Message si la liste est vide pour cet article &ndash;&gt;-->
+<!--                  <div *ngIf="listeMvts.length === 0" class="p-3 text-center text-muted">-->
+<!--                    Aucun mouvement de stock pour cet article.-->
+<!--                  </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Template de secours si la clé n'existe pas encore dans la Map &ndash;&gt;-->
+<!--                <ng-template #noMvt>-->
+<!--                  <div class="p-3 text-center text-muted">-->
+<!--                    Chargement des mouvements...-->
+<!--                  </div>-->
+<!--                </ng-template>-->
+
+
                 <ng-container *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
                   <app-detail-mvtstock
-
                     *ngFor="let mouvement of listeMvts"
                     [mvtStockDto]="mouvement">
                   </app-detail-mvtstock>

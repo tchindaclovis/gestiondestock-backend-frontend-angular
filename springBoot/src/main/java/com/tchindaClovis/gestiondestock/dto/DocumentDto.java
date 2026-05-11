@@ -2,6 +2,7 @@ package com.tchindaClovis.gestiondestock.dto;
 
 import com.tchindaClovis.gestiondestock.model.Document;
 import com.tchindaClovis.gestiondestock.model.EEtatDocument;
+import com.tchindaClovis.gestiondestock.model.ESourceDocument;
 import com.tchindaClovis.gestiondestock.model.ETypeDocument;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class DocumentDto {
     private Date dateDernierRejet;
     private EEtatDocument etat;
     protected ETypeDocument type;
+    protected ESourceDocument source;
     private Date date;
     private Date dateButoireConfirmation;
     private Date dateButoireValidation;
@@ -46,6 +48,7 @@ public class DocumentDto {
                 .dateDernierRejet(document.getDateDernierRejet())
                 .etat(document.getEtat())
                 .type(document.getType())
+                .source(document.getSource())
                 .date(document.getDate())
                 .dateButoireConfirmation(document.getDateButoireConfirmation())
                 .dateButoireValidation(document.getDateButoireValidation())
@@ -72,6 +75,7 @@ public class DocumentDto {
         document.setDateDernierRejet(documentDto.getDateDernierRejet());
         document.setEtat(documentDto.getEtat());
         document.setType(documentDto.getType());
+        document.setSource(documentDto.getSource());
         document.setDate(documentDto.getDate());
         document.setDateButoireConfirmation(documentDto.getDateButoireConfirmation());
         document.setDateButoireValidation(documentDto.getDateButoireValidation());

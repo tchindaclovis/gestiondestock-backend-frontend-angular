@@ -56,6 +56,10 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
   }
 
 
+  confirmer(): void{
+
+  }
+
 
   confirmerEtSupprimer(): void {
     if (this.origin === 'client') {
@@ -103,6 +107,9 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     }
   }
 
+  vendre(): void{
+
+  }
 }
 
 

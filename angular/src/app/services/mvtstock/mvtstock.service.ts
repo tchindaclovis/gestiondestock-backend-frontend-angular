@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import {ArticleDto, MvtStockDto, MvtStocksService} from '../../../gs-api/src';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import {ArticleDto, MvtStockDto, MvtStocksService} from '../../../gs-api/src';
 export class MvtstockService {
 
   constructor(
-    private mvtStocksService: MvtStocksService
+    private mvtStocksService: MvtStocksService,
+    private http: HttpClient                  // <--- Vérifie bien le "private" ici
   ) { }
 
   /**
@@ -74,6 +76,10 @@ export class MvtstockService {
     return this.mvtStocksService.correctionStockNegRetourFournisseur(mvtStockDto);
   }
 
+  correctionStockNegRetourFournisseur1(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.correctionStockNegRetourFournisseur1(mvtStockDto);
+  }
+
 
   /**
    * Équivalent de correctionStockNeg(MvtStockDto dto)
@@ -96,6 +102,14 @@ export class MvtstockService {
       return this.mvtStocksService.findAllMvtsByEntreprise(idEntreprise);
     }
     return of([]);
+  }
+
+  getLastCodeCorrection(): Observable<string> {
+    // On récupère l'URL de base depuis le service généré ou on la définit
+    const url = 'http://localhost:8081/gestiondestock/v1/mvtstock/lastcodecorrection';
+
+    // L'option { responseType: 'text' } est CRUCIALRE ici
+    return this.http.get(url, { responseType: 'text' });
   }
 
 }

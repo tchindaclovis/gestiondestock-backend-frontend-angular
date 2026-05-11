@@ -44,7 +44,7 @@
   <!--  boutons action-->
   <div class="col-md-3 ">
     <div class="row pt-3 pb-0">
-      <div class="col-md-4 text-center">
+      <div class="col-md-3 text-center">
         <button type="button" class="btn btn-link text-decoration-none"
                 (click)="modifierCommandeClientFournisseur()"
                 title="Modifier">
@@ -54,7 +54,7 @@
           </small>
         </button>
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-3 text-center">
         <button type="button" class="btn btn-link text-decoration-none text-primary"
                 data-bs-toggle="modal"
                 [attr.data-bs-target]="'#modalConfirm' + commande.id"
@@ -64,7 +64,25 @@
           </small>
         </button>
       </div>
-      <div class="col-md-4 text-center">
+
+      <div class="col-md-3 text-center"
+           *ngIf="this.origin === 'client'">
+        <button type="button" class="btn btn-link text-decoration-none text-primary"
+                data-bs-toggle="modal"
+                (click)="vendre()"
+                title="Vendre">
+          <small>
+            <i class="fa-brands fa-hubspot"></i>&nbsp;
+          </small>
+        </button>
+      </div>
+
+      <div class="col-md-3 text-center"
+           *ngIf="this.origin === 'fournisseur'">
+      </div>
+
+
+      <div class="col-md-3 text-center">
         <button type="button" class="btn btn-link text-decoration-none text-danger"
                 data-bs-toggle="modal"
                 [attr.data-bs-target]="'#modalDelete' + commande.id"
@@ -79,7 +97,49 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal de confirmation de la commande -->
+<div class="modal fade" [id]="'modalConfirm' + commande.id"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!--            <span aria-hidden="true">x</span>-->
+        </button>
+      </div>
+      <div *ngIf="this.origin === 'client'"  class="modal-body">
+        Etes-vous sûr que le client <strong>{{ clientFournisseur?.nom }}</strong>
+        a validé la facture pro-format de la commande <strong>{{ commande.code }}</strong>?
+        Cela va créer une reservation sur les quantités de(s) (l')article(s) dans le stock.
+      </div>
+      <div *ngIf="this.origin === 'fournisseur'"  class="modal-body">
+        Etes-vous sûr que le fournisseur <strong>{{ clientFournisseur?.nom }}</strong>
+        a validé les quantités de la facture pro-format <strong>{{ commande.code }}</strong>?
+        Cela va crédité les quantités de(s) (l')article(s) dans le stock.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fa-solid fa-ban"></i>Annuler
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                (click)="confirmer()">
+          <i class="fa-solid fa-trash-can"></i>
+          Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal de suppression de la commande -->
 <div class="modal fade" [id]="'modalDelete' + commande.id"
      data-bs-backdrop="static"
      data-bs-keyboard="false"
@@ -113,4 +173,5 @@
     </div>
   </div>
 </div>
+
 

@@ -44,6 +44,9 @@ public class Document extends AbstractEntity{
     @Column(name = "type")
     protected ETypeDocument type;
 
+    @Column(name = "source")
+    protected ESourceDocument source;
+
     @Column(name = "date")
     private Date date;
 

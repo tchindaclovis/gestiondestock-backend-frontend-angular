@@ -35,7 +35,7 @@ export class DetailMvtstockComponent implements OnInit {
       case 'CORRECTION_NEG': return 'Correction(-)Perte';
       case 'CORRECTION_POS_VENTE_RED': return 'Correction(+)RetourArticle';
       case 'CORRECTION_NEG_VENTE_AUG': return 'Correction(-)VenteAuClientAug';
-      case 'CORRECTION_NEG_RETOUR_FOURNISSEUR': return 'Correction(-)RetourAuFournisseur';
+      case 'CORRECTION_NEG_RETOUR_FOURNISSEUR': return 'Correction(-)RetourAuFournissr';
       default: return this.mvtStockDto.typeMvt || 'INCONNU';
     }
   }

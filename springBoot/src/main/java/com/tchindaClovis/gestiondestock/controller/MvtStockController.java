@@ -81,6 +81,11 @@ public class MvtStockController implements MvtStockApi {
     }
 
     @Override
+    public MvtStockDto correctionStockNegRetourFournisseur1(MvtStockDto dto) {
+        return mvtStockService.correctionStockNegRetourFournisseur1(dto);
+    }
+
+    @Override
     public MvtStockDto correctionStockNeg(MvtStockDto dto) {
             return mvtStockService.correctionStockNeg(dto);
     }
@@ -88,6 +93,11 @@ public class MvtStockController implements MvtStockApi {
     @Override
     public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
         return mvtStockService.correctionStockNegVenteAug(dto);
+    }
+
+    @Override
+    public String getLastCodeCorrection() {
+        return mvtStockService.getLastCodeCorrection();
     }
 
 }

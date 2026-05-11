@@ -7,6 +7,8 @@ import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +66,10 @@ public interface MvtStockApi {
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionstocknegretourfournisseur",
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockNegRetourFournisseur(@RequestBody MvtStockDto dto);
+
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionstocknegretourfournisseur1",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto correctionStockNegRetourFournisseur1(@RequestBody MvtStockDto dto);
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionneg",
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockNeg(@RequestBody MvtStockDto dto);
@@ -72,6 +78,16 @@ public interface MvtStockApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockNegVenteAug(@RequestBody MvtStockDto dto);
 
+    @GetMapping(value = APP_ROOT + "/mvtstock/lastcodecorrection",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary  = "Récupérer le dernier code vente enregistré",
+            description = "Cette méthode permet de récupérer le dernier code au format CCSxxxx",
+            responses = {
+                    @ApiResponse(responseCode  = "200", description  = "Le dernier code a été récupéré / CCS0000 par défaut")
+            }
+    )
+    String getLastCodeCorrection();
 }
 
 

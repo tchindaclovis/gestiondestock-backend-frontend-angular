@@ -17,18 +17,28 @@ export interface CommandeClientDto {
     dateCommande?: string;
     idEntreprise?: number;
     etatCommande?: CommandeClientDto.EtatCommandeEnum;
+    etat?: CommandeClientDto.EtatEnum;
     client?: ClientDto;
     ligneCommandeClients?: Array<LigneCommandeClientDto>;
     commandeLivree?: boolean;
 }
 export namespace CommandeClientDto {
     export const EtatCommandeEnum = {
-        Brouillon: 'BROUILLON',
-        EnPreparation: 'EN_PREPARATION',
-        Validee: 'VALIDEE',
-        Livree: 'LIVREE'
+        ProFormat: 'PRO_FORMAT',
+        Confirmee: 'CONFIRMEE',
+        Vendu: 'VENDU',
+        Livree: 'LIVREE',
+        Annulee: 'ANNULEE'
     } as const;
     export type EtatCommandeEnum = typeof EtatCommandeEnum[keyof typeof EtatCommandeEnum];
+    export const EtatEnum = {
+        EtatDocumentProFormat: 'EtatDocument.PRO_FORMAT',
+        EtatDocumentConfirmee: 'EtatDocument.CONFIRMEE',
+        EtatDocumentVendue: 'EtatDocument.VENDUE',
+        EtatDocumentLivree: 'EtatDocument.LIVREE',
+        EtatDocumentAnnulee: 'EtatDocument.ANNULEE'
+    } as const;
+    export type EtatEnum = typeof EtatEnum[keyof typeof EtatEnum];
 }
 
 
