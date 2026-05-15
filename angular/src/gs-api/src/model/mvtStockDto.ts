@@ -14,7 +14,6 @@ export interface MvtStockDto {
     id?: number;
     dateMvt?: string;
     quantite?: number;
-    codeCorrection?: string;
     idEntreprise?: number;
     article?: ArticleDto;
     typeMvt?: MvtStockDto.TypeMvtEnum;
@@ -36,14 +35,14 @@ export namespace MvtStockDto {
     } as const;
     export type TypeMvtEnum = typeof TypeMvtEnum[keyof typeof TypeMvtEnum];
     export const TypeEnum = {
-        ArticleLivrParLeFournisseur: 'Article livré par le fournisseur',
-        ArticleCommandConfirm: 'Article à command confirmé',
-        ArticleVenduAuClient: 'Article vendu au client',
-        CorrectionPrCompenserErreurDeComptage: 'Correction pr compenser erreur de comptage',
-        CorrectionPourConsidrerUnePerte: 'Correction pour considérer une perte',
-        CorrectionPrRetourDunArticleVendu: 'Correction pr retour d\'un article vendu',
-        CorrectionPrLajoutDuNbreDunProduitVendu: 'Correction pr l\'ajout du nbre d\'un produit vendu',
-        CorrectionPrLeRetourAuFournisseurDunProduitAchet: 'Correction pr le retour au fournisseur d\'un produit acheté'
+        ETypeDocumentEntree: 'ETypeDocument.ENTREE',
+        ETypeDocumentSortie: 'ETypeDocument.SORTIE',
+        ETypeDocumentSortieVte: 'ETypeDocument.SORTIE_VTE',
+        ETypeDocumentCorrectionPos: 'ETypeDocument.CORRECTION_POS',
+        ETypeDocumentCorrectionNeg: 'ETypeDocument.CORRECTION_NEG',
+        ETypeDocumentCorrectionPosVenteRed: 'ETypeDocument.CORRECTION_POS_VENTE_RED',
+        ETypeDocumentCorrectionNegVenteAug: 'ETypeDocument.CORRECTION_NEG_VENTE_AUG',
+        ETypeDocumentCorrectionNegRetourFournisseur: 'ETypeDocument.CORRECTION_NEG_RETOUR_FOURNISSEUR'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
     export const SourceMvtEnum = {
@@ -54,10 +53,10 @@ export namespace MvtStockDto {
     } as const;
     export type SourceMvtEnum = typeof SourceMvtEnum[keyof typeof SourceMvtEnum];
     export const SourceEnum = {
-        CommandeDesArticlesParUnClient: 'Commande des articles par un client',
-        CommandeDesArticlesParUnFournisseur: 'Commande des articles par un fournisseur',
-        VenteDesArticles: 'Vente des articles',
-        CorrectionDuStockSuiteUnVnement: 'Correction du stock suite à un évènement'
+        ESourceDocumentCommandeClient: 'ESourceDocument.COMMANDE_CLIENT',
+        ESourceDocumentCommandeFournisseur: 'ESourceDocument.COMMANDE_FOURNISSEUR',
+        ESourceDocumentVente: 'ESourceDocument.VENTE',
+        ESourceDocumentCorrectionStock: 'ESourceDocument.CORRECTION_STOCK'
     } as const;
     export type SourceEnum = typeof SourceEnum[keyof typeof SourceEnum];
 }

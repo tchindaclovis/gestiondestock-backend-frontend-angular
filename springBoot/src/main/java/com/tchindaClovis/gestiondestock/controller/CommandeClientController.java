@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,7 @@ public class CommandeClientController implements CommandeClientApi {
         this.commandeClientService = commandeClientService;
     }
 
+
     @Override
     public ResponseEntity<CommandeClientDto> save(CommandeClientDto dto) {
         return ResponseEntity.ok(commandeClientService.save(dto));
@@ -31,8 +33,22 @@ public class CommandeClientController implements CommandeClientApi {
     }
 
     @Override
-    public ResponseEntity<CommandeClientDto> updateEtatCommande(Integer idCommandeClient, EEtatCommande etatCommande) {
-        return ResponseEntity.ok(commandeClientService.updateEtatCommande(idCommandeClient, etatCommande));
+    public ResponseEntity<CommandeClientDto> saveImpact(CommandeClientDto dto) {
+        return ResponseEntity.ok(commandeClientService.saveImpact(dto));
+    }
+
+//    @Override
+//    public ResponseEntity<CommandeClientDto> saveImpact(Integer idCommandeClient, EEtatCommande etatCommande, CommandeClientDto dto) {
+//        return ResponseEntity.ok(commandeClientService.saveImpact(dto,idCommandeClient, etatCommande));
+//
+//        //pour ne pas renvoyer l'objet qui a été créé (avantage du ResponseEntity)
+////        commandeClientService.save(dto);
+////        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
+
+    @Override
+    public ResponseEntity<CommandeClientDto> updateEtatCommande(Integer idCommandeClient, EEtatCommande etatCommande, Instant dateConfirmation) {
+        return ResponseEntity.ok(commandeClientService.updateEtatCommande(idCommandeClient, etatCommande, dateConfirmation));
     }
 
     @Override

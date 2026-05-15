@@ -30,6 +30,7 @@ public class DocumentDto {
     private Date dateButoirePayement;
     private Date dateEnvoi;
     private Date dateValidation;
+//    private Date dateConfirmation;
     private Date dateTransfert;
 
     //permet de faire un mapping de CategoryDto vers Category
@@ -55,6 +56,7 @@ public class DocumentDto {
                 .dateButoirePayement(document.getDateButoirePayement())
                 .dateEnvoi(document.getDateEnvoi())
                 .dateValidation(document.getDateValidation())
+//                .dateConfirmation(document.getDateConfirmation())
                 .dateTransfert(document.getDateTransfert())
 
                 .build();
@@ -82,6 +84,7 @@ public class DocumentDto {
         document.setDateButoirePayement(documentDto.getDateButoirePayement());
         document.setDateEnvoi(documentDto.getDateEnvoi());
         document.setDateValidation(documentDto.getDateValidation());
+//        document.setDateConfirmation(documentDto.getDateConfirmation());
         document.setDateTransfert(documentDto.getDateTransfert());
 
         return document;

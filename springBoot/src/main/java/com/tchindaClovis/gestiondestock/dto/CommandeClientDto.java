@@ -3,10 +3,12 @@ package com.tchindaClovis.gestiondestock.dto;
 import com.tchindaClovis.gestiondestock.model.CommandeClient;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
 import com.tchindaClovis.gestiondestock.model.EEtatDocument;
+import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
 import lombok.Builder;
 import lombok.Data;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -18,8 +20,13 @@ public class  CommandeClientDto{
 
     private Instant dateCommande;
 
-    private Integer idEntreprise;
+    private Instant creationDate;
 
+    private Instant lastModifiedDate;
+
+    private Instant dateConfirmation;
+
+    private Integer idEntreprise;
     private EEtatCommande etatCommande;
 
     private EEtatDocument etat;
@@ -37,6 +44,9 @@ public class  CommandeClientDto{
                 .id(commandeClient.getId())
                 .code(commandeClient.getCode())
                 .dateCommande(commandeClient.getDateCommande())
+                .creationDate(commandeClient.getCreationDate())
+                .lastModifiedDate(commandeClient.getLastModifiedDate())
+                .dateConfirmation(commandeClient.getDateConfirmation())
                 .idEntreprise(commandeClient.getIdEntreprise())
                 .etatCommande(commandeClient.getEtatCommande())
                 .etat(commandeClient.getEtat())
@@ -62,6 +72,9 @@ public class  CommandeClientDto{
         commandeClient.setId(commandeClientDto.getId());
         commandeClient.setCode(commandeClientDto.getCode());
         commandeClient.setDateCommande(commandeClientDto.getDateCommande());
+        commandeClient.setCreationDate(commandeClientDto.getCreationDate());
+        commandeClient.setLastModifiedDate(commandeClientDto.getLastModifiedDate());
+        commandeClient.setDateConfirmation(commandeClientDto.getDateConfirmation());
         commandeClient.setEtatCommande(commandeClientDto.getEtatCommande());
         commandeClient.setEtat(commandeClientDto.getEtat());
         commandeClient.setIdEntreprise(commandeClientDto.getIdEntreprise());
@@ -84,6 +97,11 @@ public class  CommandeClientDto{
     public boolean isCommandeLivree() {
 
         return EEtatCommande.LIVREE.equals(this.etatCommande);
+    }
+
+    public boolean isCommandeConfirmee() {
+
+        return EEtatCommande.CONFIRMEE.equals(this.etatCommande);
     }
 }
 

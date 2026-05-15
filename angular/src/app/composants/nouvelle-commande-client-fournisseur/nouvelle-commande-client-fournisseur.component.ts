@@ -47,12 +47,14 @@ import {Observable} from "rxjs";
 export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
   @Input() origin = '';
+  @Input() commande: any = {};
   connectedUser: UtilisateurDto | null = null;
   clientFournisseur: any = {}; //soit client soit fournisseur
 
   codeArticle = '';
   quantite = '';
   codeCommandeClient = ''; // Lié au champ "Code commande client"
+  etatCommande = ''; // Lié au champ "Etat commande"
   codeCommandeFournisseur = ''; // Lié au champ "Code commande fournisseur"
   idCommandeClient: number | null = null;
   idCommandeFournisseur: number | null = null;
@@ -64,8 +66,8 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   searchedArticle: ArticleDto = {};
   listArticle: Array<ArticleDto> = [];
 
-  commandeClientDto: CommandeFournisseurDto = {}; //objet ou variable initialisé à vide
-  commandeFournisseurDto: CommandeClientDto = {}; //objet ou variable initialisé à vide
+  commandeClientDto: CommandeClientDto = {}; //objet ou variable initialisé à vide
+  commandeFournisseurDto: CommandeFournisseurDto = {}; //objet ou variable initialisé à vide
 
   articleDto: ArticleDto = {}; //objet ou variable initialisé à vide
   errorMsg : Array<string> = [];
@@ -133,11 +135,11 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
         // On récupère l'ID passé dans l'URL (le "103" de votre exemple)
         const id = this.activatedRoute.snapshot.params['idCommandeFournisseur'];
         if (id) {
-          this.idCommandeClient = id;
+          this.idCommandeFournisseur= id;
           this.chargerDonneesPourModification(id);
           this.commandeClientFournisseurService.findCommandeFournisseurById(id)
             .subscribe(commande =>{
-              this.commandeClientDto = commande;
+              this.commandeFournisseurDto = commande;
             });
         }else{
           this.commandeClientFournisseurService.getLastCodeCommandeFournisseur().subscribe({
@@ -186,7 +188,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
 
-
   chargerDonneesPourModification(id: number): void {
     console.log("ID détecté :", id, " | Origine :", this.origin);
 
@@ -226,11 +227,13 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
     if (this.origin === 'client') {
       this.idCommandeClient = cmd.id; // On stocke l'ID reçu
       this.codeCommandeClient = cmd.code || '';
+      this.commandeClientDto = cmd.etatCommande || '';
       this.selectedClientFournisseur = cmd.client; // On récupère soit le client selon l'origine
       console.log("Données affectées au formulaire :", this.codeCommandeClient);
     } else if(this.origin === 'fournisseur') {
       this.idCommandeFournisseur = cmd.id; // On stocke l'ID reçu
       this.codeCommandeFournisseur = cmd.code || '';
+      this.commandeFournisseurDto = cmd.etatCommande || '';
       this.selectedClientFournisseur = cmd.fournisseur; // On récupère soit le fournisseur selon l'origine
       console.log("Données affectées au formulaire :", this.codeCommandeFournisseur);
     }
@@ -378,6 +381,64 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
 
+  // enregistrerCommande(): void {
+  //   const commande = this.preparerCommande();
+  //
+  //   // On s'assure que l'ID est un nombre (0 si null) pour éviter l'erreur "number | null"
+  //   const currentId = (this.origin === 'client')
+  //     ? (this.idCommandeClient || 0)
+  //     : (this.idCommandeFournisseur || 0);
+  //
+  //   const currentEtat = commande.etatCommande;
+  //
+  //   if (this.origin === 'client') {
+  //     // ATTENTION : Respecte bien l'ordre défini dans ton service de façade :
+  //     // 1. Le DTO (commande)
+  //     // 2. L'ID (currentId)
+  //     // 3. L'ETAT (currentEtat)
+  //     this.commandeClientFournisseurService.enregistrerCommandeClient(
+  //       commande, currentId, currentEtat
+  //     ).subscribe({
+  //       next: () => this.router.navigate(['commandesclient']),
+  //       error: (e) => this.handleError(e)
+  //     });
+  //   } else {
+  //     this.commandeClientFournisseurService.enregistrerCommandeFournisseur(
+  //       commande, currentId, currentEtat
+  //     ).subscribe({
+  //       next: () => this.router.navigate(['commandesfournisseur']),
+  //       error: (e) => this.handleError(e)
+  //     });
+  //   }
+  // }
+
+  // enregistrerCommande(): void {
+  //   const commande = this.preparerCommande();
+  //
+  //   // On récupère les valeurs nécessaires pour les nouveaux paramètres
+  //   const currentId = (this.origin === 'client') ? this.idCommandeClient : this.idCommandeFournisseur;
+  //   const currentEtat = commande.etatCommande;
+  //
+  //   if (this.origin === 'client') {
+  //     // On passe les 3 arguments : DTO, ID, ETAT
+  //     this.commandeClientFournisseurService.enregistrerCommandeClient(currentId, currentEtat, commande
+  //     ).subscribe({
+  //       next: () => {
+  //         this.router.navigate(['commandesclient']);
+  //       },
+  //       error: (e) => this.handleError(e)
+  //     });
+  //   } else if (this.origin === 'fournisseur') {
+  //     this.commandeClientFournisseurService.enregistrerCommandeFournisseur(currentId, currentEtat, commande
+  //     ).subscribe({
+  //       next: () => {
+  //         this.router.navigate(['commandesfournisseur']);
+  //       },
+  //       error: (e) => this.handleError(e)
+  //     });
+  //   }
+  // }
+
   enregistrerCommande(): void {
     const commande = this.preparerCommande();
     if (this.origin === 'client') {
@@ -398,10 +459,54 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
   }
 
 
+
+  // private preparerCommande(): any {
+  //   const idEnt = this.connectedUser?.entreprise?.id;
+  //   const isClient = this.origin === 'client';
+  //
+  //   // Récupération de l'ID selon l'origine
+  //   const currentId = isClient ? this.idCommandeClient : this.idCommandeFournisseur;
+  //
+  //   // Correction de la logique de récupération de l'état actuel
+  //   // On utilise l'objet chargé lors du ngOnInit
+  //   const commandeInitiale = isClient ? this.commandeClientDto : this.commandeFournisseurDto;
+  //   const etatActuel = commandeInitiale?.etatCommande;
+  //
+  //   const lignesPourBackend = this.listeLignesCommande.map(ligne => {
+  //     return {
+  //       id: ligne.id || null,
+  //       article: { id: ligne.article?.id },
+  //       quantite: ligne.quantite,
+  //       prixVenteUnitaireTtc: isClient ? ligne.prixVenteUnitaireTtc : undefined,
+  //       prixUnitaireTtc: !isClient ? ligne.prixUnitaireTtc : undefined,
+  //       idEntreprise: idEnt
+  //     };
+  //   });
+  //
+  //   return {
+  //     id: currentId,
+  //     [isClient ? 'client' : 'fournisseur']: this.selectedClientFournisseur,
+  //     code: isClient ? this.codeCommandeClient : this.codeCommandeFournisseur,
+  //     dateCommande: new Date().toISOString(),
+  //     // Si c'est une création, on force PRO_FORMAT. Si c'est une modif, on garde l'état existant.
+  //     etatCommande: currentId ? (etatActuel || 'PRO_FORMAT') : 'PRO_FORMAT',
+  //     idEntreprise: idEnt,
+  //     [isClient ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
+  //   };
+  // }
+
+
   private preparerCommande(): any {
     const idEnt = this.connectedUser?.entreprise?.id;
     // Utiliser l'ID général récupéré lors du ngOnInit (idCommande)
     const currentId = (this.origin === 'client') ? this.idCommandeClient : this.idCommandeFournisseur;
+
+    // On détermine l'état :
+    // Si c'est une nouvelle commande (id null), on met PRO_FORMAT.
+    // Si c'est une modif, on garde l'état actuel (qui pourrait être déjà CONFIRMEE).
+    const etatActuel = (this.origin === 'client')
+      ? this.commandeClientDto.etatCommande // Attention ici, vérifiez bien vos noms de variables (votre code mélangeait Dto client/fournisseur)
+      : this.commandeFournisseurDto.etatCommande;
 
     const lignesPourBackend = this.listeLignesCommande.map(ligne => {
       return {
@@ -421,7 +526,7 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
       // client: { id: this.selectedClientFournisseur?.id },
       code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
       dateCommande: new Date().toISOString(), // Utiliser ISOString pour la stabilité
-      etatCommande: 'PRO_FORMAT',
+      etatCommande: currentId ? (etatActuel || 'PRO_FORMAT') : 'PRO_FORMAT',
       idEntreprise: idEnt,
       [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
     };

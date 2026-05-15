@@ -32,11 +32,18 @@
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11"><small>{{ commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</small></div>
+        <div class="col-md-11"><small>CD: {{commande?.creationDate | date:'dd/MM/yyyy HH:mm'}}  LMD: {{commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
-        <div class="col-md-11"><small>{{ commande?.etatCommande }}</small></div>
+        <div class="col-md-11">
+          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'"  class="text-danger">
+            {{ commande?.etatCommande }} [[ {{ commande?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
+          </small>
+          <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"  class="text-warning">
+            {{ commande?.etatCommande }} [[ {{ commande?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
+          </small>
+        </div>
       </div>
     </div>
   </div>
@@ -48,22 +55,40 @@
         <button type="button" class="btn btn-link text-decoration-none"
                 (click)="modifierCommandeClientFournisseur()"
                 title="Modifier">
-          <small>
+          <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'" class="text-black-50">
             <i class="fa fa-edit icon-color-edit"></i>
-<!--            <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;-->
+            <!--            <i class="fa-solid fa-pencil-alt blue-color"></i>&nbsp;-->
+          </small>
+          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'" class="text-primary">
+            <i class="fa fa-edit icon-color-edit"></i>
           </small>
         </button>
       </div>
+
+
       <div class="col-md-3 text-center">
-        <button type="button" class="btn btn-link text-decoration-none text-primary"
-                data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalConfirm' + commande.id"
+        <button *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"
+                type="button" class="btn btn-link text-decoration-none text-black-50"
+                (click)="confirmationClientFournisseur()"
                 title="Confirmer">
           <small>
             <i class="fa-solid fa-clipboard-check"></i>&nbsp;
           </small>
         </button>
+        <button *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'"
+                type="button" class="btn btn-link text-decoration-none text-primary"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#modalConfirm' + commande.id"
+                title="Confirmer">
+          <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'" class="text-black-50">
+            <i class="fa-solid fa-clipboard-check"></i>&nbsp;
+          </small>
+          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'" class="text-primary">
+            <i class="fa-solid fa-clipboard-check"></i>&nbsp;
+          </small>
+        </button>
       </div>
+
 
       <div class="col-md-3 text-center"
            *ngIf="this.origin === 'client'">
@@ -76,18 +101,29 @@
           </small>
         </button>
       </div>
-
       <div class="col-md-3 text-center"
            *ngIf="this.origin === 'fournisseur'">
       </div>
 
 
       <div class="col-md-3 text-center">
-        <button type="button" class="btn btn-link text-decoration-none text-danger"
+        <button *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"
+                type="button" class="btn btn-link text-decoration-none text-black-50"
+                (click)="suppressionClientFournisseur()"
+                title="Confirmer">
+          <small>
+            <i class="fa-solid fa-trash-alt"></i>&nbsp;
+          </small>
+        </button>
+        <button *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'"
+                type="button" class="btn btn-link text-decoration-none text-primary"
                 data-bs-toggle="modal"
                 [attr.data-bs-target]="'#modalDelete' + commande.id"
                 title="Supprimer">
-          <small>
+          <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'" class="text-black-50">
+            <i class="fa-solid fa-trash-alt"></i>&nbsp;
+          </small>
+          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'" class="text-danger">
             <i class="fa-solid fa-trash-alt"></i>&nbsp;
           </small>
         </button>
@@ -138,6 +174,29 @@
   </div>
 </div>
 
+<!-- Modal d'erreur de modification -->
+<div class="modal fade" [ngClass]="{'show': showModalError}"
+     [ngStyle]="{'display': showModalError ? 'block' : 'none'}"
+     tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle"></i> Action impossible
+        </h5>
+        <button type="button" class="close text-white" (click)="showModalError = false">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{ messageErreur }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="showModalError = false">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal de suppression de la commande -->
 <div class="modal fade" [id]="'modalDelete' + commande.id"
@@ -173,5 +232,8 @@
     </div>
   </div>
 </div>
+
+
+
 
 

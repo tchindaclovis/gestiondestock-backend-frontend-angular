@@ -6,11 +6,15 @@ package com.tchindaClovis.gestiondestock.config;
 import com.tchindaClovis.gestiondestock.services.auth.ApplicationUserDetailsService;
 
 // Annotations Spring
+import com.tchindaClovis.gestiondestock.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 // Sécurité Spring
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -56,6 +60,20 @@ import static com.tchindaClovis.gestiondestock.utils.Constants.AUTHENTICATION_EN
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    // Injectez les dépendances dont le filtre a besoin
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    @Lazy // Indispensable pour casser le cycle avec le service utilisateur
+    private ApplicationUserDetailsService userDetailsService;
+
+    // Définissez le filtre comme un Bean manuel
+    @Bean
+    public ApplicationRequestFilter applicationRequestFilter() {
+        return new ApplicationRequestFilter(jwtUtil, userDetailsService);
+    }
+
     /**
      * ============================================================
      * Bean AuthenticationManager
@@ -96,8 +114,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             AuthenticationManager authenticationManager,
-            ApplicationUserDetailsService userDetailsService,
-            com.tchindaClovis.gestiondestock.config.ApplicationRequestFilter applicationRequestFilter
+            @Lazy ApplicationUserDetailsService userDetailsService, // Ajout de @Lazy
+            @Lazy com.tchindaClovis.gestiondestock.config.ApplicationRequestFilter applicationRequestFilter // Ajout de @Lazy
     ) throws Exception {
 
         http
@@ -107,7 +125,8 @@ public class SecurityConfiguration {
                 // Permet au frontend Angular (localhost:4200)
                 // d’appeler le backend
                 // =====================================================
-                .cors().and()
+                .cors(Customizer.withDefaults())   // Utilise la config de WebConfiguration
+//                .cors().and()
 
                 // =====================================================
                 // Désactivation CSRF
@@ -171,46 +190,6 @@ public class SecurityConfiguration {
 
     /**
      * ============================================================
-     * Configuration CORS personnalisée
-     * ============================================================
-     *
-     * Permet d’autoriser le frontend Angular à appeler l’API.
-     *
-     * Ici :
-     *  - Autorise localhost:4200
-     *  - Autorise tous les headers
-     *  - Autorise toutes les méthodes HTTP
-     *  - Autorise les credentials (cookies, headers d’auth)
-     */
-//    @Bean
-//    public CorsFilter corsFilter() {
-//
-//        CorsConfiguration config = new CorsConfiguration();
-//
-//        // Origine autorisée (frontend Angular)
-//        config.addAllowedOrigin("http://localhost:4200");
-//
-//        // Autoriser tous les headers
-//        config.addAllowedHeader("*");
-//
-//        // Autoriser toutes les méthodes HTTP (GET, POST, PUT, DELETE...)
-//        config.addAllowedMethod("*");
-//
-//        // Autoriser les credentials (important pour JWT dans headers)
-//        config.setAllowCredentials(true);
-//
-//        // Appliquer cette configuration à toutes les routes
-//        UrlBasedCorsConfigurationSource source =
-//                new UrlBasedCorsConfigurationSource();
-//
-//        source.registerCorsConfiguration("/**", config);
-//
-//        return new CorsFilter(source);
-//    }
-
-
-    /**
-     * ============================================================
      * Bean PasswordEncoder
      * ============================================================
      *
@@ -227,8 +206,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 }
-
-
 
 
 

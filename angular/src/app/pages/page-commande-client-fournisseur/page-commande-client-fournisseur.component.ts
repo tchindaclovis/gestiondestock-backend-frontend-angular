@@ -170,16 +170,19 @@ export class PageCommandeClientFournisseurComponent implements OnInit {
   }
 
   findAllCommandesClientFournisseur(): void {
-    if (this.origin === 'client') {
-      this.commandeClientFournisseurService.findAllCommandesClient()
-        .subscribe(res => {
-          this.listeCommandes = res;
-        });
-    }else {
-      this.commandeClientFournisseurService.findAllCommandesFournisseur()
-        .subscribe(res => {
-          this.listeCommandes = res;
-        });
+    const idEntreprise = this.connectedUser?.entreprise?.id;
+    if (idEntreprise) {
+      if (this.origin === 'client') {
+        this.commandeClientFournisseurService.findAllCommandeClientByIdEntreprise(idEntreprise)
+          .subscribe(res => {
+            this.listeCommandes = res;
+          });
+      } else {
+        this.commandeClientFournisseurService.findAllCommandeFournisseurByIdEntreprise(idEntreprise)
+          .subscribe(res => {
+            this.listeCommandes = res;
+          });
+      }
     }
   }
 }

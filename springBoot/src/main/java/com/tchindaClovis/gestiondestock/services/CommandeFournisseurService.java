@@ -5,11 +5,16 @@ import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 public interface CommandeFournisseurService {
-    CommandeFournisseurDto save(CommandeFournisseurDto dto);
 
-    CommandeFournisseurDto updateEtatCommande(Integer idCommandeFournisseur, EEtatCommande etatCommande);
+    CommandeFournisseurDto save(CommandeFournisseurDto dto);
+    CommandeFournisseurDto saveImpact(CommandeFournisseurDto dto);
+
+//    CommandeFournisseurDto saveImpact(CommandeFournisseurDto dto, Integer idCommandeFournisseur, EEtatCommande etatCommande);
+
+    CommandeFournisseurDto updateEtatCommande(Integer idCommandeFournisseur, EEtatCommande etatCommande, Instant dateConfirmation);
 
     CommandeFournisseurDto updateQuantiteCommande(Integer idCommandeFournisseur, Integer idLigneCommande, BigDecimal quantite);
 

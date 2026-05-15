@@ -10,33 +10,51 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 import static com.tchindaClovis.gestiondestock.utils.Constants.*;
 
 @Tag(name = "CommandeFournisseurs", description = "API de gestion des commandeFournisseurs")
 public interface CommandeFournisseurApi {
+
     @PostMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/create",
             produces = MediaType.APPLICATION_JSON_VALUE)
     CommandeFournisseurDto save(@RequestBody CommandeFournisseurDto dto);
 
-    @PatchMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/update/etat/{idCommandeFournisseur}/{etatCommande}",
+
+    @PostMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/createimpact",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    CommandeFournisseurDto updateEtatCommande(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur, @PathVariable("etatCommande") EEtatCommande etatCommande);
+    CommandeFournisseurDto saveImpact(@RequestBody CommandeFournisseurDto dto);
+
+//    @PostMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/create/{idCommandeFournisseur}/{etatCommande}",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    CommandeFournisseurDto saveImpact(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
+//                                      @PathVariable("etatCommande") EEtatCommande etatCommande,
+//                                      @RequestBody CommandeFournisseurDto dto);
+
+    @PatchMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/update/etat/{idCommandeFournisseur}/{etatCommande}/{dateConfirmation}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    CommandeFournisseurDto updateEtatCommande(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
+                                              @PathVariable("etatCommande") EEtatCommande etatCommande,
+                                              @PathVariable("dateConfirmation") Instant dateConfirmation);
 
     @PatchMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/update/quantite/{idCommandeFournisseur}/{idLigneCommande}/{quantite}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     CommandeFournisseurDto updateQuantiteCommande(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
-                                                  @PathVariable("idLigneCommande") Integer idLigneCommande, @PathVariable("quantite") BigDecimal quantite);
+                                                  @PathVariable("idLigneCommande") Integer idLigneCommande,
+                                                  @PathVariable("quantite") BigDecimal quantite);
 
     @PatchMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/update/fournisseur/{idCommandeFournisseur}/{idFournisseur}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    CommandeFournisseurDto updateFournisseur(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur, @PathVariable("idFournisseur") Integer idFournisseur);
+    CommandeFournisseurDto updateFournisseur(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
+                                             @PathVariable("idFournisseur") Integer idFournisseur);
 
     @PatchMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/update/article/{idCommandeFournisseur}/{idLigneCommande}/{idArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     CommandeFournisseurDto updateArticle(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur,
-                                         @PathVariable("idLigneCommande") Integer idLigneCommande, @PathVariable("idArticle") Integer idArticle);
+                                         @PathVariable("idLigneCommande") Integer idLigneCommande,
+                                         @PathVariable("idArticle") Integer idArticle);
 
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/{idCommandeFournisseur}",
             produces = MediaType.APPLICATION_JSON_VALUE)

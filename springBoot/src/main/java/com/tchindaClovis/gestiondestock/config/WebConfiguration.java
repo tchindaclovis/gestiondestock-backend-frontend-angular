@@ -29,6 +29,18 @@ public class WebConfiguration {
         return new WebMvcConfigurer() {
 
             /**
+             * ============================================================
+             * Configuration CORS personnalisée
+             * ============================================================
+             * Permet d’autoriser le frontend Angular à appeler l’API.
+             * Ici :
+             *  - Autorise localhost:4200
+             *  - Autorise tous les headers
+             *  - Autorise toutes les méthodes HTTP
+             *  - Autorise les credentials (cookies, headers d’auth)
+             */
+
+            /**
              * Méthode appelée automatiquement par Spring
              * pour enregistrer les règles CORS.
              *
@@ -50,7 +62,9 @@ public class WebConfiguration {
 
                         // 🔹 Autorise les méthodes HTTP suivantes
                         // OPTIONS est important pour les requêtes preflight
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+//                        // Autoriser toutes les méthodes HTTP (GET, POST, PUT, DELETE...)
+//                        .allowedMethods("*")
 
                         // 🔹 Autorise tous les headers envoyés par le client
                         // (ex: Authorization, Content-Type)
@@ -66,20 +80,7 @@ public class WebConfiguration {
 
 
 
-
-
-
-
-
-
-
-
 //package com.tchindaClovis.gestiondestock.config;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.servlet.config.annotation.CorsRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //
 //@Configuration
 //public class WebConfiguration {

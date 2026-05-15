@@ -37,6 +37,7 @@ public class CommandeClient extends Document{
     private List<LigneCommandeClient> ligneCommandeClients;
 
 
+
     @PrePersist
     @PreUpdate // Ajouté pour vérifier aussi lors des modifications
     protected void validateAndCreateDate() {

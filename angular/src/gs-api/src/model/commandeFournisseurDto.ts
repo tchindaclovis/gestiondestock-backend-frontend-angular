@@ -15,11 +15,15 @@ export interface CommandeFournisseurDto {
     id?: number;
     code?: string;
     dateCommande?: string;
+    creationDate?: string;
+    lastModifiedDate?: string;
+    dateConfirmation?: string;
     etatCommande?: CommandeFournisseurDto.EtatCommandeEnum;
     etat?: CommandeFournisseurDto.EtatEnum;
     fournisseur?: FournisseurDto;
     idEntreprise?: number;
     ligneCommandeFournisseurs?: Array<LigneCommandeFournisseurDto>;
+    commandeConfirmee?: boolean;
     commandeLivree?: boolean;
 }
 export namespace CommandeFournisseurDto {

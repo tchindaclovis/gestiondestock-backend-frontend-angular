@@ -38,17 +38,17 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint delete /gestiondestock/v1/commandeFournisseurs/delete/{idCommandeFournisseur}
+     * @endpoint delete /gestiondestock/v1/commandefournisseurs/delete/{idCommandeFournisseur}
      * @param idCommandeFournisseur 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public delete5(idCommandeFournisseur: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public delete5(idCommandeFournisseur: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public delete5(idCommandeFournisseur: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public delete5(idCommandeFournisseur: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public delete4(idCommandeFournisseur: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public delete4(idCommandeFournisseur: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public delete4(idCommandeFournisseur: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public delete4(idCommandeFournisseur: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
         if (idCommandeFournisseur === null || idCommandeFournisseur === undefined) {
-            throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling delete5.');
+            throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling delete4.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -76,7 +76,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/delete/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/delete/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
             {
@@ -91,7 +91,7 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint delete /gestiondestock/v1/commandeFournisseurs/delete/article/{idCommandeFournisseur}/{idLigneCommande}
+     * @endpoint delete /gestiondestock/v1/commandefournisseurs/delete/article/{idCommandeFournisseur}/{idLigneCommande}
      * @param idCommandeFournisseur 
      * @param idLigneCommande 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -134,7 +134,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/delete/article/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/delete/article/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('delete', `${basePath}${localVarPath}`,
             {
@@ -149,14 +149,14 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/commandeFournisseurs/all
+     * @endpoint get /gestiondestock/v1/commandefournisseurs/all
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAll5(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CommandeFournisseurDto>>;
-    public findAll5(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CommandeFournisseurDto>>>;
-    public findAll5(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CommandeFournisseurDto>>>;
-    public findAll5(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findAll4(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CommandeFournisseurDto>>;
+    public findAll4(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CommandeFournisseurDto>>>;
+    public findAll4(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CommandeFournisseurDto>>>;
+    public findAll4(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -184,7 +184,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/all`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/all`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<CommandeFournisseurDto>>('get', `${basePath}${localVarPath}`,
             {
@@ -253,7 +253,7 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/commandeFournisseurs/lignescommande/{idCommandeFournisseur}
+     * @endpoint get /gestiondestock/v1/commandefournisseurs/lignescommande/{idCommandeFournisseur}
      * @param idCommandeFournisseur 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -292,7 +292,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/lignescommande/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/lignescommande/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<LigneCommandeFournisseurDto>>('get', `${basePath}${localVarPath}`,
             {
@@ -307,17 +307,17 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint get /gestiondestock/v1/commandeFournisseurs/{idCommandeFournisseur}
+     * @endpoint get /gestiondestock/v1/commandefournisseurs/{idCommandeFournisseur}
      * @param idCommandeFournisseur 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findById5(idCommandeFournisseur: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
-    public findById5(idCommandeFournisseur: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
-    public findById5(idCommandeFournisseur: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
-    public findById5(idCommandeFournisseur: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findById4(idCommandeFournisseur: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
+    public findById4(idCommandeFournisseur: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
+    public findById4(idCommandeFournisseur: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
+    public findById4(idCommandeFournisseur: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeFournisseur === null || idCommandeFournisseur === undefined) {
-            throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling findById5.');
+            throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling findById4.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -346,7 +346,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('get', `${basePath}${localVarPath}`,
             {
@@ -413,17 +413,17 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint post /gestiondestock/v1/commandeFournisseurs/create
+     * @endpoint post /gestiondestock/v1/commandefournisseurs/create
      * @param commandeFournisseurDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public save5(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
-    public save5(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
-    public save5(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
-    public save5(commandeFournisseurDto: CommandeFournisseurDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public save4(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
+    public save4(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
+    public save4(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
+    public save4(commandeFournisseurDto: CommandeFournisseurDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (commandeFournisseurDto === null || commandeFournisseurDto === undefined) {
-            throw new Error('Required parameter commandeFournisseurDto was null or undefined when calling save5.');
+            throw new Error('Required parameter commandeFournisseurDto was null or undefined when calling save4.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -461,7 +461,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/create`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/create`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('post', `${basePath}${localVarPath}`,
             {
@@ -477,7 +477,71 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint patch /gestiondestock/v1/commandeFournisseurs/update/article/{idCommandeFournisseur}/{idLigneCommande}/{idArticle}
+     * @endpoint post /gestiondestock/v1/commandefournisseurs/createimpact
+     * @param commandeFournisseurDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public saveImpact(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
+    public saveImpact(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
+    public saveImpact(commandeFournisseurDto: CommandeFournisseurDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
+    public saveImpact(commandeFournisseurDto: CommandeFournisseurDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (commandeFournisseurDto === null || commandeFournisseurDto === undefined) {
+            throw new Error('Required parameter commandeFournisseurDto was null or undefined when calling saveImpact.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/createimpact`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<CommandeFournisseurDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: commandeFournisseurDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint patch /gestiondestock/v1/commandefournisseurs/update/article/{idCommandeFournisseur}/{idLigneCommande}/{idArticle}
      * @param idCommandeFournisseur 
      * @param idLigneCommande 
      * @param idArticle 
@@ -524,7 +588,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/article/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/update/article/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idArticle", value: idArticle, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('patch', `${basePath}${localVarPath}`,
             {
@@ -539,21 +603,25 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint patch /gestiondestock/v1/commandeFournisseurs/update/etat/{idCommandeFournisseur}/{etatCommande}
+     * @endpoint patch /gestiondestock/v1/commandefournisseurs/update/etat/{idCommandeFournisseur}/{etatCommande}/{dateConfirmation}
      * @param idCommandeFournisseur 
      * @param etatCommande 
+     * @param dateConfirmation 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
-    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeFournisseurDto>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeFournisseurDto>>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeFournisseurDto>>;
+    public updateEtatCommande1(idCommandeFournisseur: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeFournisseur === null || idCommandeFournisseur === undefined) {
             throw new Error('Required parameter idCommandeFournisseur was null or undefined when calling updateEtatCommande1.');
         }
         if (etatCommande === null || etatCommande === undefined) {
             throw new Error('Required parameter etatCommande was null or undefined when calling updateEtatCommande1.');
+        }
+        if (dateConfirmation === null || dateConfirmation === undefined) {
+            throw new Error('Required parameter dateConfirmation was null or undefined when calling updateEtatCommande1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -582,7 +650,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/etat/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/update/etat/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "dateConfirmation", value: dateConfirmation, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "date-time"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('patch', `${basePath}${localVarPath}`,
             {
@@ -597,7 +665,7 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint patch /gestiondestock/v1/commandeFournisseurs/update/fournisseur/{idCommandeFournisseur}/{idFournisseur}
+     * @endpoint patch /gestiondestock/v1/commandefournisseurs/update/fournisseur/{idCommandeFournisseur}/{idFournisseur}
      * @param idCommandeFournisseur 
      * @param idFournisseur 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -640,7 +708,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/fournisseur/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idFournisseur", value: idFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/update/fournisseur/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idFournisseur", value: idFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('patch', `${basePath}${localVarPath}`,
             {
@@ -655,7 +723,7 @@ export class CommandeFournisseursService extends BaseService {
     }
 
     /**
-     * @endpoint patch /gestiondestock/v1/commandeFournisseurs/update/quantite/{idCommandeFournisseur}/{idLigneCommande}/{quantite}
+     * @endpoint patch /gestiondestock/v1/commandefournisseurs/update/quantite/{idCommandeFournisseur}/{idLigneCommande}/{quantite}
      * @param idCommandeFournisseur 
      * @param idLigneCommande 
      * @param quantite 
@@ -702,7 +770,7 @@ export class CommandeFournisseursService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandeFournisseurs/update/quantite/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "quantite", value: quantite, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/commandefournisseurs/update/quantite/${this.configuration.encodeParam({name: "idCommandeFournisseur", value: idCommandeFournisseur, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "idLigneCommande", value: idLigneCommande, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "quantite", value: quantite, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeFournisseurDto>('patch', `${basePath}${localVarPath}`,
             {

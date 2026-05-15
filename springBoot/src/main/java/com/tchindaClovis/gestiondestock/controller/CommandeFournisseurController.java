@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -22,14 +23,25 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
         this.commandeFournisseurService = commandeFournisseurService;
     }
 
+
     @Override
     public CommandeFournisseurDto save(CommandeFournisseurDto dto) {
         return commandeFournisseurService.save(dto);
     }
 
     @Override
-    public CommandeFournisseurDto updateEtatCommande(Integer idCommandeFournisseur, EEtatCommande etatCommande) {
-        return commandeFournisseurService.updateEtatCommande(idCommandeFournisseur, etatCommande);
+    public CommandeFournisseurDto saveImpact(CommandeFournisseurDto dto) {
+        return commandeFournisseurService.saveImpact(dto);
+    }
+
+//    @Override
+//    public CommandeFournisseurDto saveImpact(Integer idCommandeFournisseur, EEtatCommande etatCommande, CommandeFournisseurDto dto) {
+//        return commandeFournisseurService.saveImpact(dto, idCommandeFournisseur, etatCommande);
+//    }
+
+    @Override
+    public CommandeFournisseurDto updateEtatCommande(Integer idCommandeFournisseur, EEtatCommande etatCommande, Instant dateConfirmation) {
+        return commandeFournisseurService.updateEtatCommande(idCommandeFournisseur, etatCommande, dateConfirmation);
     }
 
     @Override

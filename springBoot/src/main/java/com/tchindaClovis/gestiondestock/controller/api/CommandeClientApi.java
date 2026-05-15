@@ -11,19 +11,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;
 
 @Tag(name = "CommandeClients", description = "API de gestion des commandeClients")
 public interface CommandeClientApi {
+
     @PostMapping(value = APP_ROOT + "/commandeclients/create",
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
 
-    @PatchMapping(value = APP_ROOT + "/commandesclients/update/etat/{idCommandeClient}/{etatCommande}",
+    @PostMapping(value = APP_ROOT + "/commandeclients/createimpact",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<CommandeClientDto> saveImpact(@RequestBody CommandeClientDto dto);
+
+//    @PostMapping(value = APP_ROOT + "/commandeclients/create/{idCommandeClient}/{etatCommande}",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    ResponseEntity<CommandeClientDto> saveImpact(@PathVariable("idCommandeClient") Integer idCommandeClient,
+//                                                 @PathVariable("etatCommande") EEtatCommande etatCommande,
+//                                                 @RequestBody CommandeClientDto dto);
+
+    @PatchMapping(value = APP_ROOT + "/commandesclients/update/etat/{idCommandeClient}/{etatCommande}/{dateConfirmation}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateEtatCommande(@PathVariable("idCommandeClient") Integer idCommandeClient,
-                                                         @PathVariable("etatCommande") EEtatCommande etatCommande);
+                                                         @PathVariable("etatCommande") EEtatCommande etatCommande,
+                                                         @PathVariable("dateConfirmation") Instant dateConfirmation);
 
     @PatchMapping(value = APP_ROOT + "/commandesclients/update/quantite/{idCommandeClient}/{idLigneCommande}/{quantite}",
             produces = MediaType.APPLICATION_JSON_VALUE)

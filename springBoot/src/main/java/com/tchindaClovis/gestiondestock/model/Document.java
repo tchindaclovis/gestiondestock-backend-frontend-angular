@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Data
@@ -64,6 +65,9 @@ public class Document extends AbstractEntity{
 
     @Column(name = "datevalidation")
     private Date dateValidation;
+
+    @Column(name = "dateconfirmation")
+    private Instant dateConfirmation;
 
     @Column(name = "datetransfert")
     private Date dateTransfert;

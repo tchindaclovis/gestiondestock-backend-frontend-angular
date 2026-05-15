@@ -43,12 +43,12 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public delete4(idCommandeClient: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<string>;
-    public delete4(idCommandeClient: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public delete4(idCommandeClient: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public delete4(idCommandeClient: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public delete5(idCommandeClient: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<string>;
+    public delete5(idCommandeClient: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<string>>;
+    public delete5(idCommandeClient: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<string>>;
+    public delete5(idCommandeClient: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeClient === null || idCommandeClient === undefined) {
-            throw new Error('Required parameter idCommandeClient was null or undefined when calling delete4.');
+            throw new Error('Required parameter idCommandeClient was null or undefined when calling delete5.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -154,10 +154,10 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAll4(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CommandeClientDto>>;
-    public findAll4(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CommandeClientDto>>>;
-    public findAll4(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CommandeClientDto>>>;
-    public findAll4(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findAll5(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<CommandeClientDto>>;
+    public findAll5(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<CommandeClientDto>>>;
+    public findAll5(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<CommandeClientDto>>>;
+    public findAll5(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -313,12 +313,12 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findById4(idCommandeClient: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
-    public findById4(idCommandeClient: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
-    public findById4(idCommandeClient: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
-    public findById4(idCommandeClient: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public findById5(idCommandeClient: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
+    public findById5(idCommandeClient: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public findById5(idCommandeClient: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public findById5(idCommandeClient: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeClient === null || idCommandeClient === undefined) {
-            throw new Error('Required parameter idCommandeClient was null or undefined when calling findById4.');
+            throw new Error('Required parameter idCommandeClient was null or undefined when calling findById5.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -419,12 +419,12 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public save4(commandeClientDto: CommandeClientDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
-    public save4(commandeClientDto: CommandeClientDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
-    public save4(commandeClientDto: CommandeClientDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
-    public save4(commandeClientDto: CommandeClientDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public save5(commandeClientDto: CommandeClientDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
+    public save5(commandeClientDto: CommandeClientDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public save5(commandeClientDto: CommandeClientDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public save5(commandeClientDto: CommandeClientDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (commandeClientDto === null || commandeClientDto === undefined) {
-            throw new Error('Required parameter commandeClientDto was null or undefined when calling save4.');
+            throw new Error('Required parameter commandeClientDto was null or undefined when calling save5.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -463,6 +463,70 @@ export class CommandeClientsService extends BaseService {
         }
 
         let localVarPath = `/gestiondestock/v1/commandeclients/create`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<CommandeClientDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: commandeClientDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint post /gestiondestock/v1/commandeclients/createimpact
+     * @param commandeClientDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public saveImpact1(commandeClientDto: CommandeClientDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
+    public saveImpact1(commandeClientDto: CommandeClientDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public saveImpact1(commandeClientDto: CommandeClientDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public saveImpact1(commandeClientDto: CommandeClientDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (commandeClientDto === null || commandeClientDto === undefined) {
+            throw new Error('Required parameter commandeClientDto was null or undefined when calling saveImpact1.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/commandeclients/createimpact`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeClientDto>('post', `${basePath}${localVarPath}`,
             {
@@ -598,21 +662,25 @@ export class CommandeClientsService extends BaseService {
     }
 
     /**
-     * @endpoint patch /gestiondestock/v1/commandesclients/update/etat/{idCommandeClient}/{etatCommande}
+     * @endpoint patch /gestiondestock/v1/commandesclients/update/etat/{idCommandeClient}/{etatCommande}/{dateConfirmation}
      * @param idCommandeClient 
      * @param etatCommande 
+     * @param dateConfirmation 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeClient === null || idCommandeClient === undefined) {
             throw new Error('Required parameter idCommandeClient was null or undefined when calling updateEtatCommande.');
         }
         if (etatCommande === null || etatCommande === undefined) {
             throw new Error('Required parameter etatCommande was null or undefined when calling updateEtatCommande.');
+        }
+        if (dateConfirmation === null || dateConfirmation === undefined) {
+            throw new Error('Required parameter dateConfirmation was null or undefined when calling updateEtatCommande.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -641,7 +709,7 @@ export class CommandeClientsService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommandeClient", value: idCommandeClient, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}`;
+        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommandeClient", value: idCommandeClient, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "dateConfirmation", value: dateConfirmation, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "date-time"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeClientDto>('patch', `${basePath}${localVarPath}`,
             {

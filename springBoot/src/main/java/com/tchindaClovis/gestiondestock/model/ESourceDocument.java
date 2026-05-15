@@ -7,13 +7,13 @@ public enum ESourceDocument {
     public String toString() {
         switch (this) {
             case COMMANDE_CLIENT:
-                return "Commande des articles par un client";
+                return "ESourceDocument.COMMANDE_CLIENT"; //Commande des articles par un client
             case COMMANDE_FOURNISSEUR:
-                return "Commande des articles par un fournisseur";
+                return "ESourceDocument.COMMANDE_FOURNISSEUR"; //Commande des articles par un fournisseur
             case VENTE:
-                return "Vente des articles";
+                return "ESourceDocument.VENTE"; //Vente des articles
             case CORRECTION_STOCK:
-                return "Correction du stock suite à un évènement";
+                return "ESourceDocument.CORRECTION_STOCK"; //Correction du stock suite à un évènement
 
             default:
                 return "";

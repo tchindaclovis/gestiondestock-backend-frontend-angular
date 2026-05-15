@@ -15,14 +15,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
-@Component
+//@Component <--- SUPPRIMEZ CETTE LIGNE
 public class ApplicationRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final ApplicationUserDetailsService userDetailsService;
 
-    @Autowired
-    private ApplicationUserDetailsService userDetailsService;
+    // Constructeur pour l'instanciation manuelle
+    public ApplicationRequestFilter(JwtUtil jwtUtil, ApplicationUserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
+
+    //Ayant supprimé @Component, on a plus besoin d'injection automatique car c'est fait par constructeur ci-dessus
+//    @Autowired
+//    private JwtUtil jwtUtil;
+//
+//    @Autowired
+//    private ApplicationUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -91,24 +102,7 @@ public class ApplicationRequestFilter extends OncePerRequestFilter {
 
 
 //package com.tchindaClovis.gestiondestock.config;
-//
-//import com.tchindaClovis.gestiondestock.services.auth.ApplicationUserDetailsService;
-//import com.tchindaClovis.gestiondestock.utils.JwtUtil;
-//import jakarta.servlet.FilterChain;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import org.jboss.logging.MDC;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-//import org.springframework.stereotype.Component;
-//import org.springframework.util.StringUtils;
-//import org.springframework.web.filter.OncePerRequestFilter;
-//import java.io.IOException;
-//
+
 //@Component
 //public class ApplicationRequestFilter extends OncePerRequestFilter { //filtre pour intercepter les requêtes
 //
@@ -153,92 +147,6 @@ public class ApplicationRequestFilter extends OncePerRequestFilter {
 //}
 
 
-
-
-
-//package com.tchindaClovis.gestiondestock.config;
-//
-//import com.tchindaClovis.gestiondestock.services.auth.ApplicationUserDetailsService;
-//import com.tchindaClovis.gestiondestock.utils.JwtUtil;
-//import jakarta.servlet.FilterChain;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import org.jboss.logging.MDC;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-//import org.springframework.stereotype.Component;
-//import org.springframework.util.StringUtils;
-//import org.springframework.web.filter.OncePerRequestFilter;
-//import java.io.IOException;
-//
-//@Component
-//public class ApplicationRequestFilter extends OncePerRequestFilter {
-//
-//    private JwtUtil jwtUtil;
-//    private ApplicationUserDetailsService userDetailsService;
-//
-//    // Injection par constructeur (déjà présent)
-//    @Autowired
-//    public ApplicationRequestFilter(JwtUtil jwtUtil, ApplicationUserDetailsService userDetailsService) {
-//        this.jwtUtil = jwtUtil;
-//        this.userDetailsService = userDetailsService;
-//    }
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-//            throws ServletException, IOException {
-//
-//        // =========================================================================
-//        // NOUVEAU: Contourner la vérification JWT pour les chemins publics
-//        // =========================================================================
-//        // Ces chemins doivent correspondre EXACTEMENT à ceux dans SecurityConfiguration
-//        // On vérifie le chemin relatif (URI)
-//        String servletPath = request.getServletPath();
-//
-//        if (servletPath.startsWith("/gestiondestock/v1/auth/authenticate") ||
-//                servletPath.startsWith("/gestiondestock/v1/entreprises/create") ||
-//                servletPath.startsWith("/gestiondestock/v1/utilisateurs/update/password")) {
-//
-//            // Si c'est une URL publique, on passe directement au filtre suivant sans vérifier le JWT
-//            MDC.put("idEntreprise", null); // Assurez-vous que l'ID d'entreprise est vide pour les requêtes publiques
-//            chain.doFilter(request, response);
-//            return;
-//        }
-//        // =========================================================================
-//
-//        final String authHeader = request.getHeader("Authorization");
-//        String userEmail = null;
-//        String jwt = null;
-//        String idEntreprise = null;
-//
-//        if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer ")){
-//            jwt = authHeader.substring(7);
-//            // Si le JWT est mal formé, MalformedJwtException sera levée ici.
-//            // En excluant les paths publics ci-dessus, cela devrait être évité sur ces paths.
-//            userEmail = jwtUtil.extractUsername(jwt);
-//            idEntreprise = jwtUtil.extractIdEntreprise(jwt);
-//        }
-//
-//        if (StringUtils.hasLength(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-//            if (jwtUtil.validateToken(jwt, userDetails)){
-//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-//                        userDetails, null, userDetails.getAuthorities()
-//                );
-//                usernamePasswordAuthenticationToken.setDetails(
-//                        new WebAuthenticationDetailsSource().buildDetails(request)
-//                );
-//                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//            }
-//        }
-//        MDC.put("idEntreprise",idEntreprise);
-//        chain.doFilter(request, response);
-//    }
-//}
 
 
 

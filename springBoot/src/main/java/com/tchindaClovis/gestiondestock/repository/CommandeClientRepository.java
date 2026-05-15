@@ -12,8 +12,9 @@ public interface CommandeClientRepository extends JpaRepository<CommandeClient, 
     Optional<CommandeClient> findCommandeClientByCode(String code);
     List<CommandeClient> findAllByClientId(Integer id);
 
-    @Query("SELECT c FROM CommandeClient c LEFT JOIN FETCH c.ligneCommandeClients WHERE c.id = :id")
-    Optional<CommandeClient> findByIdWithLignes(@Param("id") Integer id);
+        @Query("SELECT c FROM CommandeClient c LEFT JOIN FETCH c.ligneCommandeClients WHERE c.id = :id")
+        Optional<CommandeClient> findByIdWithLignes(@Param("id") Integer id);
+
 
     List<CommandeClient> findAllByIdEntreprise(Integer idEntreprise);
 

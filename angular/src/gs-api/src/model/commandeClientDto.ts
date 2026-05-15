@@ -15,11 +15,15 @@ export interface CommandeClientDto {
     id?: number;
     code?: string;
     dateCommande?: string;
+    creationDate?: string;
+    lastModifiedDate?: string;
+    dateConfirmation?: string;
     idEntreprise?: number;
     etatCommande?: CommandeClientDto.EtatCommandeEnum;
     etat?: CommandeClientDto.EtatEnum;
     client?: ClientDto;
     ligneCommandeClients?: Array<LigneCommandeClientDto>;
+    commandeConfirmee?: boolean;
     commandeLivree?: boolean;
 }
 export namespace CommandeClientDto {
