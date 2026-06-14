@@ -81,6 +81,13 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
         return commandeFournisseurService.findAllCommandeFournisseurByIdEntreprise(idEntreprise);
     }
 
+
+    @Override
+    public List<CommandeFournisseurDto> findAllCommandeFournisseurByIdFournisseur(Integer idFournisseur) {
+
+        return commandeFournisseurService.findAllCommandeFournisseurByIdFournisseur(idFournisseur);
+    }
+
     @Override
     public List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommandeFournisseur) {
         return commandeFournisseurService.findAllLignesCommandesFournisseurByCommandeFournisseurId(idCommandeFournisseur);

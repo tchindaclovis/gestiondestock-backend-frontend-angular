@@ -14,9 +14,13 @@ public class VenteDto {
 
     private String code;
 
+    private String codeCommandeClient;
+
     private Instant dateVente;
 
-//    private String commentaire;
+    private Instant creationDate;
+
+    private Instant lastModifiedDate;
 
     private EPaymentType paymentType;
 
@@ -34,8 +38,10 @@ public class VenteDto {
         return VenteDto.builder()
                 .id(vente.getId())
                 .code(vente.getCode())
+                .codeCommandeClient(vente.getCodeCommandeClient())
                 .dateVente(vente.getDateVente())
-//                .commentaire(vente.getCommentaire())
+                .creationDate(vente.getCreationDate())
+                .lastModifiedDate(vente.getLastModifiedDate())
                 .paymentType(vente.getPaymentType())
                 .client(ClientDto.fromEntity(vente.getClient()))
                 .idEntreprise(vente.getIdEntreprise())
@@ -49,8 +55,10 @@ public class VenteDto {
         Vente vente = new Vente();
         vente.setId(venteDto.getId());
         vente.setCode(venteDto.getCode());
+        vente.setCodeCommandeClient(venteDto.getCodeCommandeClient());
         vente.setDateVente(venteDto.getDateVente());
-//        vente.setCommentaire(venteDto.getCommentaire());
+        vente.setCreationDate(venteDto.getCreationDate());
+        vente.setLastModifiedDate(venteDto.getLastModifiedDate());
         vente.setPaymentType(venteDto.getPaymentType());
         vente.setClient(ClientDto.toEntity(venteDto.getClient()));
         vente.setIdEntreprise(venteDto.getIdEntreprise());

@@ -6,44 +6,43 @@
   </div>
 
   <!--  details client ou fournisseur-->
-  <div class="col-md-4 border-end">
-    <div class="col">
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11"><small>{{ clientFournisseur?.nom }}</small></div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-circle-info blue-color"></i></div>
-        <div class="col-md-11"><small>{{ clientFournisseur?.statut }}</small></div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-phone blue-color"></i></div>
-        <div class="col-md-11"><small>{{ clientFournisseur?.numTel }}</small></div>
-      </div>
+  <div class="col-md-3 border-end">
+    <div class="row">
+      <div class="col-md-2"><i class="fa-solid fa-circle-info blue-color"></i></div>
+      <div class="col-md-10"><small>{{ clientFournisseur?.nom }}</small></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"><i class="fa-solid fa-circle-info blue-color"></i></div>
+      <div class="col-md-10"><small>{{ clientFournisseur?.statut }}</small></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"><i class="fa-solid fa-phone blue-color"></i></div>
+      <div class="col-md-10"><small>{{ clientFournisseur?.numTel }}</small></div>
     </div>
   </div>
 
   <!--  details commandes-->
-  <div class="col-md-4 border-end ">
-    <div class="col">
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
-        <div class="col-md-11"><small>{{ commande?.code }}</small></div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11"><small>CD: {{commande?.creationDate | date:'dd/MM/yyyy HH:mm'}}  LMD: {{commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</small></div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
-        <div class="col-md-11">
-          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'"  class="text-danger">
-            {{ commande?.etatCommande }} [[ {{ commande?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
-          </small>
-          <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"  class="text-warning">
-            {{ commande?.etatCommande }} [[ {{ commande?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
-          </small>
-        </div>
+  <div class="col-md-5 border-end ">
+    <div class="row">
+      <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
+      <div class="col-md-11"><small>{{ commande?.code }}</small></div>
+    </div>
+    <div class="row">
+      <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
+      <div class="col-md-11"><small>CD: {{commande?.creationDate | date:'dd/MM/yyyy HH:mm'}}  LMD: {{commande?.dateCommande | date:'dd/MM/yyyy HH:mm'}}</small></div>
+    </div>
+    <div class="row">
+      <div class="col-md-1"><i class="fa-solid fa-cart-arrow-down blue-color"></i></div>
+      <div class="col-md-11">
+        <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'"  class="text-danger">
+          {{ commande?.etatCommande }} [[ {{ commande?.creationDate | date:'dd/MM/yyyy HH:mm'}} ]]
+        </small>
+        <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"  class="text-warning">
+          {{ commande?.etatCommande }} [[ {{ commande?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
+        </small>
+        <small *ngIf="this.commande?.etatCommande === 'VENDUE'"  class="text-success">
+          {{ commande?.etatCommande }} [[ {{ venteDto?.dateVente | date:'dd/MM/yyyy HH:mm'}} ]]
+        </small>
       </div>
     </div>
   </div>
@@ -65,7 +64,6 @@
         </button>
       </div>
 
-
       <div class="col-md-3 text-center">
         <button *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"
                 type="button" class="btn btn-link text-decoration-none text-black-50"
@@ -83,7 +81,7 @@
           <small *ngIf="this.commande?.etatCommande === 'CONFIRMEE'" class="text-black-50">
             <i class="fa-solid fa-clipboard-check"></i>&nbsp;
           </small>
-          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'" class="text-primary">
+          <small *ngIf="this.commande?.etatCommande === 'PRO_FORMAT'" class="text-warning">
             <i class="fa-solid fa-clipboard-check"></i>&nbsp;
           </small>
         </button>
@@ -91,18 +89,19 @@
 
 
       <div class="col-md-3 text-center"
-           *ngIf="this.origin === 'client'">
-        <button type="button" class="btn btn-link text-decoration-none text-primary"
+           *ngIf="this.origin === 'client' && this.commande?.etatCommande === 'CONFIRMEE'">
+        <button type="button" class="btn btn-link text-decoration-none bold text-success"
                 data-bs-toggle="modal"
                 (click)="vendre()"
                 title="Vendre">
           <small>
-            <i class="fa-brands fa-hubspot"></i>&nbsp;
+            <i class="fa-solid fa-sack-dollar"></i>&nbsp;
+<!--            <i class="fa-brands fa-hubspot"></i>&nbsp;-->
           </small>
         </button>
       </div>
       <div class="col-md-3 text-center"
-           *ngIf="this.origin === 'fournisseur'">
+           *ngIf="this.origin === 'fournisseur' || this.commande?.etatCommande !== 'CONFIRMEE'">
       </div>
 
 
@@ -110,7 +109,7 @@
         <button *ngIf="this.commande?.etatCommande === 'CONFIRMEE'"
                 type="button" class="btn btn-link text-decoration-none text-black-50"
                 (click)="suppressionClientFournisseur()"
-                title="Confirmer">
+                title="Supprimer">
           <small>
             <i class="fa-solid fa-trash-alt"></i>&nbsp;
           </small>
@@ -184,8 +183,9 @@
         <h5 class="modal-title">
           <i class="fas fa-exclamation-triangle"></i> Action impossible
         </h5>
-        <button type="button" class="close text-white" (click)="showModalError = false">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close text-white" (click)="showModalError = false"
+                data-bs-dismiss="modal" aria-label="Close">
+<!--          <span aria-hidden="true">&times;</span>-->
         </button>
       </div>
       <div class="modal-body">

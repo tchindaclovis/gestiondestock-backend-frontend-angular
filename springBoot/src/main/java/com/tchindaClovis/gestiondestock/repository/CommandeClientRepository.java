@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommandeClientRepository extends JpaRepository<CommandeClient, Integer> {
-    Optional<CommandeClient> findCommandeClientByCode(String code);
+    Optional<CommandeClient> findByCode(String code);
     List<CommandeClient> findAllByClientId(Integer id);
 
         @Query("SELECT c FROM CommandeClient c LEFT JOIN FETCH c.ligneCommandeClients WHERE c.id = :id")

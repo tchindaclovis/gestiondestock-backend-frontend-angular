@@ -503,6 +503,17 @@ public class CommandeFournisseurServiceImpl implements CommandeFournisseurServic
     }
 
     @Override
+    public List<CommandeFournisseurDto> findAllCommandeFournisseurByIdFournisseur(Integer idFournisseur) {
+        if (idFournisseur == null) {
+            log.error("Entreprise ID is null");
+            return List.of();
+        }
+        return commandeFournisseurRepository.findAllByFournisseurId(idFournisseur).stream()
+                .map(CommandeFournisseurDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommandeFournisseur) {
         return ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(idCommandeFournisseur).stream()
                 .map(LigneCommandeFournisseurDto::fromEntity)

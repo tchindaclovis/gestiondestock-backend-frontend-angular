@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Category")  //optionnel car par défaut le nom de la classe
-public class Category extends AbstractEntity{
+public class Category extends Document{
 
     @Column(name = "code")
     private String code;
@@ -22,11 +22,8 @@ public class Category extends AbstractEntity{
     @Column(name = "designation")
     private String designation;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @OneToMany(mappedBy = "category")
     private List<Article> articles;

@@ -63,8 +63,14 @@
           <label>Pays:</label>
           <div class="appercu-form">{{ utilisateurDto.adresse!.pays }}</div>
         </div>
+        <div class="col-md-6 text-center">
+          <label>Description:</label>
+          <div class="appercu-form">{{ utilisateurDto.description }}</div>
+        </div>
       </div>
     </div>
+
+
     <div class="col-md-12 text-center mt-3">
       <button class="btn btn-danger me-3" (click)="cancelClick()">
         <i class="fa-solid fa-ban"></i>&nbsp;

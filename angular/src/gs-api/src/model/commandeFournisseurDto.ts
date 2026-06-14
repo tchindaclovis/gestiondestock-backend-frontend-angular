@@ -30,7 +30,7 @@ export namespace CommandeFournisseurDto {
     export const EtatCommandeEnum = {
         ProFormat: 'PRO_FORMAT',
         Confirmee: 'CONFIRMEE',
-        Vendu: 'VENDU',
+        Vendue: 'VENDUE',
         Livree: 'LIVREE',
         Annulee: 'ANNULEE'
     } as const;

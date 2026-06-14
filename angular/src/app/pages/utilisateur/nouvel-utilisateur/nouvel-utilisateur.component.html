@@ -38,15 +38,15 @@
               <input type="text" class="form-control" placeholder="Nom" name="nom" [(ngModel)]="utilisateurDto.nom">
             </div>
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Adresse 1</label>
-              <input type="text" class="form-control" placeholder="Adresse 1" name="adresse1" [(ngModel)]="utilisateurDto.adresse!.adresse1">
+              <label class="form-label small fw-bold">Statut</label>
+              <input type="text" class="form-control" placeholder="Statut" name="statut" [(ngModel)]="utilisateurDto.statut">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Statut</label>
-              <input type="text" class="form-control" placeholder="Statut" name="statut" [(ngModel)]="utilisateurDto.statut">
+              <label class="form-label small fw-bold">Adresse 1</label>
+              <input type="text" class="form-control" placeholder="Adresse 1" name="adresse1" [(ngModel)]="utilisateurDto.adresse!.adresse1">
             </div>
             <div class="col-md-6">
               <label class="form-label small fw-bold">Adresse 2</label>
@@ -60,15 +60,15 @@
               <input type="email" class="form-control" placeholder="E-mail" name="email" [(ngModel)]="utilisateurDto.email">
             </div>
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Ville</label>
-              <input type="text" class="form-control" placeholder="Ville" name="ville" [(ngModel)]="utilisateurDto.adresse!.ville">
+              <label class="form-label small fw-bold">Téléphone</label>
+              <input type="text" class="form-control" placeholder="Telephone" name="numTel" [(ngModel)]="utilisateurDto.numTel">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label class="form-label small fw-bold">Téléphone</label>
-              <input type="text" class="form-control" placeholder="Telephone" name="numTel" [(ngModel)]="utilisateurDto.numTel">
+              <label class="form-label small fw-bold">Ville</label>
+              <input type="text" class="form-control" placeholder="Ville" name="ville" [(ngModel)]="utilisateurDto.adresse!.ville">
             </div>
             <div class="col-md-6">
               <label class="form-label small fw-bold">Code postal</label>
@@ -76,10 +76,14 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 offset-md-6">
+          <div class="row mb-3">
+            <div class="col-md-6">
               <label class="form-label small fw-bold">Pays</label>
               <input type="text" class="form-control" placeholder="Pays" name="pays" [(ngModel)]="utilisateurDto.adresse!.pays">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Description</label>
+              <textarea type="text" class="form-control" placeholder="Description" name="description" [(ngModel)]="utilisateurDto.description"></textarea>
             </div>
           </div>
         </form>

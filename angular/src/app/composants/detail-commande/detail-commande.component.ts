@@ -10,8 +10,7 @@ import {ClientfournisseurService} from "../../services/clientfournisseurs/client
 
 export class DetailCommandeComponent implements OnInit {
 
-  @Input()
-  origin = ''; // On peut aussi le passer par @Input() depuis le parent pour plus de rapidité
+  @Input() origin = ''; // On peut aussi le passer par @Input() depuis le parent pour plus de rapidité
 
   @Input()
   ligneCommande: any = {};

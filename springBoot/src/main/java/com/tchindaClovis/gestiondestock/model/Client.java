@@ -11,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Client")  //optionnel car par défaut le nom de la classe
-public class Client extends AbstractEntity{
+public class Client extends Document{
     @Column(name = "nom")
     private String nom;
 
@@ -30,8 +30,8 @@ public class Client extends AbstractEntity{
     @Column(name = "numtel")
     private String numTel;
 
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @OneToMany(mappedBy = "client")
 //    @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE)  //permet de suprimer l'objet client avec toutes les commandeClient

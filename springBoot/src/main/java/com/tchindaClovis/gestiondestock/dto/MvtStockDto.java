@@ -1,4 +1,5 @@
 package com.tchindaClovis.gestiondestock.dto;
+
 import com.tchindaClovis.gestiondestock.model.*;
 import lombok.Builder;
 import lombok.Data;

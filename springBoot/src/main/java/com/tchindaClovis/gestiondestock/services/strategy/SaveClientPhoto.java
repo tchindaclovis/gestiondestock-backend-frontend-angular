@@ -4,8 +4,10 @@ import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
 import com.tchindaClovis.gestiondestock.services.ClientService;
-import java.io.InputStream;
 import com.tchindaClovis.gestiondestock.services.MinioService;
+
+import java.io.InputStream;
+
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

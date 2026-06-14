@@ -47,6 +47,7 @@ import { NouvelleVenteComponent } from './pages/vente/nouvelle-vente/nouvelle-ve
 import { AppercuVenteComponent } from './pages/vente/appercu-vente/appercu-vente.component';
 import { DetailVenteComponent } from './composants/detail-vente/detail-vente.component';
 import { DetailVenteClientComponent } from './composants/detail-vente-client/detail-vente-client.component';
+import { NouvelleCommandeClientVenteComponent } from './composants/nouvelle-commande-client-vente/nouvelle-commande-client-vente.component';
 
 
 
@@ -92,7 +93,8 @@ registerLocaleData(localeFr);
     NouvelleVenteComponent,
     AppercuVenteComponent,
     DetailVenteComponent,
-    DetailVenteClientComponent
+    DetailVenteClientComponent,
+    NouvelleCommandeClientVenteComponent
   ],
     imports: [
         BrowserModule,

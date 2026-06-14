@@ -10,4 +10,6 @@ public interface CategoryService {
     CategoryDto findByCode(String code);
     List<CategoryDto> findAll();
     void delete(Integer id);
+    String getLastCodeCategory();
 }
+

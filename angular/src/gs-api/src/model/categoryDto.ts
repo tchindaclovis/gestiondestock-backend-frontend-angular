@@ -15,5 +15,6 @@ export interface CategoryDto {
     designation?: string;
     description?: string;
     idEntreprise?: number;
+    idUtilisateur?: number;
 }
 

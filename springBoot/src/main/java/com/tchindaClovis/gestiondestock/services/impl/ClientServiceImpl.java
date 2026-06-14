@@ -32,6 +32,7 @@ public class ClientServiceImpl implements ClientService {
         this.commandeClientRepository = commandeClientRepository;
     }
 
+
     @Override
     public ClientDto save(ClientDto dto) {
         List<String> errors = ClientValidator.validate(dto);

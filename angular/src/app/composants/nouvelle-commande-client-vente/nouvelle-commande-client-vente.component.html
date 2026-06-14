@@ -1,0 +1,221 @@
+<<div class="modal fade show" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-content shadow-lg">
+
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">
+          <i class="fa-solid fa-cash-register text-primary"></i>&nbsp; Nouvelle commande-vente
+        </h5>
+        <button type="button" class="btn-close" (click)="cancelClick()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4" style="max-height: 80vh; overflow-y: auto;">
+
+        <div class="alert alert-danger" *ngIf="errorMsg.length">
+          <div *ngFor="let msg of errorMsg">
+            <span> {{ msg }} </span>
+          </div>
+        </div>
+
+        <div class="row  mx-1 bg-white border rounded shadow-sm">
+          <div class="col-md-5 border-end">
+            <form>
+              <div class="row mt-2">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Code Vente (Auto)</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control bg-light" name="codeVente" [(ngModel)]="codeVente" readonly>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Code commande</label>
+                </div>
+                <div class="col-md-8">
+                  <span class="form-label small border ">
+                    {{ commandeClientDto?.code }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Mode de paiement</label>
+                </div>
+                <div class="col-md-8">
+                  <select class="form-select" name="paymentType" [(ngModel)]="venteDto.paymentType">
+                    <option [ngValue]="undefined" selected disabled>Sélectionner un mode de paiement</option>
+                    <option *ngFor="let type of paymentTypesOptions" [value]="type">
+                      {{ type.replace('_', ' ') | titlecase }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Etat commande</label>
+                </div>
+                <div class="col-md-8">
+                  <i class="fa-solid fa-clipboard-check small text-warning me-2"></i>
+                  <span class="form-label small border text-warning">
+                    {{ commandeClientDto?.etatCommande }} [[ {{ commandeClientDto?.dateConfirmation | date:'dd/MM/yyyy HH:mm'}} ]]
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-md-5 border-end" >
+            <form>
+              <div class="row mt-1">
+                <div class="col-md-4 text-end">
+                  <label class="form-label small fw-bold">Nom</label>
+                </div>
+                <div class="col-md-8">
+                  <i class="fa-solid fa-tag blue-color me-2"></i>
+                  {{ clientFournisseur.nom }}
+                </div>
+              </div>
+
+              <div class="row mt-1">
+                <div class="col-md-4 text-end">
+                  <label class="form-label small fw-bold">Statut ou prénom</label>
+                </div>
+                <div class="col-md-8">
+                  <i class="fa-solid fa-tag blue-color me-2"></i>
+                  {{ clientFournisseur.statut }}
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="col-md-4 text-end">
+                  <label class="form-label small fw-bold">Téléphone</label>
+                </div>
+                <div class="col-md-8">
+                  <i class="fa-solid fa-phone blue-color me-2"></i>
+                  {{ clientFournisseur.numTel }}
+                </div>
+              </div>
+            </form>
+            <div class="row  mb-1">
+              <div class="col-md-4 text-end">
+                <label class="form-label small fw-bold">Email</label>
+              </div>
+              <div class="col-md-8">
+                <i class="fa-solid fa-mail-bulk blue-color me-2"></i>
+                {{ clientFournisseur.email }}
+              </div>
+            </div>
+            <div class="row  mb-1">
+              <div class="col-md-4 text-end">
+                <label class="form-label small fw-bold">Quartier</label>
+              </div>
+              <div class="col-md-8">
+                <i class="fa-solid fa-mail-bulk blue-color me-2"></i>
+                {{ clientFournisseur?.adresse?.adresse1 }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2 mt-2 text-center" *ngIf="clientFournisseur?.id">
+            <img [src]="clientFournisseur.photo ? clientFournisseur.photo: 'assets/product.png'"
+                 class="rounded-circle border" width="150px" height="150px" style="object-fit: cover;" />
+          </div>
+        </div>
+
+<!--        <div>-->
+<!--        Cette partie qui a été supprimmée ici doit être matérialisée dans le backend pour ne pas constituée une faille de sécurité-->
+<!--        </div>-->
+<!--        <div class="row p-3 mb-3 mx-1 bg-light border rounded align-items-end">-->
+<!--          <div class="col-md-4 position-relative">-->
+<!--            <label class="form-label small fw-bold">Article</label>-->
+<!--            <input type="text" class="form-control" name="codeArticle" placeholder="Rechercher article..."-->
+<!--                   [(ngModel)]="codeArticle" (input)="filtrerArticle()">-->
+<!--            <div *ngIf="codeArticle.length && !articleNotYetSelected"-->
+<!--                 class="list-group position-absolute w-100 shadow" style="z-index: 1050; max-height: 200px; overflow-y: auto;">-->
+<!--              <button type="button" class="list-group-item list-group-item-action"-->
+<!--                      *ngFor="let article of listArticle" (click)="selectArticleClick(article)">-->
+<!--                {{ article.codeArticle }} - {{ article.designation }}-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col-md-3">-->
+<!--            <label class="form-label small fw-bold">Quantité</label>-->
+<!--            <input type="number" class="form-control" name="quantite" [(ngModel)]="quantite">-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label class="form-label small fw-bold">Prix de vente TTC</label>-->
+<!--            <input type="text" class="form-control bg-white" name="prixVente" readonly-->
+<!--                   [(ngModel)]="searchedArticle.prixVenteUnitaireTtc">-->
+<!--          </div>-->
+<!--          <div class="col-md-1">-->
+<!--            <button type="button" class="btn btn-success w-100" (click)="ajouterLigneCommande()">-->
+<!--              <i class="fa-solid fa-plus"></i>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <div class="p-2 border rounded bg-white shadow-sm" style="max-height: 300px; overflow-y: auto;">
+          <app-detail-commande
+            *ngFor="let ligne of listeLignesCommande"
+            [ligneCommande]="ligne"
+            [origin]="origin">
+          </app-detail-commande>
+          <div *ngIf="!listeLignesCommande.length" class="text-center p-4 text-muted">
+            <p><i class="fa-solid fa-receipt fa-2x mb-2"></i><br>Aucun article dans cette vente</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-between bg-light">
+        <div class="h4 mb-0 text-success fw-bold">
+          Total Vente : {{ totalCommande | currency:'XAF':'symbol':'1.0-0':'fr' }}
+        </div>
+        <div>
+          <button class="btn btn-danger me-2" (click)="cancelClick()">
+            <i class="fa-solid fa-ban"></i>&nbsp; Annuler
+          </button>
+          <button class="btn btn-primary" (click)="enregistrerVente()" [disabled]="!listeLignesCommande.length">
+            <i class="fa-solid fa-save"></i>&nbsp; Enregistrer la vente
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--        <div class="row p-3 mb-3 mx-1 bg-light border rounded align-items-end">-->
+<!--          <div class="col-md-4 position-relative">-->
+<!--            <label class="form-label small fw-bold">Article</label>-->
+<!--            <input type="text" class="form-control" name="codeArticle" placeholder="Rechercher article..."-->
+<!--                   [(ngModel)]="codeArticle" (input)="filtrerArticle()">-->
+<!--            <div *ngIf="codeArticle.length && !articleNotYetSelected"-->
+<!--                 class="list-group position-absolute w-100 shadow" style="z-index: 1050; max-height: 200px; overflow-y: auto;">-->
+<!--              <button type="button" class="list-group-item list-group-item-action"-->
+<!--                      *ngFor="let article of listArticle" (click)="selectArticleClick(article)">-->
+<!--                {{ article.codeArticle }} - {{ article.designation }}-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col-md-3">-->
+<!--            <label class="form-label small fw-bold">Quantité</label>-->
+<!--            <input type="number" class="form-control" name="quantite" [(ngModel)]="quantite">-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label class="form-label small fw-bold">Prix de vente TTC</label>-->
+<!--            <input type="text" class="form-control bg-white" name="prixVente" readonly-->
+<!--                   [(ngModel)]="searchedArticle.prixVenteUnitaireTtc">-->
+<!--          </div>-->
+<!--          <div class="col-md-1">-->
+<!--            <button type="button" class="btn btn-success w-100" (click)="ajouterLigneCommande()">-->
+<!--              <i class="fa-solid fa-plus"></i>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->

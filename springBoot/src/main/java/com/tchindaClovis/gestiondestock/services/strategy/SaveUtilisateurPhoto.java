@@ -6,6 +6,7 @@ import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
 import com.tchindaClovis.gestiondestock.services.MinioService;
 import com.tchindaClovis.gestiondestock.services.UtilisateurService;
 import java.io.InputStream;
+
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

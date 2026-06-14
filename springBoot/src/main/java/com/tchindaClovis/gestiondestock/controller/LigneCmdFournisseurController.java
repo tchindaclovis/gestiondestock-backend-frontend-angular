@@ -1,9 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.LigneCmdFournisseurApi;
-import com.tchindaClovis.gestiondestock.dto.LigneCommandeClientDto;
 import com.tchindaClovis.gestiondestock.dto.LigneCommandeFournisseurDto;
-import com.tchindaClovis.gestiondestock.services.LigneCmdClientService;
 import com.tchindaClovis.gestiondestock.services.LigneCmdFournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

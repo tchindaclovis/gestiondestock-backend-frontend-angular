@@ -19,22 +19,16 @@ public class Vente extends Document {
     @Column(name = "datevente")
     private Instant dateVente;
 
-//    @Column(name = "commentaire")
-//    private String commentaire;
-
     @Column(name = "paymenttype")
     @Enumerated(EnumType.STRING)
     private EPaymentType paymentType;
 
+    @Column(name = "codecommandeclient")
+    private String codeCommandeClient;
+
     @ManyToOne
     @JoinColumn(name = "idclient")
     private Client client;
-
-//    @Column(name = "identreprise")
-//    private Integer idEntreprise;
-
-//    @OneToMany(mappedBy = "vente", fetch = FetchType.LAZY) // Gardez LAZY par défaut
-//    private List<LigneVente> ligneVentes;
 
     @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude // <--- AJOUTEZ CECI

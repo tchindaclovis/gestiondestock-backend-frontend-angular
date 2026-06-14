@@ -362,6 +362,60 @@ export class CommandeClientsService extends BaseService {
     }
 
     /**
+     * @endpoint get /gestiondestock/v1/commandeClients/find/code/{code}
+     * @param code 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findCommandeClientByCode(code: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<CommandeClientDto>;
+    public findCommandeClientByCode(code: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public findCommandeClientByCode(code: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public findCommandeClientByCode(code: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext}): Observable<any> {
+        if (code === null || code === undefined) {
+            throw new Error('Required parameter code was null or undefined when calling findCommandeClientByCode.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            '*/*'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/commandeClients/find/code/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<CommandeClientDto>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Récupérer le dernier code CommandeClient enregistré
      * Cette méthode permet de récupérer le dernier code au format CMCxxxx
      * @endpoint get /gestiondestock/v1/commandeclients/lastcodecommandeclient
@@ -669,10 +723,10 @@ export class CommandeClientsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
-    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDUE' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CommandeClientDto>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDUE' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CommandeClientDto>>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDUE' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CommandeClientDto>>;
+    public updateEtatCommande(idCommandeClient: number, etatCommande: 'PRO_FORMAT' | 'CONFIRMEE' | 'VENDUE' | 'LIVREE' | 'ANNULEE', dateConfirmation: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (idCommandeClient === null || idCommandeClient === undefined) {
             throw new Error('Required parameter idCommandeClient was null or undefined when calling updateEtatCommande.');
         }
@@ -709,7 +763,7 @@ export class CommandeClientsService extends BaseService {
             }
         }
 
-        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommandeClient", value: idCommandeClient, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDU' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "dateConfirmation", value: dateConfirmation, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "date-time"})}`;
+        let localVarPath = `/gestiondestock/v1/commandesclients/update/etat/${this.configuration.encodeParam({name: "idCommandeClient", value: idCommandeClient, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "etatCommande", value: etatCommande, in: "path", style: "simple", explode: false, dataType: "'PRO_FORMAT' | 'CONFIRMEE' | 'VENDUE' | 'LIVREE' | 'ANNULEE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "dateConfirmation", value: dateConfirmation, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "date-time"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CommandeClientDto>('patch', `${basePath}${localVarPath}`,
             {

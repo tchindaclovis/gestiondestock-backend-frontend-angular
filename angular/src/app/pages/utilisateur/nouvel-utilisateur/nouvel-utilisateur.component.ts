@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {PhotoService, UtilisateurDto} from "../../../../gs-api/src";
+import {AdresseDto, PhotoService, UtilisateurDto} from "../../../../gs-api/src";
 import {UtilisateurService} from "../../../services/utilisateur/utilisateur.service";
 import {UserService} from "../../../services/user/user.service";
 

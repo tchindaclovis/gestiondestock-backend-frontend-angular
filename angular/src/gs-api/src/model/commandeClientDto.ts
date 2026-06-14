@@ -24,13 +24,15 @@ export interface CommandeClientDto {
     client?: ClientDto;
     ligneCommandeClients?: Array<LigneCommandeClientDto>;
     commandeConfirmee?: boolean;
+    commandeProformat?: boolean;
+    commandeVendue?: boolean;
     commandeLivree?: boolean;
 }
 export namespace CommandeClientDto {
     export const EtatCommandeEnum = {
         ProFormat: 'PRO_FORMAT',
         Confirmee: 'CONFIRMEE',
-        Vendu: 'VENDU',
+        Vendue: 'VENDUE',
         Livree: 'LIVREE',
         Annulee: 'ANNULEE'
     } as const;

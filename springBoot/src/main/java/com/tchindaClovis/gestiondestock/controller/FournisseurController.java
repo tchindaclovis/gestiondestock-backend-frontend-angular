@@ -1,7 +1,6 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.FournisseurApi;
-import com.tchindaClovis.gestiondestock.dto.ClientDto;
 import com.tchindaClovis.gestiondestock.dto.FournisseurDto;
 import com.tchindaClovis.gestiondestock.services.FournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;

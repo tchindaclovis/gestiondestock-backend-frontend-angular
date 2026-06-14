@@ -11,16 +11,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Entreprise")  //optionnel car par défaut le nom de la classe
-public class Entreprise extends AbstractEntity{
+public class Entreprise extends Document{
 
     @Column(name = "nomentreprise")
     private String nom;
 
     @Column(name = "statutentreprise")
     private String statut;
-
-    @Column(name = "description")
-    private String description;
 
     @Embedded
     private Adresse adresse;

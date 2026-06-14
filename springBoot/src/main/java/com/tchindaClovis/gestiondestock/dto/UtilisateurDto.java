@@ -21,6 +21,8 @@ public class UtilisateurDto {
 
     private String numTel;
 
+    private String description;
+
     private Instant dateDeNaissance;
 
     private String motDePasse;
@@ -44,6 +46,7 @@ public class UtilisateurDto {
                 .statut(utilisateur.getStatut())
                 .email(utilisateur.getEmail())
                 .numTel(utilisateur.getNumTel())
+                .description(utilisateur.getDescription())
                 .dateDeNaissance(utilisateur.getDateDeNaissance())
                 .motDePasse(utilisateur.getMotDePasse())
                 .photo(utilisateur.getPhoto())
@@ -68,6 +71,7 @@ public class UtilisateurDto {
         utilisateur.setStatut(utilisateurDto.getStatut());
         utilisateur.setEmail(utilisateurDto.getEmail());
         utilisateur.setNumTel(utilisateurDto.getNumTel());
+        utilisateur.setDescription(utilisateurDto.getDescription());
         utilisateur.setDateDeNaissance(utilisateurDto.getDateDeNaissance());
         utilisateur.setMotDePasse(utilisateurDto.getMotDePasse());
         utilisateur.setPhoto(utilisateurDto.getPhoto());

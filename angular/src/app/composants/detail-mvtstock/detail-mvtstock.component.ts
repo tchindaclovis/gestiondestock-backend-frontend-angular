@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {MvtStockDto} from "../../../gs-api/src";
 
 @Component({
@@ -8,13 +9,33 @@ import {MvtStockDto} from "../../../gs-api/src";
 })
 export class DetailMvtstockComponent implements OnInit {
 
+  @Input() origin = ''; // On peut aussi le passer par @Input() depuis le parent pour plus de rapidité
+
   @Input() mvtStockDto: MvtStockDto = {}; // Utilisation directe du DTO de mouvement
 
+  @Input() ligneCommande: any = {};
+
   constructor(
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    // On garde ceci par sécurité, mais l'Input prendra le dessus
+    this.activatedRoute.data.subscribe(data => {
+      this.origin = data['origin'];
+    });
+
     console.log('Données reçues dans le détail :', this.mvtStockDto);
+  }
+
+  // 🛡️ AJOUTEZ CECI POUR CONTROLER LES ENTRÉES
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ligneCommande']) {
+      console.log('Ligne Commande reçue :', this.ligneCommande);
+    }
+    if (changes['mvtStockDto']) {
+      console.log('Mouvement Stock reçu :', this.mvtStockDto);
+    }
   }
 
   // Détermine si le mouvement est une Entrée ou une Sortie
@@ -52,7 +73,67 @@ export class DetailMvtstockComponent implements OnInit {
       default: return this.mvtStockDto.sourceMvt || 'INCONNU';
     }
   }
+
+  // calculerTotalMvtStock(): number {
+  //   if (!this.mvtStockDto || !this.mvtStockDto.quantite || !this.mvtStockDto.codeSource) {
+  //     return 0;
+  //   }
+  //
+  //   let prix = 0;
+  //
+  //   const prefixeCode = this.mvtStockDto.codeSource.substring(0, 3).toUpperCase();
+  //
+  //   // 2. Affectation de la valeur selon le contexte
+  //   if (prefixeCode === 'CVT') {
+  //     prix = this.mvtStockDto.article?.prixVenteUnitaireTtc || 0;
+  //   } else if (prefixeCode === 'CMF') {
+  //     prix = this.mvtStockDto.article?.prixUnitaireTtc || 0;
+  //   }
+  //
+  //   return +prix * +this.mvtStockDto.quantite;
+  // }
+
+
+  calculerTotalMvtStock(): number {
+    // 1. Vérification des données indispensables
+    if (!this.mvtStockDto || !this.mvtStockDto.quantite) {
+      return 0;
+    }
+
+    let prix = 0;
+
+    // 2. Attribution du bon prix selon le type de mouvement (sans casser la fonction)
+    switch (this.mvtStockDto.typeMvt) {
+      case 'ENTREE':
+      case 'CORRECTION_POS':
+        prix = -(this.mvtStockDto.article?.prixUnitaireTtc || 0);
+        break; //le mot-clé break fait simplement sortir du bloc switch une fois le prix affecté
+
+      case 'CORRECTION_NEG_RETOUR_FOURNISSEUR':
+        prix = this.mvtStockDto.article?.prixUnitaireTtc || 0;
+        break;
+
+      case 'CORRECTION_POS_VENTE_RED':
+        prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
+        break;
+
+      case 'SORTIE_VTE':
+      case 'CORRECTION_NEG_VENTE_AUG':
+        prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
+        break;
+
+      case 'SORTIE': // Utile pour afficher "--" ou 0 dans le template selon vos besoins
+      case 'CORRECTION_NEG':
+      default:
+        prix = 0;
+        break;
+    }
+
+    // 3. Calcul final et renvoi du total réel (Prix * Quantité)
+    return +prix * +this.mvtStockDto.quantite;
+  }
 }
+
 
 // // On crée un dictionnaire qui lie les valeurs de l'Enum à leur libellé
 //   const TYPE_MVT_LABELS: Record<MvtStockDto.TypeMvtEnum, string> = {

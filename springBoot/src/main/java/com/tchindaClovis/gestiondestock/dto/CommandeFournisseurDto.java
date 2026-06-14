@@ -1,10 +1,12 @@
 package com.tchindaClovis.gestiondestock.dto;
-import com.tchindaClovis.gestiondestock.model.*;
+
+import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
+import com.tchindaClovis.gestiondestock.model.EEtatCommande;
+import com.tchindaClovis.gestiondestock.model.EEtatDocument;
 import lombok.Builder;
 import lombok.Data;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder

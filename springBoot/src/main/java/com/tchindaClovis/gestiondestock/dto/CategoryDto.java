@@ -20,6 +20,8 @@ public class CategoryDto {
 
     private Integer idEntreprise;
 
+    private Integer idUtilisateur;
+
     @JsonIgnore
     private List<ArticleDto> articles;
 
@@ -35,6 +37,7 @@ public class CategoryDto {
                 .designation(category.getDesignation())
                 .description(category.getDescription())
                 .idEntreprise(category.getIdEntreprise())
+                .idUtilisateur(category.getIdUtilisateur())
                 .build();
     }
         //permet de faire un mapping de CategoryDto vers Category
@@ -50,6 +53,7 @@ public class CategoryDto {
         category.setDesignation(categoryDto.getDesignation());
         category.setDescription(categoryDto.getDescription());
         category.setIdEntreprise(categoryDto.getIdEntreprise());
+        category.setIdUtilisateur(categoryDto.getIdUtilisateur());
 
         return category;
     }

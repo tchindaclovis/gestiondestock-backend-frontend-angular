@@ -5,14 +5,18 @@ import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
+import com.tchindaClovis.gestiondestock.model.Category;
 import com.tchindaClovis.gestiondestock.model.CommandeFournisseur;
 import com.tchindaClovis.gestiondestock.model.Fournisseur;
+import com.tchindaClovis.gestiondestock.model.Utilisateur;
 import com.tchindaClovis.gestiondestock.repository.CommandeFournisseurRepository;
 import com.tchindaClovis.gestiondestock.repository.FournisseurRepository;
+import com.tchindaClovis.gestiondestock.repository.UtilisateurRepository;
 import com.tchindaClovis.gestiondestock.services.FournisseurService;
 import com.tchindaClovis.gestiondestock.validator.FournisseurValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,20 +31,70 @@ public class FournisseurServiceImpl implements FournisseurService {
     private FournisseurRepository fournisseurRepository;
     private CommandeFournisseurRepository commandeFournisseurRepository;
 
+    private UtilisateurRepository utilisateurRepository;
+
     @Autowired
     public FournisseurServiceImpl(FournisseurRepository fournisseurRepository,
-                                  CommandeFournisseurRepository commandeFournisseurRepository) {
+                                  CommandeFournisseurRepository commandeFournisseurRepository,
+                                  UtilisateurRepository utilisateurRepository) {
         this.fournisseurRepository = fournisseurRepository;
         this.commandeFournisseurRepository = commandeFournisseurRepository;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     @Override
     public FournisseurDto save(FournisseurDto dto) {
+
+        // 1. Validation de l'objet FournisseurDto
         List<String> errors = FournisseurValidator.validate(dto);
         if(!errors.isEmpty()){
             log.error("Fournisseur is not valid{}", dto);
             throw new InvalidEntityException("Le fournisseur n'est pas valide", ErrorCodes.FOURNISSEUR_NOT_VALID, errors);
         }
+
+        // 2. Récupérer l'utilisateur connecté depuis le contexte de sécurité
+        String connectedUserEmail = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof org.springframework.security.core.userdetails.UserDetails) {
+            connectedUserEmail = ((org.springframework.security.core.userdetails.UserDetails) principal).getUsername();
+        } else {
+            connectedUserEmail = principal.toString();
+        }
+
+        // Récupération de l'utilisateur complet en BDD
+        Utilisateur loggedInUser = utilisateurRepository.findUtilisateurByEmail(connectedUserEmail)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Utilisateur connecté introuvable",
+                        ErrorCodes.UTILISATEUR_NOT_FOUND));
+
+        // 3. RÈGLE DE GESTION
+        if (dto.getId() != null) {
+            // Mode Modification : On récupère le fournisseur existant en BDD avant mise à jour
+            Fournisseur existingFournisseur = fournisseurRepository.findById(dto.getId())
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Aucun fournisseur trouvé avec l'ID = " + dto.getId(),
+                            ErrorCodes.FOURNISSEUR_NOT_FOUND));
+
+            // On vérifie si l'utilisateur connecté est le créateur originel
+            // (Note : Assurez-vous que votre entité Fournisseur possède le champ idUtilisateur ou utilisateur)
+            if (existingFournisseur.getIdUtilisateur() != null && !existingFournisseur.getIdUtilisateur().equals(loggedInUser.getId())) {
+                log.warn("L'utilisateur {} a tenté de modifier le fournisseur {} sans en être le créateur", loggedInUser.getId(), dto.getId());
+                throw new InvalidOperationException(
+                        "Vous n'êtes pas autorisé à modifier ce fournisseur car vous n'en êtes pas le créateur originel.",
+                        ErrorCodes.UTILISATEUR_CHANGE_FOURNISSEUR_OBJECT_NOT_VALID);
+            }
+        } else {
+            // Mode Création : On injecte l'ID de l'utilisateur connecté comme créateur
+            dto.setIdUtilisateur(loggedInUser.getId());
+
+            // Optionnel : Si vos fournisseurs dépendent aussi de l'entreprise de l'utilisateur
+            if (loggedInUser.getEntreprise() != null) {
+                dto.setIdEntreprise(loggedInUser.getEntreprise().getId());
+            }
+        }
+
+
         Fournisseur savedFournisseur = fournisseurRepository.save(FournisseurDto.toEntity(dto));
         return FournisseurDto.fromEntity(savedFournisseur);
     }

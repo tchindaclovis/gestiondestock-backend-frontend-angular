@@ -7,7 +7,7 @@ import java.util.List;
 public interface VenteService {
     VenteDto save(VenteDto dto);
     VenteDto findById(Integer idVente);
-    VenteDto findByCode(String codeVente);
+    VenteDto findVenteByCodeCommandeClient(String codeCommandeClient);
     List<VenteDto> findAll();
 
     List<VenteDto> findAllVenteByIdEntreprise(Integer idEntreprise);

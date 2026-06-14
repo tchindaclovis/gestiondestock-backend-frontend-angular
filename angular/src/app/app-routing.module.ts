@@ -81,6 +81,9 @@ import {
 import {PageVenteComponent} from "./pages/vente/page-vente/page-vente.component";
 import {NouvelleVenteComponent} from "./pages/vente/nouvelle-vente/nouvelle-vente.component";
 import {AppercuVenteComponent} from "./pages/vente/appercu-vente/appercu-vente.component";
+import {
+  NouvelleCommandeClientVenteComponent
+} from "./composants/nouvelle-commande-client-vente/nouvelle-commande-client-vente.component";
 
 
 // ==============================
@@ -248,6 +251,15 @@ const routes: Routes = [
         }
       },
 
+
+      {
+        path: 'nouvellecommandeclientvente/:idCommandeClient',
+        component: NouvelleCommandeClientVenteComponent,
+        canActivate: [ApplicationGuardService],
+        data: {
+          origin: 'client'
+        }
+      },
 
       // ==============================
       // VENTES

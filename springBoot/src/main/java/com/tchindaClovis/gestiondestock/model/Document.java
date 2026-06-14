@@ -27,8 +27,14 @@ public class Document extends AbstractEntity{
     @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
     private Integer idEntreprise;  //rien à voir avec les règle UML
 
+    @Column(name = "idutilisateur")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+    private Integer idUtilisateur;  //rien à voir avec les règle UML
+
     @Column(name = "exercice")
     private String exercice;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "derniermotifannulation")
     private String dernierMotifAnnulation;

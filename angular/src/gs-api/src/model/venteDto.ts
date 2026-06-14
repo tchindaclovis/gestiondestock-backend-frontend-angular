@@ -14,7 +14,10 @@ import { ClientDto } from './clientDto';
 export interface VenteDto { 
     id?: number;
     code?: string;
+    codeCommandeClient?: string;
     dateVente?: string;
+    creationDate?: string;
+    lastModifiedDate?: string;
     paymentType?: VenteDto.PaymentTypeEnum;
     client?: ClientDto;
     idEntreprise?: number;

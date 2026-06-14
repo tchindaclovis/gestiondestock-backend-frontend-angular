@@ -1,24 +1,32 @@
-import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientfournisseurService} from "../../services/clientfournisseurs/clientfournisseur.service";
 import {VenteService} from "../../services/vente/vente.service";
 import {
   CommandeclientfournisseurService
 } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
-import {VenteDto} from "../../../gs-api/src";
+// @ts-ignore
+import {CommandeFournisseurDto, VenteDto} from "../../../gs-api/src";
 
 @Component({
   selector: 'app-detail-vente-client',
   templateUrl: './detail-vente-client.component.html',
   styleUrls: ['./detail-vente-client.component.scss']
 })
-export class DetailVenteClientComponent implements OnInit {
+export class DetailVenteClientComponent implements OnInit, OnChanges {
 
   @Input() origin = '';
 
   @Input() vente: any = {};
 
-  clientFournisseur: any = {};
+  @Input() commande: any = {};
+
+  clientFournisseur: any;
+
+  commandeClientDto: CommandeFournisseurDto = {}; //objet ou variable initialisé à vide
+
+  venteDto: VenteDto = {}; //objet ou variable initialisé à vide
+
 
   @Output()
   suppressionResult = new EventEmitter<string>();
@@ -40,6 +48,7 @@ export class DetailVenteClientComponent implements OnInit {
   }
 
   // Crucial : Détecter quand l'objet 'vente' arrive du composant parent
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['vente']) {
       this.extractClientFournisseur();
@@ -53,9 +62,16 @@ export class DetailVenteClientComponent implements OnInit {
   }
 
   modifierVente(): void {
+   //  let codeCommandeClient = this.vente?.codeCommandeClient;
+   // if(codeCommandeClient){
+   //   const route = 'nouvellecommandeclientvente';
+   //   // On navigue vers la page de modification avec l'ID de la vente
+   //   this.router.navigate([route, this.vente.id]);
+   // }else{
     const route = 'nouvellevente';
-    // On navigue vers la page de modification avec l'ID de la commande
+    // On navigue vers la page de modification avec l'ID de la vente
     this.router.navigate([route, this.vente.id]);
+   // }
   }
 
 

@@ -17,6 +17,7 @@ export interface ClientDto {
     photo?: string;
     email?: string;
     numTel?: string;
+    description?: string;
     adresse?: AdresseDto;
     idEntreprise?: number;
 }

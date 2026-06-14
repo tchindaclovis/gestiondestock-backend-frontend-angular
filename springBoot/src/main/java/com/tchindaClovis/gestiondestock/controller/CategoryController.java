@@ -46,4 +46,9 @@ public class CategoryController implements CategoryApi {
 
         categoryService.delete(id);
     }
+
+    @Override
+    public String getLastCodeCategory() {
+        return categoryService.getLastCodeCategory();
+    }
 }

@@ -46,14 +46,26 @@
 
   <!--  boutons action-->
   <div class="col-md-3 ">
-    <div class="row pt-3 pb-0">
-      <div class="col-md-4 text-center">
+    <div class="row pt-3 pb-0" >
+      <div *ngIf="this.origin === 'client'" class="col-md-4 text-center">
         <button type="button" class="btn btn-link souligner-au-survol"
                 (click)="modifierClientFournisseur()"
                 title="Modifier">
           <small>
             <i class="fa fa-edit icon-color-edit"></i>
 <!--            <i class="fa-solid fa-pencil"></i>-->
+          </small>
+        </button>
+      </div>
+      <div *ngIf="this.origin === 'fournisseur'" class="col-md-4 text-center">
+        <button type="button" class="btn btn-link souligner-au-survol"
+                (click)="modifierClientFournisseur()"
+                title="Modifier">
+          <small *ngIf="connectedUser?.id !== clientFournisseur?.idUtilisateur" class="text-black-50">
+            <i class="fa fa-edit icon-color-edit"></i>
+          </small>
+          <small *ngIf="connectedUser?.id === clientFournisseur?.idUtilisateur" class="text-primary">
+            <i class="fa fa-edit icon-color-edit"></i>
           </small>
         </button>
       </div>
@@ -64,40 +76,104 @@
           <small><i class="fa-solid fa-eye"></i></small>
         </button>
       </div>
+
       <div class="col-md-4 text-center">
-        <button type="button" class="btn btn-link souligner-au-survol text-danger"
-                data-bs-toggle="modal"
-                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id"
+        <button *ngIf="getNombreCommandeFournisseurs(clientFournisseur.id) > 0"
+                type="button" class="btn btn-link text-decoration-none"
+                data-bs-target="#modalDelete"
+                (click)="selectFouPourSupprimer(clientFournisseur.id)"
                 title="Supprimer">
-          <small><i class="fa-solid fa-trash-can"></i></small>
+          <small class="text-black-50">
+            <i class="fa-solid fa-trash-can"></i>
+          </small>
         </button>
-      </div>
-    </div>
 
+        <button *ngIf="getNombreCommandeFournisseurs(clientFournisseur.id) === 0 &&
+                       connectedUser?.entreprise?.id === clientFournisseur?.idEntreprise"
+                type="button" class="btn btn-link souligner-au-survol"
+                data-bs-toggle="modal"
+                data-bs-target="#modalDelete"
+                (click)="selectFouPourSupprimer(clientFournisseur.id)"
+                title="Supprimer le fournisseur">
+          <small class="text-danger">
+            <i class="fa-solid fa-trash-can"></i>
+          </small>
+        </button>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalDelete{{ clientFournisseur.id }}"
-       data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-       aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Etes-vous sûr de vouloir supprimer ce {{ origin }}?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-ban"></i>Annuler</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
-            <i class="fa-solid fa-trash-can"></i>Supprimer</button>
-        </div>
+        <button *ngIf="getNombreCommandeFournisseurs(clientFournisseur.id) === 0 &&
+                       connectedUser?.entreprise?.id !== clientFournisseur?.idEntreprise"
+                type="button" class="btn btn-link text-decoration-none"
+                data-bs-toggle="modal"
+                (click)="selectFouPourSupprimer(clientFournisseur.id)"
+                title="Supprimer">
+          <small class="text-black-50">
+            <i class="fa-solid fa-trash-can"></i>
+          </small>
+        </button>
+
+<!--        <button type="button" class="btn btn-link souligner-au-survol text-danger"-->
+<!--                data-bs-toggle="modal"-->
+<!--                [attr.data-bs-target]="'#modalDelete' + clientFournisseur.id"-->
+<!--                title="Supprimer">-->
+<!--          <small><i class="fa-solid fa-trash-can"></i></small>-->
+<!--        </button>-->
       </div>
     </div>
   </div>
 </div>
+
+
+
+<!-- Modal d'erreur -->
+<div class="modal fade" [ngClass]="{'show': showModalError}"
+     [ngStyle]="{'display': showModalError ? 'block' : 'none'}"
+     tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle"></i> Action impossible
+        </h5>
+        <button type="button" class="btn-close text-white" (click)="showModalError = false"
+                data-bs-dismiss="modal" aria-label="Close">
+          <!--          <span aria-hidden="true">x</span>-->
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{ messageErreur }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="showModalError = false">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Modal de suppression -->
+<div class="modal fade" id="modalDelete"
+     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Etes-vous sûr de vouloir supprimer ce {{ origin }}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="annulerSuppression()">
+          <i class="fa-solid fa-ban"></i>Annuler</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
+          <i class="fa-solid fa-trash-can"></i>Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

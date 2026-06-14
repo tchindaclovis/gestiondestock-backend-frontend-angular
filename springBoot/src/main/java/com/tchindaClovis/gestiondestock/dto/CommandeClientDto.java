@@ -3,12 +3,10 @@ package com.tchindaClovis.gestiondestock.dto;
 import com.tchindaClovis.gestiondestock.model.CommandeClient;
 import com.tchindaClovis.gestiondestock.model.EEtatCommande;
 import com.tchindaClovis.gestiondestock.model.EEtatDocument;
-import com.tchindaClovis.gestiondestock.model.LigneCommandeClient;
 import lombok.Builder;
 import lombok.Data;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -25,6 +23,8 @@ public class  CommandeClientDto{
     private Instant lastModifiedDate;
 
     private Instant dateConfirmation;
+
+//    private Instant dateVente;
 
     private Integer idEntreprise;
     private EEtatCommande etatCommande;
@@ -47,6 +47,7 @@ public class  CommandeClientDto{
                 .creationDate(commandeClient.getCreationDate())
                 .lastModifiedDate(commandeClient.getLastModifiedDate())
                 .dateConfirmation(commandeClient.getDateConfirmation())
+//                .dateVente(commandeClient.getDateVente())
                 .idEntreprise(commandeClient.getIdEntreprise())
                 .etatCommande(commandeClient.getEtatCommande())
                 .etat(commandeClient.getEtat())
@@ -75,6 +76,7 @@ public class  CommandeClientDto{
         commandeClient.setCreationDate(commandeClientDto.getCreationDate());
         commandeClient.setLastModifiedDate(commandeClientDto.getLastModifiedDate());
         commandeClient.setDateConfirmation(commandeClientDto.getDateConfirmation());
+//        commandeClient.setDateVente(commandeClientDto.getDateVente());
         commandeClient.setEtatCommande(commandeClientDto.getEtatCommande());
         commandeClient.setEtat(commandeClientDto.getEtat());
         commandeClient.setIdEntreprise(commandeClientDto.getIdEntreprise());
@@ -94,14 +96,20 @@ public class  CommandeClientDto{
         return commandeClient;
     }
 
-    public boolean isCommandeLivree() {
+    public boolean isCommandeProformat() {
+        return EEtatCommande.PRO_FORMAT.equals(this.etatCommande);
+    }
 
+    public boolean isCommandeLivree() {
         return EEtatCommande.LIVREE.equals(this.etatCommande);
     }
 
     public boolean isCommandeConfirmee() {
-
         return EEtatCommande.CONFIRMEE.equals(this.etatCommande);
+    }
+
+    public boolean isCommandeVendue() {
+        return EEtatCommande.VENDUE.equals(this.etatCommande);
     }
 }
 

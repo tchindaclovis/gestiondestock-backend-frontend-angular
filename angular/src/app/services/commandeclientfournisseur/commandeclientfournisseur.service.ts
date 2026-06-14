@@ -4,7 +4,7 @@ import {
   CommandeClientDto, CommandeClientsService,
   CommandeFournisseurDto, CommandeFournisseursService,
   LigneCommandeClientDto,
-  LigneCommandeFournisseurDto
+  LigneCommandeFournisseurDto, VenteDto
 } from "../../../gs-api/src";
 import {from, map, Observable, of, switchMap} from "rxjs";
 import {UserService} from "../user/user.service";
@@ -155,9 +155,23 @@ export class CommandeclientfournisseurService {
   }
 
 
+  findAllCommandeFournisseurByIdFournisseur(idFourniseur: number): Observable<CommandeFournisseurDto[]> {
+    if (idFourniseur) {
+      return this.commandeFournisseursService.findAllCommandeFournisseurByIdFournisseur(idFourniseur).pipe(
+        map(data => {
+          // Si les données arrivent déjà sous forme d'objet (JSON), on les retourne telles quelles
+          return data;
+        })
+      );
+    }
+    return of([]);
+  }
+
+
   // findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
   //   return this.commandeFournisseurService.findAll4();
   // }
+
   findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
     return this.commandeFournisseursService.findAll4().pipe(
       switchMap((data: any) => {
@@ -255,5 +269,15 @@ export class CommandeclientfournisseurService {
     // L'option { responseType: 'text' } est CRUCIALRE ici
     return this.http.get(url, { responseType: 'text' });
   }
+
+
+  findCommandeClientByCode(code: string): Observable<CommandeClientDto> {
+    return this.commandeClientsService. findCommandeClientByCode(code);
+  }
+
+  // findCommandeClientByCode(codeCommande: string): Observable<string> {
+  //   const url = 'http://localhost:8081/gestiondestock/v1/commandeClients/find/codecommandeclient/{codeCommandeClient}';
+  //   return this.http.get(url, { responseType: 'text' });
+  // }
 }
 

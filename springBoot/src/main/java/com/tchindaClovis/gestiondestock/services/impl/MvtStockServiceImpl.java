@@ -13,7 +13,6 @@ import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
 import com.tchindaClovis.gestiondestock.model.ESourceMvtStock;
 import com.tchindaClovis.gestiondestock.model.ETypeMvtStock;
 import com.tchindaClovis.gestiondestock.model.MvtStock;
-import com.tchindaClovis.gestiondestock.model.Vente;
 import com.tchindaClovis.gestiondestock.repository.MvtStockRepository;
 import com.tchindaClovis.gestiondestock.services.ArticleService;
 import com.tchindaClovis.gestiondestock.services.MvtStockService;

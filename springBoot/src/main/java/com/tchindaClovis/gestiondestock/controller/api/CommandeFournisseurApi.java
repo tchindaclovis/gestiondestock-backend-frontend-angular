@@ -71,6 +71,12 @@ public interface CommandeFournisseurApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(@PathVariable("idEntreprise") Integer idEntreprise);
 
+
+    @GetMapping(value = APP_ROOT + "/commandefournisseurs/filter/fournisseur/{idFournisseur}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<CommandeFournisseurDto> findAllCommandeFournisseurByIdFournisseur(@PathVariable("idFournisseur") Integer idFournisseur);
+
+
     @GetMapping(value = COMMANDE_FOURNISSEUR_ENDPOINT + "/lignescommande/{idCommandeFournisseur}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(@PathVariable("idCommandeFournisseur") Integer idCommandeFournisseur);

@@ -20,7 +20,11 @@ public class FournisseurDto {
 
     private String numTel;
 
+    private String description;
+
     private Integer idEntreprise;
+
+    private Integer idUtilisateur;
 
     private AdresseDto adresse;
 
@@ -39,7 +43,9 @@ public class FournisseurDto {
                 .photo(fournisseur.getPhoto())
                 .email(fournisseur.getEmail())
                 .numTel(fournisseur.getNumTel())
+                .description(fournisseur.getDescription())
                 .idEntreprise(fournisseur.getIdEntreprise())
+                .idUtilisateur(fournisseur.getIdUtilisateur())
                 .adresse(AdresseDto.fromEntity(fournisseur.getAdresse()))
                 .build();
     }
@@ -55,7 +61,9 @@ public class FournisseurDto {
         fournisseur.setPhoto(dto.getPhoto());
         fournisseur.setEmail(dto.getEmail());
         fournisseur.setNumTel(dto.getNumTel());
+        fournisseur.setDescription(dto.getDescription());
         fournisseur.setIdEntreprise(dto.getIdEntreprise());
+        fournisseur.setIdUtilisateur(dto.getIdUtilisateur());
         fournisseur.setAdresse(AdresseDto.toEntity(dto.getAdresse()));
 
         return fournisseur;

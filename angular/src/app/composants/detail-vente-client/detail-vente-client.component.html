@@ -25,11 +25,14 @@
     <div class="col">
       <div class="row mb-1">
         <div class="col-md-1"><i class="fa-solid fa-qrcode blue-color"></i></div>
-        <div class="col-md-11"><small>Code : {{ vente?.code }}</small></div>
+        <div class="col-md-11">
+          <small *ngIf="this.vente.codeCommandeClient">Code : {{ vente?.code }} --|-- {{ vente?.codeCommandeClient }}</small>
+          <small *ngIf="!this.vente.codeCommandeClient">Code : {{ vente?.code }} </small>
+        </div>
       </div>
       <div class="row mb-1">
         <div class="col-md-1"><i class="fa-solid fa-calendar-days blue-color"></i></div>
-        <div class="col-md-11"><small>{{ vente?.dateVente | date:'dd/MM/yyyy HH:mm' }}</small></div>
+        <div class="col-md-11"><small>CD: {{vente?.creationDate | date:'dd/MM/yyyy HH:mm'}}  LMD: {{vente?.dateVente | date:'dd/MM/yyyy HH:mm'}}</small></div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fa-solid fa-comment-dots blue-color"></i></div>

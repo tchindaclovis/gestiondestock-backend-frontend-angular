@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "LigneVente")  //optionnel car par défaut le nom de la classe
-public class LigneVente extends AbstractEntity{
+public class LigneVente extends Document{
 
     @Column(name = "quantite")
     private BigDecimal quantite;
@@ -20,8 +20,8 @@ public class LigneVente extends AbstractEntity{
     @Column(name = "prixventeunitairettc")
     private BigDecimal prixVenteUnitaireTtc;
 
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @ManyToOne
     @JoinColumn(name = "idarticle")

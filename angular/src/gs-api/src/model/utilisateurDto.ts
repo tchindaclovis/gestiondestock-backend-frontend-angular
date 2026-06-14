@@ -18,6 +18,7 @@ export interface UtilisateurDto {
     statut?: string;
     email?: string;
     numTel?: string;
+    description?: string;
     dateDeNaissance?: string;
     motDePasse?: string;
     photo?: string;

@@ -79,4 +79,22 @@ export class VenteService {
   // getLastCodeVente(): Observable<string> {
   //   return this.ventesService.getLastCodeVente();
   // }
+
+
+  findVenteByCodeCommandeClient(code: string): Observable<VenteDto> {
+    return this.ventesService.findVenteByCodeCommandeClient(code);
+  }
+
+  // findVenteByCodeCommandeClient(code: string): Observable<VenteDto> {
+  //   // Utilisation des template literals (backticks) pour injecter dynamiquement le code
+  //   const url = `http://localhost:8081/gestiondestock/v1/ventes/find/codecommandeclient/${code}`;
+  //
+  //   // On laisse Angular gérer le format JSON automatiquement
+  //   return this.http.get<VenteDto>(url);
+  // }
+
+  // findVenteByCode(code: string): Observable<string> {
+  //   const url = 'http://localhost:8081/gestiondestock/v1/ventes/find/codevente/{codeVente}';
+  //   return this.http.get(url, { responseType: 'text' });
+  // }
 }

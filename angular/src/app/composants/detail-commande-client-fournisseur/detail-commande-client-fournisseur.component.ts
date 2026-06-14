@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChange
 import { Router, ActivatedRoute } from "@angular/router";
 import { ClientfournisseurService } from "../../services/clientfournisseurs/clientfournisseur.service";
 import { CommandeclientfournisseurService } from "../../services/commandeclientfournisseur/commandeclientfournisseur.service";
-import {CommandeClientDto, CommandeFournisseurDto} from "../../../gs-api/src";
+// @ts-ignore
+import {CommandeClientDto, CommandeFournisseurDto, VenteDto} from "../../../gs-api/src";
+import { VenteService } from 'src/app/services/vente/vente.service';
 
 @Component({
   selector: 'app-detail-commande-client-fournisseur',
@@ -14,11 +16,13 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
   @Input() origin = '';
 
   @Input() commande: any = {};
+  @Input() vente: any = {};
 
   clientFournisseur: any;
 
+  venteDto: VenteDto = {}; //objet ou variable initialisé à vide
+
   commandeClientDto: CommandeFournisseurDto = {}; //objet ou variable initialisé à vide
-  commandeFournisseurDto: CommandeClientDto = {}; //objet ou variable initialisé à vide
 
   showModalError = false;
   messageErreur = '';
@@ -30,7 +34,8 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private clientFournisseurService: ClientfournisseurService,
-    private commandeClientFournisseurService: CommandeclientfournisseurService
+    private commandeClientFournisseurService: CommandeclientfournisseurService,
+    private venteService: VenteService // 👈 Injectez le service ici
   ) { }
 
   ngOnInit(): void {
@@ -48,11 +53,41 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     }
   }
 
+
   extractClientFournisseur(): void {
     if (this.commande) {
       this.clientFournisseur = (this.origin === 'client')
         ? this.commande.client
         : this.commande.fournisseur;
+
+      // 🛡️ CHARGEMENT DE LA VENTE SI LA COMMANDE EST VENDUE
+      if (this.commande.etatCommande === 'VENDUE' && this.commande.code) {
+
+        // // Avec la méthode corrigée, le flux devient limpide :
+        // this.venteService.findVenteByCodeCommandeClient(this.commande.code).subscribe({
+        //   next: (vente) => {
+        //     this.venteDto = vente; // Reçu directement comme un objet valide !
+        //   }
+        // });
+
+        this.venteService.findVenteByCodeCommandeClient(this.commande.code).subscribe({
+          next: (vente: any) => { // 👈 Ajoutez ': any' ici pour désactiver la vérification stricte
+            if (vente instanceof Blob) {
+              (vente as Blob).text().then(text => {
+                this.venteDto = JSON.parse(text);
+              });
+            } else if (typeof vente === 'string') {
+              this.venteDto = JSON.parse(vente);
+            } else {
+              this.venteDto = vente;
+            }
+            console.log("Vente chargée pour la commande :", this.venteDto);
+          },
+          error: (err) => {
+            console.error("Impossible de récupérer la vente pour le code commande " + this.commande.code, err);
+          }
+        });
+      }
     }
   }
 
@@ -98,6 +133,7 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
     this.showModalError = true;
   }
 
+
   confirmer(): void {
       if (this.commande && this.commande.id) {
         const id = this.commande.id;
@@ -134,8 +170,6 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
   }
 
 
-
-
   private handleError(error: any): void {
     console.error('Erreur lors de la confirmation', error);
     this.suppressionResult.emit(error.error?.message || 'Erreur lors de la confirmation');
@@ -143,12 +177,14 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
 
 
   vendre(): void{
-
+    const route = 'nouvellecommandeclientvente';
+    // On navigue vers la page de modification avec l'ID de la vente
+    this.router.navigate([route, this.commande.id]);
   }
 
 
   suppressionClientFournisseur(): void {
-    this.messageErreur = "Etat déjà Confirmé.";
+    this.messageErreur = "Cette commande ne peut être supprimée car elle a déjà à été Confirmée";
     this.showModalError = true;
   }
 
@@ -197,7 +233,6 @@ export class DetailCommandeClientFournisseurComponent implements OnInit, OnChang
       }
     }
   }
-
 }
 
 

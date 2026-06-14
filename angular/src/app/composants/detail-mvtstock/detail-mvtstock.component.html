@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="col-md-2 border-end mb-1 mt-1">
+  <div class="col-md-1 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
         <small [ngClass]="isEntree ? 'text-success' : 'text-danger'">
@@ -37,15 +37,29 @@
         <small [ngClass]="isEntree ? 'text-success' : 'text-danger'">
           {{ typeMvtLabel }}
         </small>
-
       </div>
     </div>
   </div>
 
-  <div class="col-md-3 mb-1 mt-1">
+  <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row text-center">
       <small class="text-primary">
          {{ sourceMvtLabel }}
+      </small>
+    </div>
+  </div>
+
+  <div class="col-md-2 mb-1 mt-1">
+    <div class="row text-center">
+      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMF'
+              || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CVT'
+              || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CCS'"
+              class="text-primary">
+        {{ (calculerTotalMvtStock()) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+      </small>
+      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMC'"
+              class="text-primary">
+        {{ "--" }}
       </small>
     </div>
   </div>

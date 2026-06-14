@@ -146,20 +146,6 @@ public interface CategoryApi {
     CategoryDto findByCode(@PathVariable("codeCategory") String code);
 
 
-    //imposer les catégories
-//    CategoryDto findByCode(
-//            @Parameter(
-//                    name = "codeCategory",
-//                    in = ParameterIn.PATH,
-//                    description = "Accepted values: CAT1, CAT2, CAT3",
-//                    schema = @Schema(
-//                            type = "string",
-//                            allowableValues = {"CAT1", "CAT2", "CAT3"},
-//                            example = "CAT1"
-//                    )
-//            )
-//            @PathVariable("codeCategory") String code
-//    );
 
 
     @GetMapping(value = APP_ROOT + "/categories/all",
@@ -184,4 +170,16 @@ public interface CategoryApi {
             }
     )
     void delete(@PathVariable("idCategory") Integer id);
+
+
+    @GetMapping(value = APP_ROOT + "/categories/lastcodecategory",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary  = "Récupérer le dernier code category enregistré",
+            description = "Cette méthode permet de récupérer le dernier code au format CATxxx",
+            responses = {
+                    @ApiResponse(responseCode  = "200", description  = "Le dernier code a été récupéré / CAT000 par défaut")
+            }
+    )
+    String getLastCodeCategory();
 }

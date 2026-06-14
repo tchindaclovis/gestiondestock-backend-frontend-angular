@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;
-
 @RestController
 public class ArticleController implements ArticleApi {
 

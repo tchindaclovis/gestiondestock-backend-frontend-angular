@@ -9,4 +9,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Optional<Category> findCategoryByCode(String code);
     //Optional<Category> findByIdAndIdEntreprise(String code);
 
+    // Cette méthode va trier par codeCategory descendant et prendre le premier (le plus grand)
+    Optional<Category> findTopByOrderByCodeDesc();
 }

@@ -71,7 +71,6 @@ export class NouvelleCommandeClientFournisseurComponent implements OnInit {
 
   articleDto: ArticleDto = {}; //objet ou variable initialisé à vide
   errorMsg : Array<string> = [];
-  // listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
 
   listeLignesCommande: Array<any> = [];
   totalCommande = 0;

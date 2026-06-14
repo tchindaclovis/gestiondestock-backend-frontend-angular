@@ -29,9 +29,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // CORS
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 // Import des constantes d’URL pour éviter le hardcoding
 import static com.tchindaClovis.gestiondestock.utils.Constants.APP_ROOT;

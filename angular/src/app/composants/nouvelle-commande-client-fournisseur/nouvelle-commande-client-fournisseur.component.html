@@ -20,35 +20,60 @@
         <div class="row p-3 mb-3 mx-1 bg-white border rounded shadow-sm">
           <div class="col-md-5 border-end">
             <form>
-              <div class="mb-3">
-                <label class="form-label small fw-bold">Code Commande (automatique)</label>
-                <input *ngIf="this.origin === 'client'" type="text" class="form-control bg-light"
-                       [(ngModel)]="codeCommandeClient" name="codecommandeclient" readonly>
-                <input *ngIf="this.origin === 'fournisseur'" type="text" class="form-control bg-light"
-                       [(ngModel)]="codeCommandeFournisseur" name="codecommandefournisseur" readonly>
+              <div class="row mt-2">
+                <div class="col-md-5">
+                  <label class="form-label small fw-bold">Code Commande (auto)</label>
+                </div>
+                <div class="col-md-7 mb-2">
+                  <input *ngIf="this.origin === 'client'" type="text" class="form-control bg-light"
+                         [(ngModel)]="codeCommandeClient" name="codecommandeclient" readonly>
+                  <input *ngIf="this.origin === 'fournisseur'" type="text" class="form-control bg-light"
+                         [(ngModel)]="codeCommandeFournisseur" name="codecommandefournisseur" readonly>
+                </div>
               </div>
 
-              <div class="mb-0">
-                <label class="form-label small fw-bold">Sélectionner le {{ origin }}</label>
-                <select class="form-select" name="clientFournisseur" [(ngModel)]="selectedClientFournisseur" [compareWith]="compareFn">
-                  <option [ngValue]="null">Choisir un {{ origin }}</option>
-                  <option *ngFor="let obj of (origin === 'client' ? listClients : listFournisseurs)" [ngValue]="obj">
-                    {{ obj.nom }} {{ obj.statut }}
-                  </option>
-                </select>
+              <div class="row mt-2">
+                <div class="col-md-5">
+                  <label class="form-label small fw-bold">Sélectionner le {{ origin }}</label>
+                </div>
+                <div class="col-md-7 mb-2">
+                  <select class="form-select" name="clientFournisseur" [(ngModel)]="selectedClientFournisseur" [compareWith]="compareFn">
+                    <option [ngValue]="null">Choisir un {{ origin }}</option>
+                    <option *ngFor="let obj of (origin === 'client' ? listClients : listFournisseurs)" [ngValue]="obj">
+                      {{ obj.nom }} {{ obj.statut }}
+                    </option>
+                  </select>
+                </div>
               </div>
             </form>
           </div>
 
           <div class="col-md-5 border-end" *ngIf="selectedClientFournisseur?.id">
             <div class="ps-3">
-              <div class="d-flex mb-1"><i class="fa-solid fa-user blue-color me-2"></i> <strong>{{ selectedClientFournisseur.nom }}</strong></div>
-              <div class="d-flex mb-1"><i class="fa-solid fa-tag blue-color me-2"></i> {{ selectedClientFournisseur.statut }}</div>
-              <div class="d-flex mb-1"><i class="fa-solid fa-phone blue-color me-2"></i> {{ selectedClientFournisseur.numTel }}</div>
+              <div class="d-flex mb-1">
+                <i class="fa-solid fa-user blue-color me-2"></i>
+                <strong>{{ selectedClientFournisseur.nom }}</strong>
+              </div>
+              <div class="d-flex mb-1">
+                <i class="fa-solid fa-tag blue-color me-2"></i>
+                {{ selectedClientFournisseur.statut }}
+              </div>
+              <div class="d-flex mb-1">
+                <i class="fa-solid fa-phone blue-color me-2"></i>
+                {{ selectedClientFournisseur.numTel }}
+              </div>
+              <div class="d-flex mb-1">
+                <i class="fa-solid fa-mail-bulk blue-color me-2"></i>
+                {{ selectedClientFournisseur.email }}
+              </div>
               <div class="d-flex">
-                <i class="fa-solid fa-clock text-warning me-2"></i>
-                <span *ngIf="this.origin === 'client'" class="badge bg-soft-primary text-primary">{{ commandeClientDto.etatCommande }}</span>
-                <span *ngIf="this.origin === 'fournisseur'" class="badge bg-soft-primary text-primary">{{ commandeFournisseurDto.etatCommande }}</span>
+                <i class="fa-solid fa-clipboard-check text-primary me-2"></i>
+                <span *ngIf="this.origin === 'client'" class="badge bg-soft-primary text-primary">
+                  {{ commandeClientDto.etatCommande }}
+                </span>
+                <span *ngIf="this.origin === 'fournisseur'" class="badge bg-soft-primary text-primary">
+                  {{ commandeFournisseurDto.etatCommande }}
+                </span>
               </div>
             </div>
           </div>
@@ -99,7 +124,6 @@
             <p>Aucun article ajouté à cette commande.</p>
           </div>
         </div>
-
       </div>
 
       <div class="modal-footer d-flex justify-content-between bg-light">
@@ -115,7 +139,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 </div>

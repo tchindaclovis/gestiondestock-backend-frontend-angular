@@ -56,7 +56,9 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-
+# Désactive le cache de Springdoc pour voir les modifications immédiatement
+  cache:
+    disabled: true
 
       ## Logs de debug pour voir ce qui se passe
 logging:
@@ -73,17 +75,16 @@ logging:
 minio:
   access-key: minioadmin
   secret-key: minioadmin
+
   bucket-name: imagephoto
-  endpoint: http://localhost:9000
+  endpoint: http://localhost:9000    # 🟢 Port S3 Docker obligatoire
   secure: false
   default-folder: uploads/
-  url: http://127.0.0.1:9000
-
+  url: http://127.0.0.1:9000         # 🟢 Port S3 Docker obligatoire
+  presigned-expiry: 604800           # 🟢 Aligné ici pour éviter le NullPointerException
       ##Temps d'expiration des URLs signées (en secondes)
   presigned-url-expiry: 3600
-
   public-url: false
-  presigned-expiry: 604800
 
 
       ## activer le mode debug

@@ -17,7 +17,9 @@ public class DocumentDto {
     private String destinataire;
 //    private boolean modifiable = true;
     private Integer idEntreprise;  //rien à voir avec les règle UML
+    private Integer idUtilisateur;  //rien à voir avec les règle UML
     private String exercice;
+    private String description;
     private String dernierMotifAnnulation;
     private String dernierRejetteur;
     private Date dateDernierRejet;
@@ -30,7 +32,6 @@ public class DocumentDto {
     private Date dateButoirePayement;
     private Date dateEnvoi;
     private Date dateValidation;
-//    private Date dateConfirmation;
     private Date dateTransfert;
 
     //permet de faire un mapping de CategoryDto vers Category
@@ -43,7 +44,9 @@ public class DocumentDto {
                 .destinataire(document.getDestinataire())
 //                .modifiable(document.getModifiable())
                 .idEntreprise(document.getIdEntreprise())
+                .idUtilisateur(document.getIdUtilisateur())
                 .exercice(document.getExercice())
+                .description(document.getDescription())
                 .dernierMotifAnnulation(document.getDernierMotifAnnulation())
                 .dernierRejetteur(document.getDernierRejetteur())
                 .dateDernierRejet(document.getDateDernierRejet())
@@ -56,7 +59,6 @@ public class DocumentDto {
                 .dateButoirePayement(document.getDateButoirePayement())
                 .dateEnvoi(document.getDateEnvoi())
                 .dateValidation(document.getDateValidation())
-//                .dateConfirmation(document.getDateConfirmation())
                 .dateTransfert(document.getDateTransfert())
 
                 .build();
@@ -71,7 +73,9 @@ public class DocumentDto {
         document.setDestinataire(documentDto.getDestinataire());
 //        document.setModifiable(documentDto.getModifiable());
         document.setIdEntreprise(documentDto.getIdEntreprise());
+        document.setIdUtilisateur(documentDto.getIdUtilisateur());
         document.setExercice(documentDto.getExercice());
+        document.setDescription(documentDto.getDescription());
         document.setDernierMotifAnnulation(documentDto.getDernierMotifAnnulation());
         document.setDernierRejetteur(documentDto.getDernierRejetteur());
         document.setDateDernierRejet(documentDto.getDateDernierRejet());

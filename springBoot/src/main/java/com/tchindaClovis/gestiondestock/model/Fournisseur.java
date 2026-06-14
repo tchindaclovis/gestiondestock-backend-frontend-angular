@@ -11,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Fournisseur")  //optionnel car par défaut le nom de la classe
-public class Fournisseur extends AbstractEntity{
+public class Fournisseur extends Document{
 
     @Column(name = "nomfournisseur")
     private String nom;
@@ -31,8 +31,8 @@ public class Fournisseur extends AbstractEntity{
     @Column(name = "numtel")
     private String numTel;
 
-    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
-    private Integer idEntreprise;  //rien à voir avec les règle UML
+//    @Column(name = "identreprise")  //entité de convenance qu'on ajoute juste pour certaines dispositions
+//    private Integer idEntreprise;  //rien à voir avec les règle UML
 
     @OneToMany(mappedBy = "fournisseur")
     private List<CommandeFournisseur> commandeFournisseurs;

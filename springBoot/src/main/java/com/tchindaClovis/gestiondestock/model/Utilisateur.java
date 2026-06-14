@@ -27,6 +27,9 @@ public class Utilisateur extends AbstractEntity{
     @Column(name = "numtel")
     private String numTel;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "datedenaissance"
             //, columnDefinition = "timestamp without time zone"
     )

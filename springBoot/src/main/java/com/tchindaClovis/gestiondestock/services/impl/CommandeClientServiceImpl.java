@@ -59,7 +59,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
                 "La commande client n'est pas valide", ErrorCodes.COMMANDE_CLIENT_NOT_VALID, errors);
     }
 
-    // 2. Vérification si modification autorisée (si livrée, on bloque) || dto.isCommandeConfirmee()
+    // 2. Vérification si modification autorisée (si confirmee, on bloque) || dto.isCommandeConfirmee()
     if (dto.getId() != null && (dto.isCommandeConfirmee())) {
         throw new InvalidOperationException(
                 "Impossible de modifier la commande lorsqu'elle est confirmé ", ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
@@ -103,6 +103,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         commandeClientToSave = commandeClientRepository.findByIdWithLignes(dto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("CommandeClient introuvable", ErrorCodes.COMMANDE_CLIENT_NOT_FOUND));
 
+
         // On remplit la Map : ID Article -> Quantité
         if (commandeClientToSave.getLigneCommandeClients() != null) {
             commandeClientToSave.getLigneCommandeClients().forEach(lig ->
@@ -110,12 +111,14 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             );
         }
 
+
         // On met à jour les infos générales
         commandeClientToSave.setCode(dto.getCode());
         commandeClientToSave.setDateCommande(dto.getDateCommande());
         commandeClientToSave.setIdEntreprise(dto.getIdEntreprise());
         commandeClientToSave.setEtatCommande(dto.getEtatCommande());
         commandeClientToSave.setClient(ClientDto.toEntity(dto.getClient()));
+
 
         // Au lieu de supprimer manuellement avec le repository, on vide la collection Java pour éviter les conflits d'état
         // orphanRemoval = true dans l'entité s'occupera de la suppression en base
@@ -204,6 +207,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
                         anciennesLignesMap.put(lig.getArticle().getId(), lig.getQuantite())
                 );
             }
+
 
             // Mise à jour des infos générales
             commandeClientToSave.setCode(dto.getCode());
@@ -469,12 +473,12 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     }
 
     @Override
-    public CommandeClientDto findByCode(String code) {
+    public CommandeClientDto findCommandeClientByCode(String code) {
         if (!StringUtils.hasLength(code)) {
             log.error("Commande client CODE is NULL");
             return null;
         }
-        return commandeClientRepository.findCommandeClientByCode(code)
+        return commandeClientRepository.findByCode(code)
                 .map(CommandeClientDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Aucune commande client n'a ete trouve avec le CODE " + code, ErrorCodes.COMMANDE_CLIENT_NOT_FOUND

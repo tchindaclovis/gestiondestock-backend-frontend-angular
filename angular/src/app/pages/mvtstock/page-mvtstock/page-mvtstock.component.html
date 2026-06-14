@@ -1,5 +1,5 @@
 <div class="row ">
-  <div class="col-md-9">
+  <div class="col-md-12">
     <div class="row ms-3 me-3 pb-1 page_title">
       <div class="col-md-8 p-0">
         <h4>
@@ -51,14 +51,18 @@
                     <h6>Date mvmt</h6>
                   </div>
 
-                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
+                  <div class="col-md-1 border-end mb-1 mt-1 text-center">
                     <h6>Qté mvt</h6>
                   </div>
                   <div class="col-md-3 border-end mb-1 mt-1 text-center">
                     <h6>Type mvt</h6>
                   </div>
-                  <div class="col-md-3 mb-1 mt-1 text-center">
+                  <div class="col-md-2 border-end mb-1 mt-1 text-center">
                     <h6>Source mvt</h6>
+                  </div>
+
+                  <div class="col-md-2 mb-1 mt-1 text-center">
+                    <h6>Cout total</h6>
                   </div>
                 </div>
 
@@ -85,7 +89,9 @@
                 <ng-container *ngIf="mapMouvementsStock.get(article.id!) as listeMvts">
                   <app-detail-mvtstock
                     *ngFor="let mouvement of listeMvts"
-                    [mvtStockDto]="mouvement">
+                    [mvtStockDto]="mouvement"
+                    [ligneCommande]="mouvement"
+                    >
                   </app-detail-mvtstock>
                   <div *ngIf="listeMvts.length === 0" class="p-3 text-center text-muted">
                     Aucun mouvement de stock pour cet article.
@@ -101,7 +107,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -114,9 +119,9 @@
     </div>
   </div>
 
-  <div class="col-md-3">
-    Zone de recherche
-  </div>
+<!--  <div class="col-md-3">-->
+<!--    Zone de recherche-->
+<!--  </div>-->
 </div>
 
 

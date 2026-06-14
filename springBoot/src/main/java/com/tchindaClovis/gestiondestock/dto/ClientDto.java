@@ -21,6 +21,8 @@ public class ClientDto {
 
     private String numTel;
 
+    private String description;
+
     private AdresseDto adresse;
 
     private Integer idEntreprise;
@@ -40,6 +42,7 @@ public class ClientDto {
                 .photo(client.getPhoto())
                 .email(client.getEmail())
                 .numTel(client.getNumTel())
+                .description(client.getDescription())
                 .adresse(AdresseDto.fromEntity(client.getAdresse()))
                 .idEntreprise(client.getIdEntreprise())
                 .build();
@@ -56,6 +59,7 @@ public class ClientDto {
         client.setPhoto(clientDto.getPhoto());
         client.setEmail(clientDto.getEmail());
         client.setNumTel(clientDto.getNumTel());
+        client.setDescription(clientDto.getDescription());
         client.setAdresse(AdresseDto.toEntity(clientDto.getAdresse()));
         client.setIdEntreprise(clientDto.getIdEntreprise());
 

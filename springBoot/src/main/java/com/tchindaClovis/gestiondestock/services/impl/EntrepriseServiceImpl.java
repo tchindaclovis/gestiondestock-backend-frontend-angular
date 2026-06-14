@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
 @Transactional(rollbackOn = Exception.class)
 @Service
 @Slf4j
-public class EntrepriseServiceImpl implements EntrepriseService {
+public class    EntrepriseServiceImpl implements EntrepriseService {
 
     private EntrepriseRepository entrepriseRepository;
     private UtilisateurService utilisateurService;
@@ -70,8 +70,9 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         return UtilisateurDto.builder()
                 .adresse(dto.getAdresse())
                 .nom(dto.getNom().toUpperCase())
-                .statut(dto.getStatut().toLowerCase())
+                .statut(dto.getStatut())
                 .email(dto.getEmail())
+                .description(dto.getDescription())
                 .numTel(dto.getNumTel())
                 .motDePasse(generateRandomPassword())
                 .entreprise(dto)

@@ -69,13 +69,9 @@ public interface CommandeClientApi {
 //        return ResponseEntity.ok(service.findById(id));
 //    }
 
-//    @GetMapping(value = APP_ROOT + "/commandeClients/{codeCommandeClient}")
-//    ResponseEntity<CommandeClientDto> findByCode(@PathVariable("codeCommandeClient") String code);
+    @GetMapping(value = APP_ROOT + "/commandeClients/find/code/{code}")
+    ResponseEntity<CommandeClientDto> findCommandeClientByCode(@PathVariable("code") String code);
 
-//    @GetMapping("/filter/{code}") // Ajoutez /filter/ ou /code/
-//    public ResponseEntity<CommandeClientDto> findByCode(@PathVariable("code") String code) {
-//        return ResponseEntity.ok(service.findByCode(code));
-//    }
     @GetMapping(value = APP_ROOT + "/commandeclients/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<CommandeClientDto>> findAll();

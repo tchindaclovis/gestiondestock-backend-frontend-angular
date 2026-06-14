@@ -1,5 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ArticleDto, CategoryDto, ClientDto, UtilisateurDto, VenteDto} from "../../../../gs-api/src";
+import {
+  AdresseDto,
+  ArticleDto,
+  ClientDto,
+  CommandeClientDto,
+  PhotoService,
+  UtilisateurDto,
+  VenteDto
+} from "../../../../gs-api/src";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {ClientfournisseurService} from "../../../services/clientfournisseurs/clientfournisseur.service";
@@ -7,6 +15,9 @@ import {ArticleService} from "../../../services/article/article.service";
 import {CategoryService} from "../../../services/category/category.service";
 import {Observable} from "rxjs";
 import {VenteService} from "../../../services/vente/vente.service";
+import {
+  CommandeclientfournisseurService
+} from "../../../services/commandeclientfournisseur/commandeclientfournisseur.service";
 
 @Component({
   selector: 'app-nouvelle-vente',
@@ -18,32 +29,31 @@ export class NouvelleVenteComponent implements OnInit {
   @Input() origin = '';
   connectedUser: UtilisateurDto | null = null;
   clientFournisseur: any = {}; //soit client soit fournisseur
-
+  adresseDto: AdresseDto = {};
+  commandeClientDto: CommandeClientDto = {}; //objet ou variable initialisé à vid
   codeArticle = '';
   quantite = '';
   codeVente = ''; // Lié au champ "Code vente"
-  commentaire = ''; // Lié au champ "COmmentaire vente"
+  codeCommandeClient= ''; // Lié au champ "Code commande client"
+  paymentType = ''; // Lié au champ "PaymentType"
+  // adresse1 = ''; // Lié au champ "adresse1 de  vente"
   idVente: number | null = null;
-
-
   selectedClientFournisseur: any = {}; // Variable utilisée dans le HTML
   listClients: ClientDto[] = [];
-
   searchedArticle: ArticleDto = {};
   listArticle: Array<ArticleDto> = [];
-
-
-
   articleDto: ArticleDto = {}; //objet ou variable initialisé à vide
   venteDto: VenteDto = {}; //objet ou variable initialisé à vide
   errorMsg : Array<string> = [];
   // listeCategorie: Array<CategoryDto> = []; //liste de catégorie type tableau
-
   listeLignesVente: Array<any> = [];
   totalVente = 0;
   articleNotYetSelected = false;
   // On récupère les valeurs de l'énumération pour l'itérer dans le HTML
   paymentTypesOptions = Object.values(VenteDto.PaymentTypeEnum);
+
+  file: File| null = null;  // objet file qui peut être null et qui va être initialisé à null
+  imgUrl: string | ArrayBuffer = 'assets/new_product.png';
 
   constructor(
     private router: Router,
@@ -52,7 +62,9 @@ export class NouvelleVenteComponent implements OnInit {
     private clientFournisseurService: ClientfournisseurService,
     private articleService: ArticleService,   //injection du nouveau service article créé dans Angular
     private categoryService: CategoryService,  //injection du nouveau service category créé dans Angular
-    private venteService: VenteService
+    private venteService: VenteService,
+    private photoService: PhotoService,
+    private commandeClientFournisseurService: CommandeclientfournisseurService // 👈 Ajoutez l'injection de votre service ici
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +77,8 @@ export class NouvelleVenteComponent implements OnInit {
 
       // Charger la liste correspondante dès qu'on connaît l'origine
       this.findAllClientsFournisseurs();
+
+      // this.findClientFournisseur();
 
       // 2. Charger les articles pour l'autocomplétion
       this.findAllArticles();
@@ -98,7 +112,6 @@ export class NouvelleVenteComponent implements OnInit {
       }
     });
   }
-
 
   private genererProchainCode(lastCode: any): string {
     console.log('Type de lastCode :', typeof lastCode);
@@ -139,7 +152,6 @@ export class NouvelleVenteComponent implements OnInit {
     });
   }
 
-
   private traiterReponse(res: any, id: number): void {
     // Cas où la réponse est un Blob (Binaire JSON)
     if (res instanceof Blob) {
@@ -156,12 +168,85 @@ export class NouvelleVenteComponent implements OnInit {
     }
   }
 
+
   private affecterDonnees(vte: any): void {
+    this.idVente = vte.id;
     this.codeVente = vte.code || '';
-    this.commentaire = vte.commentaire || '';
-    // On récupère le client
-    this.selectedClientFournisseur =  vte.client;
-    console.log("Données affectées au formulaire :", this.codeVente);
+
+    // Crucial : On met à jour les deux variables pour garantir que le lien n'est pas rompu
+    this.codeCommandeClient = vte.codeCommandeClient || '';
+    this.commandeClientDto = { code: vte.codeCommandeClient };
+
+    this.venteDto = vte;
+    this.paymentType = vte.paymentType || '';
+
+
+    // 🛡️ RÉCUPÉRATION DE L'ÉTAT ET DES INFOS DE LA COMMANDE
+    if (this.codeCommandeClient && this.codeCommandeClient.trim() !== '') {
+      // On force le typage à 'any' temporairement pour la vérification du Blob ou du parsing
+      this.commandeClientFournisseurService.findCommandeClientByCode(this.codeCommandeClient).subscribe({
+        next: (commande: any) => {
+          // 1. Correction Erreur 1 & 2 : Cast en 'any' pour éviter les erreurs d'instanceof et d'assignation brute
+          if (commande instanceof Blob) {
+            (commande as Blob).text().then(text => {
+              this.commandeClientDto = JSON.parse(text);
+            });
+          } else if (typeof commande === 'string') {
+            this.commandeClientDto = JSON.parse(commande);
+          } else {
+            this.commandeClientDto = commande;
+          }
+          console.log("Commande chargée pour affichage de l'état :", this.commandeClientDto);
+        },
+        error: (err) => {
+          console.error("Impossible de récupérer les détails de la commande d'origine", err);
+          // 2. Correction Erreur 3 : Utiliser l'énumération générée par Swagger/OpenAPI pour l'état par défaut
+          this.commandeClientDto = {
+            code: this.codeCommandeClient,
+            // On évite d'écrire 'INCONNU' en dur et on utilise le bon type ou on le laisse indéfini
+            etatCommande: undefined
+          };
+        }
+      });
+    } else {
+      this.commandeClientDto = {}; // Pas de commande liée (Vente directe)
+    }
+
+    // // 🛡️ RÉCUPÉRATION DE L'ÉTAT ET DES INFOS DE LA COMMANDE
+    // if (this.codeCommandeClient && this.codeCommandeClient.trim() !== '') {
+    //   // On appelle le backend pour récupérer l'objet complet (avec état, date, etc.)
+    //   this.commandeClientFournisseurService.findCommandeClientByCode(this.codeCommandeClient).subscribe({
+    //     next: (commande) => {
+    //       if (commande instanceof Blob) {
+    //         (commande as Blob).text().then(text => {
+    //           this.commandeClientDto = JSON.parse(text);
+    //         });
+    //       } else {
+    //         this.commandeClientDto = commande;
+    //       }
+    //       console.log("Commande chargée pour affichage de l'état :", this.commandeClientDto);
+    //     },
+    //     error: (err) => {
+    //       console.error("Impossible de récupérer les détails de la commande d'origine", err);
+    //       // En cas d'erreur, on garde une structure minimale
+    //       this.commandeClientDto = { code: this.codeCommandeClient, etatCommande: 'INCONNU' };
+    //     }
+    //   });
+    // } else {
+    //   this.commandeClientDto = {}; // Pas de commande liée (Vente directe)
+    // }
+
+
+    // On récupère le client et son adresse de manière sécurisée
+    this.clientFournisseur = vte.client || {};
+    if (vte.client && vte.client.adresse) {
+      this.adresseDto = vte.client.adresse;
+    } else {
+      this.adresseDto = {};
+    }
+
+    this.imgUrl = vte.client?.photo || 'assets/new_product.png';
+    console.log("Données affectées au formulaire. Code Commande :", this.codeCommandeClient);
   }
 
 
@@ -169,7 +254,6 @@ export class NouvelleVenteComponent implements OnInit {
     // 1. Déclaration avec initialisation pour éviter l'erreur "used before being assigned"
     let serviceLignes: Observable<any>;
       serviceLignes = this.venteService.findAllLigneVenteByVentes(idVente);
-
 
     // 2. Appel du subscribe
     serviceLignes.subscribe({
@@ -223,7 +307,6 @@ export class NouvelleVenteComponent implements OnInit {
     }
   }
 
-
   findAllArticles(): void {
     // On récupère l'id de l'entreprise de l'utilisateur connecté
     const idEntreprise = this.connectedUser?.entreprise?.id;
@@ -260,7 +343,6 @@ export class NouvelleVenteComponent implements OnInit {
     this.articleNotYetSelected = false;
   }
 
-
   private checkLigneVente(): void {
     const ligneExistante = this.listeLignesVente.find(lig =>
       lig.article?.codeArticle === this.searchedArticle.codeArticle
@@ -279,42 +361,68 @@ export class NouvelleVenteComponent implements OnInit {
     }
   }
 
-
   enregistrerVente(): void {
-    const vente = this.preparerVente();
-    this.venteService.enregistrerVente(vente).subscribe({
-      next: () => {
-        // Redirection vers la liste après succès
-        this.router.navigate(['ventes']);
+    // 1. On s'assure d'associer la bonne adresse mise à jour au client avant la sauvegarde
+    this.clientFournisseur.adresse = this.adresseDto;
+    this.clientFournisseur.idEntreprise = this.connectedUser?.entreprise?.id;
+
+    // 2. Étape 1 : Sauvegarder/Mettre à jour le client d'abord le client/fournisseur pour obtenir un ID valide
+    this.clientFournisseurService.enregistrerClient(this.clientFournisseur).subscribe({
+      next: (clientSauvegarde) => {
+        console.log('Client sauvegardé avec succès, ID :', clientSauvegarde.id);
+
+        // On met à jour notre objet local avec l'ID et les infos retournées par le serveur
+        this.clientFournisseur = clientSauvegarde;
+
+        // 3. Étape 2 : Enregistrer la vente principale (Préparer et sauvegarder la vente avec le client persistant)
+        const vente = this.preparerVente();
+
+        this.venteService.enregistrerVente(vente).subscribe({
+          next: (venteSauvegardee) => {
+            console.log('Vente enregistrée avec succès');
+
+            // 4. Étape 3 : Gestion de la photo (Si une photo a été sélectionnée, on l'enregistre sur le client)
+            if (this.file && clientSauvegarde.id) {
+              const nomPhoto = clientSauvegarde.nom || 'photo_client';
+              this.savePhoto(clientSauvegarde.id, nomPhoto);
+            } else {
+              // Pas de photo ? On redirige directement
+              this.router.navigate(['ventes']);
+            }
+          },
+          error: (e) => this.handleError(e)
+        });
       },
       error: (e) => this.handleError(e)
     });
   }
 
-
-
   private preparerVente(): any {
-    const idEnt = this.connectedUser?.entreprise?.id;
+// On lie l'adresse modifiée au client sans écraser les champs manquants par "NR"
+    this.clientFournisseur.adresse = this.adresseDto;
     const lignesPourBackend = this.listeLignesVente.map(ligne => {
       return {
-        // Très important : garder l'ID de la ligne si elle existe déjà
-        id: ligne.id || null,
-        article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
-        // article: ligne.article,
+        id: ligne.id || null,  // Très important : garder l'ID de la ligne si elle existe déjà
+        article: {
+          id: ligne.article?.id  // Envoyer seulement l'ID article pour éviter les conflits
+        },
         quantite: ligne.quantite,
         prixVenteUnitaireTtc: ligne.prixVenteUnitaireTtc,
-        idEntreprise: idEnt
+        idEntreprise: this.connectedUser?.entreprise?.id
       };
     });
 
     return {
-      // Si idVente existe, il est ajouté. Sinon, le backend créera une nouvelle entrée.
-      id: this.idVente,
-      [this.origin]: this.selectedClientFournisseur,
+      id: this.idVente, // Si idVente existe, il est ajouté. Sinon, le backend créera une nouvelle entrée.
+      [this.origin]: this.clientFournisseur, // On passe l'objet complet mis à jour localement
+      // [this.origin]: {   // Ici, this.clientFournisseur contient désormais l'id généré par le backend
+      //   id: this.clientFournisseur.id
+      // },
       code: this.codeVente,
+      codeCommandeClient: this.commandeClientDto?.code || this.codeCommandeClient, // On s'assure de récupérer le code de la commande depuis l'une des deux sources disponibles
       paymentType: this.venteDto.paymentType,
-      dateVente: new Date().getTime(),
-      idEntreprise: idEnt,
+      dateVente: this.venteDto.dateVente || new Date().getTime(),
+      idEntreprise: this.connectedUser?.entreprise?.id, // const idEnt = this.connectedUser?.entreprise?.id;
       ['ligneVentes']: lignesPourBackend
     };
   }
@@ -328,4 +436,41 @@ export class NouvelleVenteComponent implements OnInit {
     this.errorMsg = error.error?.errors || [error.error?.message || 'Erreur'];
   }
 
+
+  onFileInput(files: FileList | null): void {
+    if(files) {
+      this.file = files.item(0);  //pour récupérer le premier fichier à l'index 0
+      if (this.file){
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(this.file)  //pour afficher le fichier avant de l'enregistrer
+        fileReader.onload = (event) => {
+          if(fileReader.result){
+            this.imgUrl = fileReader.result; //je peux changer ou mettre à jour le fichier
+          }
+        };
+      }
+    }
+  }
+
+  savePhoto(idObject?: number, titre?: string): void {
+    if (idObject && titre && this.file) {  //si j'ai mon idArticle et un fichier sélectionné
+
+      this.photoService.savePhoto(
+        this.origin,        // context
+        idObject,        // id
+        titre,            // title
+        this.file         // file (Blob)
+      ).subscribe({
+        next: () => {
+          this.cancelClick();
+        },
+        error: (err) => {
+          console.error('Erreur upload photo', err);
+        }
+      });
+
+    } else {
+      this.cancelClick();
+    }
+  }
 }

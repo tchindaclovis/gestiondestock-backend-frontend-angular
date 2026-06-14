@@ -33,4 +33,6 @@ public interface CommandeFournisseurService {
 
     List<CommandeFournisseurDto> findAllCommandeFournisseurByIdEntreprise(Integer idEntreprise);
 
+    List<CommandeFournisseurDto> findAllCommandeFournisseurByIdFournisseur(Integer idFournisseur);
+
 }
