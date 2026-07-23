@@ -1,10 +1,15 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gestionstock?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:sqlserver://localhost:1433;databaseName=gestionstock;encrypt=false;trustServerCertificate=true
+
+    username: sa
+    password: JESUSglory_26
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#   url: jdbc:postgresql://localhost:5432/gestionstock?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 #   url: jdbc:postgresql://localhost:5432/gestionstock
-    username: postgres
-    password: JESUSglory
-    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: JESUSglory
+#    driver-class-name: org.postgresql.Driver
 
 
     #pour exécuter les script sql
@@ -28,11 +33,12 @@ spring:
 
       ## Specify DBMS
   jpa:
-    database: POSTGRESQL
+    database: sql_server
       ## Exposer les requête sql lorsqu'on les envoi à notre API(true or false)
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
         format_sql: true
         ejb:
           interceptor: com.tchindaClovis.gestiondestock.interceptor.Interceptor
@@ -43,7 +49,7 @@ spring:
       ## Hibernate DDL Auto (create, create-drop, update, none, validate)
     hibernate:
       ddl-auto: update
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+#     dialect: org.hibernate.dialect.PostgreSQLDialect
 
       ## Port du serveur
 server:

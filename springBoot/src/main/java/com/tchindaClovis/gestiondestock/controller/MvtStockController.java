@@ -100,6 +100,11 @@ public class MvtStockController implements MvtStockApi {
         return mvtStockService.getLastCodeCorrection();
     }
 
+    @Override
+    public void delete(Integer id) {
+        mvtStockService.delete(id);
+    }
+
 }
 
 

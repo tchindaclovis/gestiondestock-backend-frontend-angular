@@ -62,14 +62,14 @@ export class ClientfournisseurService {
 
   deleteClient(idClient: number): Observable<any>{
     if(idClient){
-      return this.clientsService.delete6(idClient);
+      return this.clientsService.delete7(idClient);
     }
     return of();
   }
 
   deleteFournisseur(idFournisseur: number): Observable<any>{
     if(idFournisseur){
-      return this.fournisseursService.delete2(idFournisseur);
+      return this.fournisseursService.delete3(idFournisseur);
     }
     return of();
   }

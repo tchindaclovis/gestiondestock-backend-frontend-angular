@@ -55,31 +55,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
     }
     this.chargerStock();
 
-
-    // this.mvtstockService.getLastCodeCorrection().subscribe({
-    //   next: async (res: any) => {
-    //     let rawValue = '';
-    //
-    //     if (res instanceof Blob) {
-    //       rawValue = await res.text();
-    //     } else {
-    //       rawValue = String(res);
-    //     }
-    //
-    //     // Supprimer les guillemets résiduels si le backend renvoie ""CCS0001""
-    //     rawValue = rawValue.replace(/"/g, '');
-    //
-    //     console.log('Dernier code reçu du serveur :', rawValue);
-    //
-    //     // Affectation du nouveau code incrémenté
-    //     this.codeCorrection = this.genererProchainCode(rawValue);
-    //   },
-    //   error: (err) => {
-    //     console.warn('Aucun code trouvé ou erreur, initialisation à CCS0001');
-    //     this.codeCorrection = 'CCS0001';
-    //   }
-    // });
-
     this.mvtstockService.getLastCodeCorrection().subscribe({
       next: async (res: any) => { // Ajoutez 'async' ici
         let rawValue = res;
@@ -133,57 +108,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
     // 4. On reformate avec le préfixe et 4 chiffres (ex: CCS0001)
     return `CCS${nextNumber.toString().padStart(4, '0')}`;
   }
-
-
-  // private genererProchainCode(lastCode: any): string {
-  //   console.log('Type de lastCode :', typeof lastCode);
-  //   console.log('Valeur brute de lastCode :', lastCode);
-  //   // 1. Si lastCode est vide, nul ou non défini, on commence à 1
-  //   if (!lastCode || lastCode === '' || lastCode === 'null') {
-  //     return 'CCS0001';
-  //   }
-  //
-  //   // 2. Nettoyage de la chaîne
-  //   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
-  //
-  //   // 3. Extraction des chiffres
-  //   const match = cleanCode.match(/\d+/);
-  //
-  //   if (match) {
-  //     // On extrait le nombre, on l'incrémente
-  //     const nextNumber = parseInt(match[0], 10) + 1;
-  //     // On formate avec des zéros non significatifs (ex: 0002)
-  //     return `CCS${nextNumber.toString().padStart(4, '0')}`;
-  //   }
-  //
-  //   // Si on a un texte sans chiffre, on renvoie le premier code
-  //   return 'CCS0001';
-  // }
-
-
-  // private genererProchainCode(lastCode: any): string {
-  //   console.log('Type de lastCode :', typeof lastCode);
-  //   console.log('Valeur brute de lastCode :', lastCode);
-  //   // 1. Conversion en string et nettoyage radical (supprime guillemets, espaces, retours à la ligne)
-  //   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
-  //
-  //   // 2. Extraction de TOUS les chiffres présents dans la chaîne
-  //   // On cherche une suite de chiffres (\d+)
-  //   const match = cleanCode.match(/\d+/);
-  //
-  //   let nextNumber = 9999; // Valeur par défaut si aucun chiffre n'est trouvé
-  //
-  //   if (match && match[0]) {
-  //     // 3. Conversion de la partie trouvée (ex: "0013") en nombre et incrémentation
-  //     nextNumber = parseInt(match[0], 10) + 1;
-  //   }
-  //
-  //   // 4. Formatage : "ART" + nombre formaté sur 4 positions (Milliers, Centaines, Dizaines, Unités)
-  //   // padStart(4, '0') transforme 14 en "0014"
-  //   const formattedNumber = nextNumber.toString().padStart(4, '0');
-  //
-  //   return `CCS${formattedNumber}`;
-  // }
 
 
   private chargerStock(): void {
@@ -318,6 +242,59 @@ export class DetailMvtstockArticleComponent implements OnInit {
     }
   }
 }
+
+
+
+
+// private genererProchainCode(lastCode: any): string {
+//   console.log('Type de lastCode :', typeof lastCode);
+//   console.log('Valeur brute de lastCode :', lastCode);
+//   // 1. Si lastCode est vide, nul ou non défini, on commence à 1
+//   if (!lastCode || lastCode === '' || lastCode === 'null') {
+//     return 'CCS0001';
+//   }
+//
+//   // 2. Nettoyage de la chaîne
+//   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
+//
+//   // 3. Extraction des chiffres
+//   const match = cleanCode.match(/\d+/);
+//
+//   if (match) {
+//     // On extrait le nombre, on l'incrémente
+//     const nextNumber = parseInt(match[0], 10) + 1;
+//     // On formate avec des zéros non significatifs (ex: 0002)
+//     return `CCS${nextNumber.toString().padStart(4, '0')}`;
+//   }
+//
+//   // Si on a un texte sans chiffre, on renvoie le premier code
+//   return 'CCS0001';
+// }
+
+
+// private genererProchainCode(lastCode: any): string {
+//   console.log('Type de lastCode :', typeof lastCode);
+//   console.log('Valeur brute de lastCode :', lastCode);
+//   // 1. Conversion en string et nettoyage radical (supprime guillemets, espaces, retours à la ligne)
+//   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
+//
+//   // 2. Extraction de TOUS les chiffres présents dans la chaîne
+//   // On cherche une suite de chiffres (\d+)
+//   const match = cleanCode.match(/\d+/);
+//
+//   let nextNumber = 9999; // Valeur par défaut si aucun chiffre n'est trouvé
+//
+//   if (match && match[0]) {
+//     // 3. Conversion de la partie trouvée (ex: "0013") en nombre et incrémentation
+//     nextNumber = parseInt(match[0], 10) + 1;
+//   }
+//
+//   // 4. Formatage : "ART" + nombre formaté sur 4 positions (Milliers, Centaines, Dizaines, Unités)
+//   // padStart(4, '0') transforme 14 en "0014"
+//   const formattedNumber = nextNumber.toString().padStart(4, '0');
+//
+//   return `CCS${formattedNumber}`;
+// }
 
 
 

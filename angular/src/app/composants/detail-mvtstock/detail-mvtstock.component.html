@@ -1,6 +1,7 @@
 
 <div class="row mb-1 mr-0 border">
 
+  <!-- Code Source -->
   <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row text-center">
       <div class="col-md-11">
@@ -11,6 +12,7 @@
     </div>
   </div>
 
+  <!-- Date du Mouvement -->
   <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row text-center">
       <div class="col-md-11">
@@ -21,16 +23,24 @@
     </div>
   </div>
 
+  <!-- 🛡️ AFFICHAGE CONDITIONNEL DE LA QUANTITÉ -->
   <div class="col-md-1 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
-        <small [ngClass]="isEntree ? 'text-success' : 'text-danger'">
+        <!-- 1. Si la vente possède un codeCommandeClient, on affiche '--' -->
+        <small *ngIf="estVenteIssueDeCommande" class="text-danger">
+          --
+        </small>
+
+        <!-- 2. Sinon, affichage standard de la quantité -->
+        <small *ngIf="!estVenteIssueDeCommande" [ngClass]="isEntree ? 'text-success' : 'text-danger'">
           {{ mvtStockDto.quantite | number:'1.0-0':'fr' }}
         </small>
       </div>
     </div>
   </div>
 
+  <!-- Libellé Type de Mouvement -->
   <div class="col-md-3 border-end mb-1 mt-1">
     <div class="row">
       <div class="col-md-12 text-center">
@@ -41,29 +51,107 @@
     </div>
   </div>
 
+  <!-- Source du Mouvement -->
   <div class="col-md-2 border-end mb-1 mt-1">
     <div class="row text-center">
       <small class="text-primary">
-         {{ sourceMvtLabel }}
+        {{ sourceMvtLabel }}
       </small>
     </div>
   </div>
 
+  <!-- Total Calculé (Montant) -->
   <div class="col-md-2 mb-1 mt-1">
     <div class="row text-center">
-      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMF'
+      <small *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMF'
               || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CVT'
               || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CCS'"
-              class="text-primary">
-        {{ (calculerTotalMvtStock()) | currency:'XAF':'symbol':'1.0-0':'fr'  }}
+             class="text-primary">
+        {{ (calculerTotalMvtStock()) | currency:'XAF':'symbol':'1.0-0':'fr' }}
       </small>
-      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMC'"
-              class="text-primary">
+      <small *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMC'"
+             class="text-primary">
         {{ "--" }}
       </small>
     </div>
   </div>
+
 </div>
+
+
+
+<!--<div class="row mb-1 mr-0 border">-->
+
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <div class="col-md-11">-->
+<!--        <small>-->
+<!--          {{ mvtStockDto.codeSource || 'N/A' }}-->
+<!--        </small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <div class="col-md-11">-->
+<!--        <small>-->
+<!--          {{ mvtStockDto.dateMvt | date:'dd/MM/yyyy HH:mm' }}-->
+<!--        </small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-1 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        <small [ngClass]="isEntree ? 'text-success' : 'text-danger'">-->
+<!--          {{ mvtStockDto.quantite | number:'1.0-0':'fr' }}-->
+<!--        </small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-3 border-end mb-1 mt-1">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-12 text-center">-->
+<!--        <small [ngClass]="isEntree ? 'text-success' : 'text-danger'">-->
+<!--          {{ typeMvtLabel }}-->
+<!--        </small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-2 border-end mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <small class="text-primary">-->
+<!--         {{ sourceMvtLabel }}-->
+<!--      </small>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="col-md-2 mb-1 mt-1">-->
+<!--    <div class="row text-center">-->
+<!--      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMF'-->
+<!--              || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CVT'-->
+<!--              || this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CCS'"-->
+<!--              class="text-primary">-->
+<!--        {{ (calculerTotalMvtStock()) | currency:'XAF':'symbol':'1.0-0':'fr'  }}-->
+<!--      </small>-->
+<!--      <small  *ngIf="this.mvtStockDto?.codeSource?.substring(0, 3)?.toUpperCase() === 'CMC'"-->
+<!--              class="text-primary">-->
+<!--        {{ "&#45;&#45;" }}-->
+<!--      </small>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+
+
+
+
+
 
 
 

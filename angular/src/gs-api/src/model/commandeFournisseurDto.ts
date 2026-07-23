@@ -23,8 +23,8 @@ export interface CommandeFournisseurDto {
     fournisseur?: FournisseurDto;
     idEntreprise?: number;
     ligneCommandeFournisseurs?: Array<LigneCommandeFournisseurDto>;
-    commandeConfirmee?: boolean;
     commandeLivree?: boolean;
+    commandeConfirmee?: boolean;
 }
 export namespace CommandeFournisseurDto {
     export const EtatCommandeEnum = {

@@ -21,6 +21,7 @@ export interface MvtStockDto {
     sourceMvt?: MvtStockDto.SourceMvtEnum;
     source?: MvtStockDto.SourceEnum;
     codeSource?: string;
+    coutTotal?: number;
 }
 export namespace MvtStockDto {
     export const TypeMvtEnum = {

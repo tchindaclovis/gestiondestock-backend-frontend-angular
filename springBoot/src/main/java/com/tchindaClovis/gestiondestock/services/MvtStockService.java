@@ -39,4 +39,6 @@ public interface MvtStockService {
 
     String getLastCodeCorrection();
 
+    void delete(Integer id);
+
 }

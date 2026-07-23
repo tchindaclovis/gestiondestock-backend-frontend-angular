@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.VenteApi;
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.LigneVenteDto;
 import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.services.VenteService;
@@ -26,6 +27,12 @@ public class VenteController implements VenteApi {
     @Override
     public VenteDto findById(Integer idVente) {
         return venteService.findById(idVente);
+    }
+
+    @Override
+    public VenteDto findByCode(String code) {
+
+        return venteService.findByCode(code);
     }
 
     @Override

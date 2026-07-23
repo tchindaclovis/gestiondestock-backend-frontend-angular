@@ -23,10 +23,10 @@ export interface CommandeClientDto {
     etat?: CommandeClientDto.EtatEnum;
     client?: ClientDto;
     ligneCommandeClients?: Array<LigneCommandeClientDto>;
-    commandeConfirmee?: boolean;
     commandeProformat?: boolean;
     commandeVendue?: boolean;
     commandeLivree?: boolean;
+    commandeConfirmee?: boolean;
 }
 export namespace CommandeClientDto {
     export const EtatCommandeEnum = {

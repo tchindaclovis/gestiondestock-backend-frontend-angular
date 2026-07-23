@@ -1,6 +1,7 @@
 package com.tchindaClovis.gestiondestock.repository;
 
 import aj.org.objectweb.asm.commons.Remapper;
+import com.tchindaClovis.gestiondestock.model.Article;
 import com.tchindaClovis.gestiondestock.model.Vente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VenteRepository extends JpaRepository<Vente, Integer> {
+
+    Optional<Vente> findVenteByCode(String code);
     Optional<Vente> findByCodeCommandeClient(String codeCommandeClient);
 
     @Query("SELECT v FROM Vente v LEFT JOIN FETCH v.ligneVentes WHERE v.id = :id")

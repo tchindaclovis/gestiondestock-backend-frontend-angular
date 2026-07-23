@@ -81,6 +81,11 @@ export class VenteService {
   // }
 
 
+  findVenteByCode(code: string): Observable<VenteDto> {
+    return this.ventesService.findByCode(code);
+  }
+
+
   findVenteByCodeCommandeClient(code: string): Observable<VenteDto> {
     return this.ventesService.findVenteByCodeCommandeClient(code);
   }

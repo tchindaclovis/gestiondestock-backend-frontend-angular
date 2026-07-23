@@ -47,6 +47,7 @@ public class VenteServiceImpl implements VenteService {
     }
 
 
+
     @Override
     @Transactional
     public VenteDto save(VenteDto dto) {
@@ -258,6 +259,8 @@ public class VenteServiceImpl implements VenteService {
     }
 
 
+
+
     /**
      * Méthode utilitaire pour générer un mouvement de stock spécifique (différentiel)
      */
@@ -375,6 +378,24 @@ public class VenteServiceImpl implements VenteService {
                 ));
     }
 
+
+    @Override
+
+    public VenteDto findByCode(String code) {
+        if (!StringUtils.hasLength(code)) {
+            log.error("Vente CODE is null");
+            return null;
+        }
+
+        return venteRepository.findVenteByCode(code)
+                .map(VenteDto::fromEntity)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Aucune vente avec le CODE = " + code + " n'a été trouve dans la BDD",
+                                ErrorCodes.VENTE_NOT_FOUND)
+                );
+    }
+
     @Override
     public VenteDto findVenteByCodeCommandeClient(String codeCommandeClient) {
         if(!StringUtils.hasLength(codeCommandeClient)){
@@ -446,6 +467,254 @@ public class VenteServiceImpl implements VenteService {
                 .orElse("CVT0000");           // Valeur par défaut si aucun vente n'existe
     }
 }
+
+
+
+
+
+//    @Override
+//    @Transactional
+//    public VenteDto save(VenteDto dto) {
+//        validateVente(dto);
+//
+//        // =========================================================================
+//        // 🛡️ SÉCURITÉ ALIGNÉE : BLOCAGE SI LES QUANTITÉS OU LES ARTICLES ONT CHANGÉ PAR RAPPORT À LA COMMANDE
+//        // =========================================================================
+//        if (dto.getCodeCommandeClient() != null && !dto.getCodeCommandeClient().trim().isEmpty()) {
+//
+//            // Récupérer la commande d'origine avec ses lignes depuis la BDD
+//            CommandeClient commandeInitiale = commandeClientRepository.findByCode(dto.getCodeCommandeClient())
+//                    .orElseThrow(() -> new EntityNotFoundException(
+//                            "Commande client introuvable avec le code : " + dto.getCodeCommandeClient(),
+//                            ErrorCodes.COMMANDE_CLIENT_NOT_FOUND
+//                    ));
+//
+//            // Construire la Map des éléments attendus de la commande : ID Article -> Quantité Commandée
+//            Map<Integer, BigDecimal> lignesCommandeMap = new HashMap<>();
+//            if (commandeInitiale.getLigneCommandeClients() != null) {
+//                commandeInitiale.getLigneCommandeClients().forEach(ligCmd -> {
+//                    if (ligCmd.getArticle() != null) {
+//                        lignesCommandeMap.put(ligCmd.getArticle().getId(), ligCmd.getQuantite());
+//                    }
+//                });
+//            }
+//
+//            int nbrNouvellesLignes = dto.getLigneVentes() != null ? dto.getLigneVentes().size() : 0;
+//
+//            // Vérification sur le nombre global d'articles
+//            if (lignesCommandeMap.size() != nbrNouvellesLignes) {
+//                throw new InvalidOperationException(
+//                        "Modification impossible : Le nombre d'articles de la vente (" + nbrNouvellesLignes +
+//                                ") ne correspond pas à la commande initiale (" + lignesCommandeMap.size() + ").",
+//                        ErrorCodes.VENTE_NON_MODIFIABLE
+//                );
+//            }
+//
+//            // Vérification de la correspondance exacte des articles et des quantités
+//            if (dto.getLigneVentes() != null) {
+//                for (LigneVenteDto ligDto : dto.getLigneVentes()) {
+//                    if (ligDto.getArticle() == null || ligDto.getArticle().getId() == null) {
+//                        throw new InvalidEntityException("Un article de la vente n'est pas valide ou ne possède pas d'identifiant.");
+//                    }
+//
+//                    Integer idArticle = ligDto.getArticle().getId();
+//                    BigDecimal qteFacturee = ligDto.getQuantite();
+//
+//                    // L'article fait-il partie de la commande ?
+//                    if (!lignesCommandeMap.containsKey(idArticle)) {
+//                        throw new InvalidOperationException(
+//                                "Modification impossible : L'article ID " + idArticle + " ne figure pas dans la commande d'origine " + dto.getCodeCommandeClient() + ".",
+//                                ErrorCodes.VENTE_NON_MODIFIABLE
+//                        );
+//                    }
+//
+//                    // La quantité correspond-elle à celle de la commande ?
+//                    BigDecimal qteCommandee = lignesCommandeMap.get(idArticle);
+//                    if (qteFacturee.compareTo(qteCommandee) != 0) {
+//                        throw new InvalidOperationException(
+//                                "Modification impossible : La quantité facturée pour l'article ID " + idArticle +
+//                                        " (" + qteFacturee + ") diffère de la quantité commandée (" + qteCommandee + ").",
+//                                ErrorCodes.VENTE_NON_MODIFIABLE
+//                        );
+//                    }
+//                }
+//            }
+//        }
+//        // =========================================================================
+//
+//        // On récupère l'ancienne vente si c'est une mise à jour
+//        Map<Integer, BigDecimal> anciennesLignesMap = new HashMap<>();
+//        Vente venteToSave;
+//
+//        if (dto.getId() != null) {
+//            venteToSave = venteRepository.findByIdWithLignes(dto.getId())
+//                    .orElseThrow(() -> new EntityNotFoundException("Vente introuvable", ErrorCodes.VENTE_NOT_FOUND));
+//
+//            // On remplit la Map pour la logique différentielle des stocks
+//            if (venteToSave.getLigneVentes() != null) {
+//                venteToSave.getLigneVentes().forEach(lig ->
+//                        anciennesLignesMap.put(lig.getArticle().getId(), lig.getQuantite())
+//                );
+//            }
+//
+//            // 🛡️ SÉCURITÉ : Conserver le codeCommandeClient d'origine s'il était déjà présent en BDD
+//            if (venteToSave.getCodeCommandeClient() != null && !venteToSave.getCodeCommandeClient().trim().isEmpty()) {
+//                // On force le maintien du code d'origine si le DTO l'envoie vide
+//                if (dto.getCodeCommandeClient() == null || dto.getCodeCommandeClient().trim().isEmpty()) {
+//                    dto.setCodeCommandeClient(venteToSave.getCodeCommandeClient());
+//                }
+//            }
+//
+//            // On met à jour les infos générales autorisées
+//            venteToSave.setCode(dto.getCode());
+//            venteToSave.setCodeCommandeClient(dto.getCodeCommandeClient());
+//            venteToSave.setPaymentType(dto.getPaymentType());
+//            venteToSave.setDateVente(dto.getDateVente());
+//
+//            // 🛡️ MISE À JOUR SÉLECTIVE DU CLIENT : Éviter de vider les autres champs en BDD
+//            if (dto.getClient() != null && dto.getClient().getId() != null) {
+//                Client clientExistant = clientRepository.findById(dto.getClient().getId())
+//                        .orElseThrow(() -> new EntityNotFoundException("Client introuvable", ErrorCodes.CLIENT_NOT_FOUND));
+//
+//                // On met uniquement à jour les champs gérés par votre formulaire de vente
+//                if (dto.getClient().getNom() != null) clientExistant.setNom(dto.getClient().getNom());
+//                if (dto.getClient().getStatut() != null) clientExistant.setStatut(dto.getClient().getStatut());
+//                if (dto.getClient().getNumTel() != null) clientExistant.setNumTel(dto.getClient().getNumTel());
+//                if (dto.getClient().getEmail() != null) clientExistant.setEmail(dto.getClient().getEmail());
+//
+//                if (dto.getClient().getAdresse() != null) {
+//                    if (clientExistant.getAdresse() == null) {
+//                        clientExistant.setAdresse(new Adresse()); // ou Adresse.builder().build() selon votre projet
+//                    }
+//                    if (dto.getClient().getAdresse().getAdresse1() != null) {
+//                        clientExistant.getAdresse().setAdresse1(dto.getClient().getAdresse().getAdresse1());
+//                    }
+//                }
+//
+//                // On sauvegarde le client modifié de manière isolée
+//                clientRepository.save(clientExistant);
+//                venteToSave.setClient(clientExistant);
+//            }
+//
+//            // On nettoie les anciennes lignes pour Hibernate
+//            venteToSave.getLigneVentes().clear();
+//            venteRepository.saveAndFlush(venteToSave);
+//
+//        } else {
+//            // 1. On intercepte le client AVANT de faire le toEntity global pour éviter de créer un objet transient inutile
+//            Client clientPersistant = null;
+//            if (dto.getClient() != null && dto.getClient().getId() != null) {
+//                clientPersistant = clientRepository.findById(dto.getClient().getId())
+//                        .orElseThrow(() -> new EntityNotFoundException("Client introuvable", ErrorCodes.CLIENT_NOT_FOUND));
+//            }
+//
+//            // 2. On transforme le DTO en entité
+//            venteToSave = VenteDto.toEntity(dto);
+//
+//            // 3. On applique explicitement le client persistant managé par Hibernate
+//            venteToSave.setClient(clientPersistant);
+//        }
+//
+//        // -------------------------------------------------------------------------
+//        // 📦 INDICATEUR : VÉRIFICATION SI LA VENTE EST ISSUE D'UNE COMMANDE CLIENT
+//        // -------------------------------------------------------------------------
+//        boolean estIssueDuneCommandeClient = dto.getCodeCommandeClient() != null && !dto.getCodeCommandeClient().trim().isEmpty();
+//
+//        // Préparer la liste des nouvelles lignes pour la sauvegarde
+//        if (dto.getLigneVentes() != null) {
+//            if (venteToSave.getLigneVentes() == null) {
+//                venteToSave.setLigneVentes(new ArrayList<>());
+//            }
+//
+//            for (LigneVenteDto ligDto : dto.getLigneVentes()) {
+//                LigneVente lig = LigneVenteDto.toEntity(ligDto);
+//                lig.setId(null);
+//                lig.setVente(venteToSave);
+//                lig.setIdEntreprise(dto.getIdEntreprise());
+//                venteToSave.getLigneVentes().add(lig);
+//
+//                Integer articleId = ligDto.getArticle().getId();
+//                BigDecimal nouvelleQte = ligDto.getQuantite();
+//
+//                if (estIssueDuneCommandeClient) {
+//                    // -----------------------------------------------------------------
+//                    // 📝 VENTE ISSUE D'UNE COMMANDE :
+//                    // On enregistre la ligne de mouvement de stock pour traçabilité (Audit),
+//                    // mais la quantité impactant le stock physique est mise à ZERO.
+//                    // -----------------------------------------------------------------
+//                    modifierStockIndividuel(lig, BigDecimal.ZERO, ETypeMvtStock.SORTIE_VTE);
+//
+//                } else {
+//                    // -----------------------------------------------------------------
+//                    // 🔄 VENTE DIRECTE : LOGIQUE DIFFÉRENTIELLE CLASSIQUE
+//                    // -----------------------------------------------------------------
+//                    if (anciennesLignesMap.containsKey(articleId)) {
+//                        BigDecimal ancienneQte = anciennesLignesMap.get(articleId);
+//                        int comparaison = nouvelleQte.compareTo(ancienneQte);
+//
+//                        if (comparaison > 0) {
+//                            BigDecimal diff = nouvelleQte.subtract(ancienneQte);
+//                            modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG);
+//                        }
+//                        else if (comparaison < 0) {
+//                            BigDecimal diff = ancienneQte.subtract(nouvelleQte);
+//                            modifierStockIndividuel(lig, diff, ETypeMvtStock.CORRECTION_POS_VENTE_RED);
+//                        }
+//                        anciennesLignesMap.remove(articleId);
+//                    } else {
+//                        modifierStockIndividuel(lig, nouvelleQte, ETypeMvtStock.SORTIE_VTE);
+//                    }
+//                }
+//            }
+//        }
+//
+//        // -------------------------------------------------------------------------
+//        // GÉRER LES SUPPRESSIONS (Articles restants dans la Map lors d'une MAJ)
+//        // S'applique uniquement aux ventes directes (hors commande)
+//        // -------------------------------------------------------------------------
+//        if (!estIssueDuneCommandeClient) {
+//            anciennesLignesMap.forEach((idArt, qteInitiale) -> {
+//                LigneVente ligneSupprimee = new LigneVente();
+//                ligneSupprimee.setArticle(articleRepository.findById(idArt).orElse(null));
+//                ligneSupprimee.setQuantite(qteInitiale);
+//                ligneSupprimee.setIdEntreprise(dto.getIdEntreprise());
+//
+//                updateMvtStockAnnulation(ligneSupprimee);
+//            });
+//        }
+//
+//        // Sauvegarde de la vente principale
+//        Vente savedVente = venteRepository.saveAndFlush(venteToSave);
+//
+//        // TRAITEMENT DE LA COMMANDE CLIENT LIÉE
+//        if (estIssueDuneCommandeClient) {
+//            Optional<CommandeClient> commandeOpt = commandeClientRepository.findByCode(dto.getCodeCommandeClient());
+//
+//            if (commandeOpt.isPresent()) {
+//                CommandeClient commandeClient = commandeOpt.get();
+//                commandeClient.setEtatCommande(EEtatCommande.VENDUE);
+//                commandeClientRepository.save(commandeClient);
+//                log.info("✅ La commande client avec le code {} a été passée à l'état VENDUE.", dto.getCodeCommandeClient());
+//            } else {
+//                log.warn("⚠️ Code commande client '{}' fourni mais aucune commande correspondante en BDD.", dto.getCodeCommandeClient());
+//            }
+//        }
+//
+//        return VenteDto.fromEntity(savedVente);
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -30,7 +30,7 @@ export class CategoryService {
 
   delete(idCategorie?: number): Observable<any> {  //any coe pr dire que je peut renvoyer n'importe quoi
     if(idCategorie){
-    return this.categoriesService.delete7(idCategorie)
+    return this.categoriesService.delete8(idCategorie)
     }
     return of();  // ie je vais renvoyer un observable vide
   }

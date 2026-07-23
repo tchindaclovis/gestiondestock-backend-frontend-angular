@@ -10,9 +10,8 @@ package com.tchindaClovis.gestiondestock.services.impl;
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
 import com.tchindaClovis.gestiondestock.exception.InvalidEntityException;
-import com.tchindaClovis.gestiondestock.model.ESourceMvtStock;
-import com.tchindaClovis.gestiondestock.model.ETypeMvtStock;
-import com.tchindaClovis.gestiondestock.model.MvtStock;
+import com.tchindaClovis.gestiondestock.exception.InvalidOperationException;
+import com.tchindaClovis.gestiondestock.model.*;
 import com.tchindaClovis.gestiondestock.repository.MvtStockRepository;
 import com.tchindaClovis.gestiondestock.services.ArticleService;
 import com.tchindaClovis.gestiondestock.services.MvtStockService;
@@ -408,6 +407,30 @@ public class MvtStockServiceImpl implements MvtStockService {
 //    }
 
 
+
+    @Override
+    public void delete(Integer id) {
+        if (id == null) {
+            log.error("Mouvement stock ID is null");
+            return;
+        }
+//        List<LigneCommandeClient> ligneCommandeClients = commandeClientRepository.findAllByArticleId(id);
+//        if (!ligneCommandeClients.isEmpty()) {
+//            throw new InvalidOperationException("Impossible de supprimer un article deja utilise dans des commandes client",
+//                    ErrorCodes.ARTICLE_ALREADY_IN_USE);
+//        }
+//        List<LigneCommandeFournisseur> ligneCommandeFournisseurs = commandeFournisseurRepository.findAllByArticleId(id);
+//        if (!ligneCommandeFournisseurs.isEmpty()) {
+//            throw new InvalidOperationException("Impossible de supprimer un article deja utilise dans des commandes fournisseur",
+//                    ErrorCodes.ARTICLE_ALREADY_IN_USE);
+//        }
+//        List<LigneVente> ligneVentes = venteRepository.findAllByArticleId(id);
+//        if (!ligneVentes.isEmpty()) {
+//            throw new InvalidOperationException("Impossible de supprimer un article deja utilise dans des ventes",
+//                    ErrorCodes.ARTICLE_ALREADY_IN_USE);
+//        }
+        mvtStockRepository.deleteById(id);
+    }
 
 }
 

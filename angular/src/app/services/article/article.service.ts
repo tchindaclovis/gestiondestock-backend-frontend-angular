@@ -36,7 +36,7 @@ export class ArticleService {
 
   deleteArticle(idArticle: number): Observable<any> { //type de retour est un observable de any
     if(idArticle){
-      return this.articlesService.delete8(idArticle);
+      return this.articlesService.delete9(idArticle);
     }
     return of();  //sinon retourne un observable vide
   }

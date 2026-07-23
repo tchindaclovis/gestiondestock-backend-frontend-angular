@@ -242,14 +242,14 @@ export class CommandeclientfournisseurService {
 
   deleteCommandeClient(idClient: number): Observable<any>{
     if(idClient){
-      return this.commandeClientsService.delete5(idClient);
+      return this.commandeClientsService.delete6(idClient);
     }
     return of();
   }
 
   deleteCommandeFournisseur(idFournisseur: number): Observable<any>{
     if(idFournisseur){
-      return this.commandeFournisseursService.delete4(idFournisseur);
+      return this.commandeFournisseursService.delete5(idFournisseur);
     }
     return of();
   }

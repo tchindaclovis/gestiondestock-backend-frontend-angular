@@ -43,15 +43,30 @@ public interface VenteApi {
     )
     VenteDto findById(@PathVariable("idVente") Integer id);
 
+
+    @GetMapping(value = APP_ROOT + "/ventes/find/code/{code}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher une vente par code",
+            description = "Cette méthode permet de rechercher une vente par son code",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "La vente a été trouvé dans la BDD",
+                            content = @Content(schema = @Schema(implementation = VenteDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Aucune vente n'a été trouvé avec le code fourni")
+            }
+    )
+    VenteDto findByCode(@PathVariable("code") String code);
+
+
     @GetMapping(value = APP_ROOT + "/ventes/find/codecommandeclient/{codeCommandeClient}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Rechercher une vente par codeCommandeClient",
             description = "Cette méthode permet de rechercher une vente par son codeCommandeClient",
             responses = {
-                @ApiResponse(responseCode = "200", description = "L'article a été trouvé dans la BDD",
+                @ApiResponse(responseCode = "200", description = "La vente a été trouvé dans la BDD",
                         content = @Content(schema = @Schema(implementation = VenteDto.class))),
-                @ApiResponse(responseCode = "404", description = "Aucune vente trouvé avec le codeCommandeClient fourni")
+                @ApiResponse(responseCode = "404", description = "Aucune vente n'a été trouvé avec le codeCommandeClient fourni")
             }
      )
     VenteDto findVenteByCodeCommandeClient(@PathVariable("codeCommandeClient")  String codeCommandeClient);

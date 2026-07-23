@@ -199,6 +199,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--Dépendance pour SQL Server-->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 
