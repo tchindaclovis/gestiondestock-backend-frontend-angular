@@ -2,6 +2,7 @@ package com.tchindaClovis.gestiondestock.controller;
 
 import com.tchindaClovis.gestiondestock.controller.api.MvtStockApi;
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import com.tchindaClovis.gestiondestock.services.MvtStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +19,22 @@ public class MvtStockController implements MvtStockApi {
         this.mvtStockService = mvtStockService;
     }
 
+
+    @Override
+    public MvtStockDto findMvtStockByCodeCommandeClient(String codeCommandeClient) {
+        return mvtStockService.findMvtStockByCodeCommandeClient(codeCommandeClient);
+    }
+
+
     @Override
     public BigDecimal stockReelArticle(Integer idArticle) {
             return mvtStockService.stockReelArticle(idArticle);
     }
+
+//    @Override
+//    public BigDecimal stockReelArticleVenteIssueDeCommande(Integer idArticle) {
+//        return mvtStockService.stockReelArticleVenteIssueDeCommande(idArticle);
+//    }
 
     @Override
     public List<MvtStockDto> mvtStockArticle(Integer idArticle) {

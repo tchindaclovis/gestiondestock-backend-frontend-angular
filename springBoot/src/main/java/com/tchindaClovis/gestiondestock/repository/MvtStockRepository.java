@@ -8,14 +8,36 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface MvtStockRepository extends JpaRepository<MvtStock, Integer> {
 
-    @Query("select coalesce(sum(m.quantite), 0) from MvtStock m where m.article.id = :idArticle")
+    // 1. Calcul classique du stock réel
+    @Query("SELECT COALESCE(SUM(m.quantite), 0) FROM MvtStock m WHERE m.article.id = :idArticle")
     BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
 
-//    @Query("select sum(m.quantite) from MvtStock m where m.article.id = :idArticle")
-//    BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
+    // 2. Calcul du stock avec ajout de |quantité| pour les mouvements liés à une commande client
+    @Query("SELECT COALESCE(SUM(" +
+            "  m.quantite + " +
+            "  CASE " +
+            "    WHEN m.codeCommandeClient IS NOT NULL AND TRIM(m.codeCommandeClient) <> '' " +
+            "    THEN ABS(m.quantite) " +
+            "    ELSE 0 " +
+            "  END" +
+            "), 0) " +
+            "FROM MvtStock m " +
+            "WHERE m.article.id = :idArticle")
+    BigDecimal stockReelArticleVenteIssueDeCommande(@Param("idArticle") Integer idArticle);
+
+    // 3. Vérifie si l'article possède au moins un mouvement de stock avec un codeCommandeClient
+    @Query("SELECT COUNT(m) > 0 FROM MvtStock m " +
+            "WHERE m.article.id = :idArticle " +
+            "AND m.codeCommandeClient IS NOT NULL " +
+            "AND TRIM(m.codeCommandeClient) <> ''")
+    boolean existsByArticleIdAndCodeCommandeClientIsNotNull(@Param("idArticle") Integer idArticle);
+
+    Optional<MvtStock> findByCodeCommandeClient(String codeCommandeClient);
+
 
     List<MvtStock> findAllByArticleId(Integer idArticle);
 
@@ -32,3 +54,24 @@ public interface MvtStockRepository extends JpaRepository<MvtStock, Integer> {
 //    Optional<MvtStock> findTopByOrderByCodeCorrectionDesc();
 
 }
+
+
+
+
+//        @Query("SELECT COALESCE(SUM(" +
+//                "  m.quantite + " +
+//                "  CASE " +
+//                "    WHEN m.typeMvt = 'VENTE' AND v.codeCommandeClient IS NOT NULL AND TRIM(v.codeCommandeClient) <> '' " +
+//                "    THEN ABS(m.quantite) " +
+//                "    ELSE 0 " +
+//                "  END" +
+//                "), 0) " +
+//                "FROM MvtStock m " +
+//                "LEFT JOIN Vente v ON m.codeSource = v.code " +
+//                "WHERE m.article.id = :idArticle")
+//        BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
+
+
+
+//    @Query("select sum(m.quantite) from MvtStock m where m.article.id = :idArticle")
+//    BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);

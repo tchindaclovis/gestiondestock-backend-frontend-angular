@@ -10,7 +10,11 @@ public interface MvtStockService {
 
     List<MvtStockDto> findAllMvtStock();
 
+    MvtStockDto findMvtStockByCodeCommandeClient(String codeCommandeClient);
+
     BigDecimal stockReelArticle(Integer idArticle);
+
+//    BigDecimal stockReelArticleVenteIssueDeCommande(Integer idArticle);
 
     List<MvtStockDto> mvtStockArticle(Integer idArticle);
 

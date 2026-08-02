@@ -24,6 +24,14 @@ export class MvtstockService {
     return this.mvtStocksService.stockReelArticle(idArticle);
   }
 
+
+  // stockReelArticleVenteIssueDeCommande(idArticle: number): Observable<number> {
+  //   if (!idArticle) {
+  //     return of(-1);
+  //   }
+  //   return this.mvtStocksService.stockReelArticleVenteIssueDeCommande(idArticle);
+  // }
+
   /**
    * Équivalent de mvtStockArticle(Integer idArticle)
    * Récupère l'historique complet des mouvements pour un article

@@ -34,6 +34,9 @@ public class MvtStock extends Document {
     @Column(name = "code_source") // Le champ magique pour Angular
     private String codeSource;
 
+    @Column(name = "codecommandeclient")
+    private String codeCommandeClient;
+
     @Column(name = "cout_total")
     private BigDecimal coutTotal;
 

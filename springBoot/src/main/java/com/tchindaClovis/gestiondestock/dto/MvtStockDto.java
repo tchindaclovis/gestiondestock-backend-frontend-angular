@@ -30,6 +30,8 @@ public class MvtStockDto {
 
     private String codeSource;
 
+    private String codeCommandeClient;
+
     private BigDecimal coutTotal;
 
     public static MvtStockDto fromEntity (MvtStock mvtStock){
@@ -46,6 +48,7 @@ public class MvtStockDto {
                 .sourceMvt(mvtStock.getSourceMvt())
                 .source(mvtStock.getSource())
                 .codeSource(mvtStock.getCodeSource())
+                .codeCommandeClient(mvtStock.getCodeCommandeClient())
                 .coutTotal(mvtStock.getCoutTotal())
                 .article(ArticleDto.fromEntity(mvtStock.getArticle()))
                 .build();
@@ -64,6 +67,7 @@ public class MvtStockDto {
         mvtStock.setSourceMvt(mvtStockDto.getSourceMvt());
         mvtStock.setSource(mvtStockDto.getSource());
         mvtStock.setCodeSource(mvtStockDto.getCodeSource());
+        mvtStock.setCodeCommandeClient(mvtStockDto.getCodeCommandeClient());
         mvtStock.setCoutTotal(mvtStockDto.getCoutTotal());
         mvtStock.setIdEntreprise(mvtStockDto.getIdEntreprise());
         mvtStock.setArticle(ArticleDto.toEntity(mvtStockDto.getArticle()));

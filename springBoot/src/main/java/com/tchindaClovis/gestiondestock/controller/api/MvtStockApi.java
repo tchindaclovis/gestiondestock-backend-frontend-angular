@@ -7,7 +7,10 @@ import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.tchindaClovis.gestiondestock.dto.VenteDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
@@ -15,10 +18,26 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "MvtStocks", description = "API de gestion des mvtStocks")
 public interface MvtStockApi {
+    @GetMapping(value = APP_ROOT + "/mvtstock/find/codecommandeclient/{codeCommandeClient}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Rechercher un mvtStock par codeCommandeClient",
+            description = "Cette méthode permet de rechercher une mvtStock par son codeCommandeClient",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "La vente a été trouvé dans la BDD",
+                            content = @Content(schema = @Schema(implementation = MvtStockDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Aucune mvtStock n'a été trouvé avec le codeCommandeClient fourni")
+            }
+    )
+    MvtStockDto findMvtStockByCodeCommandeClient(@PathVariable("codeCommandeClient")  String codeCommandeClient);
 
     @GetMapping(value =APP_ROOT + "/mvtstock/stockreel/{idArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     BigDecimal stockReelArticle(@PathVariable("idArticle") Integer idArticle);
+
+//    @GetMapping(value =APP_ROOT + "/mvtstock/stockreelVenteIssueDeCommande/{idArticle}",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    BigDecimal stockReelArticleVenteIssueDeCommande(@PathVariable("idArticle") Integer idArticle);
 
     @GetMapping(value = APP_ROOT + "/mvtstock/filter/idarticle/{idArticle}",
             produces = MediaType.APPLICATION_JSON_VALUE)

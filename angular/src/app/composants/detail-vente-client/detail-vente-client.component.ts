@@ -62,12 +62,6 @@ export class DetailVenteClientComponent implements OnInit, OnChanges {
   }
 
   modifierVente(): void {
-   //  let codeCommandeClient = this.vente?.codeCommandeClient;
-   // if(codeCommandeClient){
-   //   const route = 'nouvellecommandeclientvente';
-   //   // On navigue vers la page de modification avec l'ID de la vente
-   //   this.router.navigate([route, this.vente.id]);
-   // }else{
     const route = 'nouvellevente';
     // On navigue vers la page de modification avec l'ID de la vente
     this.router.navigate([route, this.vente.id]);
@@ -97,26 +91,6 @@ export class DetailVenteClientComponent implements OnInit, OnChanges {
         });
     }
   }
-
-
-  // confirmerEtSupprimer(): void {
-  //   if (this.vente && this.vente.id) {
-  //     this.venteService.deleteVente(this.vente.id)
-  //       .subscribe({
-  //         next: () => {
-  //           // On informe le composant parent que la suppression a réussi
-  //           // Le parent devra alors rafraîchir la liste des ventes
-  //           this.suppressionResult.emit('success');
-  //         },
-  //         error: (err) => {
-  //           console.error("Erreur lors de la suppression de la vente", err);
-  //           this.suppressionResult.emit(err.error.message || 'Erreur lors de la suppression');
-  //         }
-  //       });
-  //   } else {
-  //     console.error("Impossible de supprimer : ID manquant");
-  //   }
-  // }
 
 }
 

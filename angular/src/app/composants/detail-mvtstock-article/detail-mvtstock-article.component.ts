@@ -4,6 +4,7 @@ import { MvtstockService } from '../../services/mvtstock/mvtstock.service';
 import {Router} from "@angular/router";
 import { MvtStockDto } from "../../../gs-api/src/model/mvtStockDto";
 import {ArticleService} from "../../services/article/article.service";
+import { VenteService } from 'src/app/services/vente/vente.service';
 
 
 @Component({
@@ -16,6 +17,8 @@ export class DetailMvtstockArticleComponent implements OnInit {
   @Input() articleDto: ArticleDto = {};
   @Input() stockGlobal: number = 0;
 
+  // 💡 Vente récupérée depuis le backend si le mouvement est lié à une vente
+  venteDto: VenteDto | null = null;
 
   // Objet local pour le formulaire
   mvtStockDto: MvtStockDto = {
@@ -24,8 +27,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
     sourceMvt: 'VENTE'
   };
   codeCorrection = ''; // Lié au champ "Code correction"
-
-  // @Output() suppressionResult = new EventEmitter<string>();
 
   // Émetteur pour demander au parent de rafraîchir la liste/stock après correction
   @Output() correctionStockEvent = new EventEmitter<string>();
@@ -38,7 +39,8 @@ export class DetailMvtstockArticleComponent implements OnInit {
   constructor(
     private router: Router,
     private mvtstockService: MvtstockService, // Injectez le service de mouvements
-    private articleService:ArticleService
+    private articleService:ArticleService,
+    private venteService: VenteService
 
   ) { }
 
@@ -139,7 +141,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
 
 
   enregistrerCorrection(): void {
-
     // 1. Validation de base
     if (!this.articleDto.id || !this.mvtStockDto.quantite || !this.mvtStockDto.typeMvt) {
       console.error("Données de correction incomplètes");
@@ -187,7 +188,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
         return; // On sort de la méthode si le type est inconnu
     }
 
-
     // 5.Exécution de l'appel API
     call.subscribe({
       next: () => {
@@ -206,7 +206,6 @@ export class DetailMvtstockArticleComponent implements OnInit {
       }
     });
   }
-
 
 
   private handleSuccess(): void {
@@ -246,132 +245,243 @@ export class DetailMvtstockArticleComponent implements OnInit {
 
 
 
-// private genererProchainCode(lastCode: any): string {
-//   console.log('Type de lastCode :', typeof lastCode);
-//   console.log('Valeur brute de lastCode :', lastCode);
-//   // 1. Si lastCode est vide, nul ou non défini, on commence à 1
-//   if (!lastCode || lastCode === '' || lastCode === 'null') {
-//     return 'CCS0001';
+
+
+
+// import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+// import { ArticleDto, VenteDto } from '../../../gs-api/src';
+// import { MvtstockService } from '../../services/mvtstock/mvtstock.service';
+// import { Router } from '@angular/router';
+// import { MvtStockDto } from '../../../gs-api/src/model/mvtStockDto';
+// import { ArticleService } from '../../services/article/article.service';
+// import { VenteService } from 'src/app/services/vente/vente.service';
+//
+// @Component({
+//   selector: 'app-detail-mvtstock-article',
+//   templateUrl: './detail-mvtstock-article.component.html',
+//   styleUrls: ['./detail-mvtstock-article.component.scss']
+// })
+// export class DetailMvtstockArticleComponent implements OnInit, OnChanges {
+//
+//   @Input() articleDto: ArticleDto = {};
+//   @Input() stockGlobal: number = 0;
+//
+//   // 💡 Permet de savoir si la vente est issue d'une commande (à passer depuis le composant parent)
+//   @Input() isVenteIssueDeCommande: boolean = false;
+//
+//   // 💡 Vente récupérée depuis le backend si le mouvement est lié à une vente
+//   venteDto: VenteDto | null = null;
+//
+//   // Objet local pour le formulaire
+//   mvtStockDto: MvtStockDto = {
+//     quantite: 0,
+//     typeMvt: 'CORRECTION_POS', // Valeur par défaut
+//     sourceMvt: 'VENTE'
+//   };
+//   codeCorrection = ''; // Lié au champ "Code correction"
+//
+//   // Émetteur pour demander au parent de rafraîchir la liste/stock après correction
+//   @Output() correctionStockEvent = new EventEmitter<string>();
+//
+//   sourceMvtsOptions: string[] = [];
+//   typeMvtsOptions: string[] = [];
+//
+//   constructor(
+//     private router: Router,
+//     private mvtstockService: MvtstockService,
+//     private articleService: ArticleService,
+//     private venteService: VenteService
+//   ) { }
+//
+//   // ==============================
+//   // INITIALISATION
+//   // ==============================
+//   ngOnInit(): void {
+//     if (MvtStockDto.TypeMvtEnum) {
+//       this.typeMvtsOptions = Object.values(MvtStockDto.TypeMvtEnum);
+//     }
+//     if (MvtStockDto.SourceMvtEnum) {
+//       this.sourceMvtsOptions = Object.values(MvtStockDto.SourceMvtEnum);
+//     }
+//
+//     this.chargerStock();
+//
+//     this.mvtstockService.getLastCodeCorrection().subscribe({
+//       next: async (res: any) => {
+//         let rawValue = res;
+//         if (res instanceof Blob) {
+//           rawValue = await res.text();
+//         }
+//         console.log('Valeur textuelle extraite :', rawValue);
+//         this.codeCorrection = this.genererProchainCode(rawValue);
+//       },
+//       error: (err) => {
+//         console.error('Erreur API :', err);
+//         this.codeCorrection = 'CCS0001';
+//       }
+//     });
 //   }
 //
-//   // 2. Nettoyage de la chaîne
-//   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
+//   // ==============================
+//   // DETECTION DES CHANGEMENTS INPUT
+//   // ==============================
 //
-//   // 3. Extraction des chiffres
-//   const match = cleanCode.match(/\d+/);
+//  // Indispensable pour mettre à jour le stock quand on change d'article dans la liste
+//    /**
+//     * Si l'article change (Input modifié) → recalcul du stock
+//     */
+//   ngOnChanges(changes: SimpleChanges): void {
+//     // Recharger le stock si l'article OU le type de vente (commande) change
+//     if ((changes['articleDto'] || changes['isVenteIssueDeCommande']) && this.articleDto?.id) {
+//       this.chargerStock();
+//     }
+//   }
 //
-//   if (match) {
-//     // On extrait le nombre, on l'incrémente
-//     const nextNumber = parseInt(match[0], 10) + 1;
-//     // On formate avec des zéros non significatifs (ex: 0002)
+//
+//     private genererProchainCode(lastCode: any): string {
+//     console.log('Type de lastCode :', typeof lastCode);
+//     console.log('Valeur brute de lastCode :', lastCode);
+//     // 1. Nettoyage : on transforme en string et on enlève TOUT ce qui n'est pas un chiffre
+//     // Cela gère les "CCS", les guillemets double "", les espaces, etc.
+//     const rawValue = String(lastCode);
+//     const onlyNumbers = rawValue.replace(/\D/g, ''); // \D signifie "tout ce qui n'est pas un chiffre"
+//
+//     let nextNumber = 0;
+//
+//     if (onlyNumbers.length > 0) {
+//       // 2. Si on a trouvé des chiffres (ex: "0000"), on ajoute 1
+//       nextNumber = parseInt(onlyNumbers, 10) + 1;
+//     } else {
+//       // 3. Si aucun chiffre n'est trouvé, on commence à 1
+//       nextNumber = 1;
+//     }
+//
+//     // 4. On reformate avec le préfixe et 4 chiffres (ex: CCS0001)
 //     return `CCS${nextNumber.toString().padStart(4, '0')}`;
 //   }
 //
-//   // Si on a un texte sans chiffre, on renvoie le premier code
-//   return 'CCS0001';
+//   // ==============================
+//   // CHARGEMENT DU STOCK CONDITIONNEL
+//   // ==============================
+//   private chargerStock(): void {
+//     if (!this.articleDto || !this.articleDto.id) {
+//       return;
+//     }
+//
+//     // Sélection dynamique du service en fonction de l'origine de la vente
+//     const stockObservable = this.isVenteIssueDeCommande
+//       ? this.mvtstockService.stockReelArticleVenteIssueDeCommande(this.articleDto.id)
+//       : this.mvtstockService.stockReelArticle(this.articleDto.id);
+//
+//     stockObservable.subscribe({
+//       next: (res: any) => {
+//         // Cas 1 : La réponse est un Blob
+//         if (res instanceof Blob) {
+//           const reader = new FileReader();
+//           reader.onload = () => {
+//             const value = reader.result as string;
+//             this.stockGlobal = Number(value) || 0;
+//           };
+//           reader.readAsText(res);
+//         }
+//         // Cas 2 : La réponse est un nombre ou texte direct
+//         else {
+//           this.stockGlobal = Number(res) || 0;
+//         }
+//       },
+//       error: (err) => {
+//         console.error("Erreur lors de la récupération du stock", err);
+//         this.stockGlobal = 0;
+//       }
+//     });
+//   }
+//
+//   // ==============================
+//   // ENREGISTREMENT CORRECTION
+//   // ==============================
+//   enregistrerCorrection(): void {
+//     if (!this.articleDto.id || !this.mvtStockDto.quantite || !this.mvtStockDto.typeMvt) {
+//       console.error("Données de correction incomplètes");
+//       return;
+//     }
+//
+//     this.mvtStockDto.article = this.articleDto;
+//     this.mvtStockDto.dateMvt = new Date().toISOString();
+//     this.mvtStockDto.idEntreprise = this.articleDto.idEntreprise;
+//     this.mvtStockDto.codeSource = this.codeCorrection;
+//     this.mvtStockDto.sourceMvt = 'CORRECTION_STOCK';
+//
+//     let call;
+//     switch (this.mvtStockDto.typeMvt) {
+//       case 'CORRECTION_POS':
+//         call = this.mvtstockService.correctionStockPos(this.mvtStockDto);
+//         break;
+//       case 'CORRECTION_NEG':
+//         call = this.mvtstockService.correctionStockNeg(this.mvtStockDto);
+//         break;
+//       case 'CORRECTION_POS_VENTE_RED':
+//         call = this.mvtstockService.correctionStockPosVenteRed(this.mvtStockDto);
+//         break;
+//       case 'CORRECTION_NEG_VENTE_AUG':
+//         call = this.mvtstockService.correctionStockNegVenteAug(this.mvtStockDto);
+//         break;
+//       case 'CORRECTION_NEG_RETOUR_FOURNISSEUR':
+//         call = this.mvtstockService.correctionStockNegRetourFournisseur1(this.mvtStockDto);
+//         break;
+//       default:
+//         console.warn('Type de mouvement non reconnu');
+//         return;
+//     }
+//
+//     call.subscribe({
+//       next: () => {
+//         this.handleSuccess();
+//         this.chargerStock(); // Recharges le bon stock mis à jour
+//         this.correctionStockEvent.emit('success');
+//       },
+//       error: (err) => {
+//         console.error("Erreur lors de la correction", err);
+//       }
+//     });
+//   }
+//
+//   private handleSuccess(): void {
+//     const currentNum = parseInt(this.codeCorrection.replace('CCS', ''), 10);
+//     const nextNum = isNaN(currentNum) ? 1 : currentNum + 1;
+//
+//     this.mvtStockDto = {
+//       quantite: 0,
+//       typeMvt: 'CORRECTION_POS'
+//     };
+//
+//     this.codeCorrection = `CCS${nextNum.toString().padStart(4, '0')}`;
+//   }
+//
+//   enregistrerQuantiteAlert(): void {
+//     if (this.articleDto && this.articleDto.id) {
+//       this.articleService.enregistrerArticle(this.articleDto)
+//         .subscribe({
+//           next: (res) => {
+//             console.log('Quantité d\'alerte mise à jour avec succès', res);
+//           },
+//           error: (err) => {
+//             console.error('Erreur lors de la mise à jour de la quantité d\'alerte', err);
+//           }
+//         });
+//     }
+//   }
 // }
 
 
-// private genererProchainCode(lastCode: any): string {
-//   console.log('Type de lastCode :', typeof lastCode);
-//   console.log('Valeur brute de lastCode :', lastCode);
-//   // 1. Conversion en string et nettoyage radical (supprime guillemets, espaces, retours à la ligne)
-//   const cleanCode = String(lastCode).replace(/["\s\n\r]/g, '');
-//
-//   // 2. Extraction de TOUS les chiffres présents dans la chaîne
-//   // On cherche une suite de chiffres (\d+)
-//   const match = cleanCode.match(/\d+/);
-//
-//   let nextNumber = 9999; // Valeur par défaut si aucun chiffre n'est trouvé
-//
-//   if (match && match[0]) {
-//     // 3. Conversion de la partie trouvée (ex: "0013") en nombre et incrémentation
-//     nextNumber = parseInt(match[0], 10) + 1;
-//   }
-//
-//   // 4. Formatage : "ART" + nombre formaté sur 4 positions (Milliers, Centaines, Dizaines, Unités)
-//   // padStart(4, '0') transforme 14 en "0014"
-//   const formattedNumber = nextNumber.toString().padStart(4, '0');
-//
-//   return `CCS${formattedNumber}`;
-// }
 
 
 
-// enregistrerCorrection(): void {
-//   if (!this.articleDto.id || !this.mvtStockDto.quantite) {
-//     return;
-//   }
-//   // On prépare le DTO avec l'article concerné
-//   this.mvtStockDto.article = this.articleDto;
-//   this.mvtStockDto.dateMvt = new Date().toISOString();
-//
-//   if (this.mvtStockDto.typeMvt === 'CORRECTION_POS') {
-//     this.mvtstockService.correctionStockPos(this.mvtStockDto).subscribe({
-//       next: () => {
-//         this.handleSuccess();
-//         // 1. On émet d'abord le succès pour les éventuels composants parents
-//         // On prévient le parent pour mettre à jour l'affichage du stock actuel
-//         this.correctionStockEvent.emit('success');
-//         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
-//         setTimeout(() => {
-//           // 3. Navigation vers la liste des ventes
-//           // Cela déclenchera le rechargement du composant de la liste
-//           this.router.navigate(['mvtstock']);
-//         }, 300);
-//       },
-//       error: (err) => console.error(err)
-//     });
-//   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_NEG'){
-//     this.mvtstockService.correctionStockNeg(this.mvtStockDto).subscribe({
-//       next: () => {
-//         this.handleSuccess();
-//         // 1. On émet d'abord le succès pour les éventuels composants parents
-//         // On prévient le parent pour mettre à jour l'affichage du stock actuel
-//         this.correctionStockEvent.emit('success');
-//         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
-//         setTimeout(() => {
-//           // 3. Navigation vers la liste des ventes
-//           // Cela déclenchera le rechargement du composant de la liste
-//           this.router.navigate(['mvtstock']);
-//         }, 300);
-//       },
-//       error: (err) => console.error(err)
-//     });
-//   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_POS_VENTE_RED'){
-//     this.mvtstockService.correctionStockPosVenteRed(this.mvtStockDto).subscribe({
-//       next: () => {
-//         this.handleSuccess();
-//         // 1. On émet d'abord le succès pour les éventuels composants parents
-//         // On prévient le parent pour mettre à jour l'affichage du stock actuel
-//         this.correctionStockEvent.emit('success');
-//         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
-//         setTimeout(() => {
-//           // 3. Navigation vers la liste des ventes
-//           // Cela déclenchera le rechargement du composant de la liste
-//           this.router.navigate(['mvtstock']);
-//         }, 300);
-//       },
-//       error: (err) => console.error(err)
-//     });
-//   } else  if (this.mvtStockDto.typeMvt === 'CORRECTION_NEG_VENTE_AUG'){
-//     this.mvtstockService.correctionStockNegVenteAug(this.mvtStockDto).subscribe({
-//       next: () => {
-//         this.handleSuccess();
-//         // 1. On émet d'abord le succès pour les éventuels composants parents
-//         // On prévient le parent pour mettre à jour l'affichage du stock actuel
-//         this.correctionStockEvent.emit('success');
-//         // 2. On attend la fermeture de la modal (300ms) avant de naviguer
-//         setTimeout(() => {
-//           // 3. Navigation vers la liste des ventes
-//           // Cela déclenchera le rechargement du composant de la liste
-//           this.router.navigate(['mvtstock']);
-//         }, 300);
-//       },
-//       error: (err) => console.error(err)
-//     });
-//   }
-// }
+
+
+
+
+
+
 
 
 

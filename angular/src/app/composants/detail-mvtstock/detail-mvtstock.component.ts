@@ -17,7 +17,6 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
 
   @Input() ligneCommande: any = {};
 
-  // @Input() codeCommandeClient?: string;
 
   // 💡 Vente récupérée depuis le backend si le mouvement est lié à une vente
   venteDto: VenteDto | null = null;
@@ -81,8 +80,6 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
       this.venteDto.codeCommandeClient &&
       this.venteDto.codeCommandeClient.trim() !== ''
     );
-
-    // return !!(this.codeCommandeClient && this.codeCommandeClient.trim() !== '');
   }
 
   // Détermine si le mouvement est une Entrée ou une Sortie
@@ -116,6 +113,7 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
       default: return this.mvtStockDto.sourceMvt || 'INCONNU';
     }
   }
+
 
   calculerTotalMvtStock(): number {
     if (!this.mvtStockDto || !this.mvtStockDto.quantite) {
