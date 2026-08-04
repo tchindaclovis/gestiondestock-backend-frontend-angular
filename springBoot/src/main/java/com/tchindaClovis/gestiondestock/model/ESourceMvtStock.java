@@ -4,5 +4,7 @@ public enum ESourceMvtStock {
     COMMANDE_CLIENT,
     COMMANDE_FOURNISSEUR,
     VENTE,
+
+    VENTE_CMD,
     CORRECTION_STOCK
 }

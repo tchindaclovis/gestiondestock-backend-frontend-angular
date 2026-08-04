@@ -292,6 +292,70 @@ export class MvtStocksService extends BaseService {
     }
 
     /**
+     * @endpoint post /gestiondestock/v1/mvtstock/correctionnegventeaugcmd
+     * @param mvtStockDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public correctionStockNegVenteAugCMD(mvtStockDto: MvtStockDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<MvtStockDto>;
+    public correctionStockNegVenteAugCMD(mvtStockDto: MvtStockDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<MvtStockDto>>;
+    public correctionStockNegVenteAugCMD(mvtStockDto: MvtStockDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<MvtStockDto>>;
+    public correctionStockNegVenteAugCMD(mvtStockDto: MvtStockDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (mvtStockDto === null || mvtStockDto === undefined) {
+            throw new Error('Required parameter mvtStockDto was null or undefined when calling correctionStockNegVenteAugCMD.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/mvtstock/correctionnegventeaugcmd`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MvtStockDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: mvtStockDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @endpoint post /gestiondestock/v1/mvtstock/correctionpos
      * @param mvtStockDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -469,6 +533,70 @@ export class MvtStocksService extends BaseService {
         }
 
         let localVarPath = `/gestiondestock/v1/mvtstock/correctionposventered1`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MvtStockDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: mvtStockDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint post /gestiondestock/v1/mvtstock/correctionposventered1cmd
+     * @param mvtStockDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public correctionStockPosVenteRed1CMD(mvtStockDto: MvtStockDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<MvtStockDto>;
+    public correctionStockPosVenteRed1CMD(mvtStockDto: MvtStockDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<MvtStockDto>>;
+    public correctionStockPosVenteRed1CMD(mvtStockDto: MvtStockDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<MvtStockDto>>;
+    public correctionStockPosVenteRed1CMD(mvtStockDto: MvtStockDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (mvtStockDto === null || mvtStockDto === undefined) {
+            throw new Error('Required parameter mvtStockDto was null or undefined when calling correctionStockPosVenteRed1CMD.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/mvtstock/correctionposventered1cmd`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<MvtStockDto>('post', `${basePath}${localVarPath}`,
             {
@@ -1046,6 +1174,70 @@ export class MvtStocksService extends BaseService {
         }
 
         let localVarPath = `/gestiondestock/v1/mvtstock/sortievte`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<MvtStockDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: mvtStockDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint post /gestiondestock/v1/mvtstock/sortievtecmd
+     * @param mvtStockDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sortieStockVteCMD(mvtStockDto: MvtStockDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<MvtStockDto>;
+    public sortieStockVteCMD(mvtStockDto: MvtStockDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<MvtStockDto>>;
+    public sortieStockVteCMD(mvtStockDto: MvtStockDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<MvtStockDto>>;
+    public sortieStockVteCMD(mvtStockDto: MvtStockDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (mvtStockDto === null || mvtStockDto === undefined) {
+            throw new Error('Required parameter mvtStockDto was null or undefined when calling sortieStockVteCMD.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (JWT) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('JWT', 'Authorization', localVarHeaders);
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/gestiondestock/v1/mvtstock/sortievtecmd`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<MvtStockDto>('post', `${basePath}${localVarPath}`,
             {

@@ -63,6 +63,10 @@ public interface MvtStockApi {
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto sortieStockVte(@RequestBody MvtStockDto dto);
 
+    @PostMapping(value = APP_ROOT + "/mvtstock/sortievtecmd",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto sortieStockVteCMD(@RequestBody MvtStockDto dto);
+
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionpos",
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockPos(@RequestBody MvtStockDto dto);
@@ -74,6 +78,10 @@ public interface MvtStockApi {
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionposventered1",
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockPosVenteRed1(@RequestBody MvtStockDto dto);
+
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionposventered1cmd",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto correctionStockPosVenteRed1CMD(@RequestBody MvtStockDto dto);
 
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionposventered2",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,6 +101,10 @@ public interface MvtStockApi {
     @PostMapping(value = APP_ROOT + "/mvtstock/correctionnegventeaug",
             produces = MediaType.APPLICATION_JSON_VALUE)
     MvtStockDto correctionStockNegVenteAug(@RequestBody MvtStockDto dto);
+
+    @PostMapping(value = APP_ROOT + "/mvtstock/correctionnegventeaugcmd",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    MvtStockDto correctionStockNegVenteAugCMD(@RequestBody MvtStockDto dto);
 
     @GetMapping(value = APP_ROOT + "/mvtstock/lastcodecorrection",
             produces = MediaType.APPLICATION_JSON_VALUE)

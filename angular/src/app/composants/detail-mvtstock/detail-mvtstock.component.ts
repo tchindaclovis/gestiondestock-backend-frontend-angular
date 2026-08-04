@@ -95,6 +95,7 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
       case 'ENTREE': return 'AchatAuFournisseurConfirm';
       case 'SORTIE': return 'CommandeClientConfirm';
       case 'SORTIE_VTE': return 'VenteAuClient';
+      case 'SORTIE_VTE_CMD': return 'VenteAuClientCmd';
       case 'CORRECTION_POS': return 'Correction(+)Erreur';
       case 'CORRECTION_NEG': return 'Correction(-)Perte';
       case 'CORRECTION_POS_VENTE_RED': return 'Correction(+)RetourArticle';
@@ -109,6 +110,7 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
       case 'COMMANDE_CLIENT': return 'Commande du client';
       case 'COMMANDE_FOURNISSEUR': return 'Commande au fournisseur';
       case 'VENTE': return 'Vente au client';
+      case 'VENTE_CMD': return 'Vente au client cmd';
       case 'CORRECTION_STOCK': return 'Correction de stock';
       default: return this.mvtStockDto.sourceMvt || 'INCONNU';
     }
@@ -137,6 +139,7 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
         break;
 
       case 'SORTIE_VTE':
+      case 'SORTIE_VTE_CMD':
       case 'CORRECTION_NEG_VENTE_AUG':
         prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
         break;

@@ -61,6 +61,11 @@ export class MvtstockService {
     return this.mvtStocksService.sortieStockVte(mvtStockDto);
   }
 
+  //pour les vente issues des commandes
+  sortieStockVteCMD(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.sortieStockVteCMD(mvtStockDto);
+  }
+
   /**
    * Équivalent de correctionStockPos(MvtStockDto dto)
    */
@@ -74,6 +79,10 @@ export class MvtstockService {
 
   correctionStockPosVenteRed1(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
     return this.mvtStocksService.correctionStockPosVenteRed1(mvtStockDto);
+  }
+  //pour les vente issues des commandes
+  correctionStockPosVenteRed1CMD(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.correctionStockPosVenteRed1CMD(mvtStockDto);
   }
 
   correctionStockPosVenteRed2(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
@@ -100,6 +109,9 @@ export class MvtstockService {
     return this.mvtStocksService.correctionStockNegVenteAug(mvtStockDto);
   }
 
+  correctionStockNegVenteAugCMD(mvtStockDto: MvtStockDto): Observable<MvtStockDto> {
+    return this.mvtStocksService.correctionStockNegVenteAugCMD(mvtStockDto);
+  }
 
   findAllMvtStock(): Observable<MvtStockDto[]>{  //renvoit un observable de listes d'articleDto
     return this.mvtStocksService.findAllMvtStock();

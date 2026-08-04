@@ -25,11 +25,13 @@ public interface MvtStockService {
     MvtStockDto sortieStock(MvtStockDto dto);
 
     MvtStockDto sortieStockVte(MvtStockDto dto);
+    MvtStockDto sortieStockVteCMD(MvtStockDto dto);
 
     MvtStockDto correctionStockPos(MvtStockDto dto);
 
     MvtStockDto correctionStockPosVenteRed(MvtStockDto dto);
     MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto);
+    MvtStockDto correctionStockPosVenteRed1CMD(MvtStockDto dto);
 
     MvtStockDto correctionStockPosVenteRed2(MvtStockDto dto);
 
@@ -40,6 +42,7 @@ public interface MvtStockService {
     MvtStockDto correctionStockNeg(MvtStockDto dto);
 
     MvtStockDto correctionStockNegVenteAug(MvtStockDto dto);
+    MvtStockDto correctionStockNegVenteAugCMD(MvtStockDto dto);
 
     String getLastCodeCorrection();
 

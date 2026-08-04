@@ -318,25 +318,6 @@ export class NouvelleCommandeClientVenteComponent implements OnInit {
     });
   }
 
-  // enregistrerCommande(): void {
-  //   const commande = this.preparerCommande();
-  //   if (this.origin === 'client') {
-  //     this.commandeClientFournisseurService.enregistrerCommandeClient(commande).subscribe({
-  //       next:() =>{
-  //         this.router.navigate(['commandesclient']);
-  //       },
-  //       error: (e) => this.handleError(e)
-  //     });
-  //   } else if (this.origin === 'fournisseur') {
-  //     this.commandeClientFournisseurService.enregistrerCommandeFournisseur(commande).subscribe({
-  //       next: () => {
-  //         this.router.navigate(['commandesfournisseur'])
-  //       },
-  //       error: (e) => this.handleError(e)
-  //     });
-  //   }
-  // }
-
 
   private preparerVente(): any {
     // let codeCmdClient = this.commandeClientDto?.code
@@ -367,42 +348,6 @@ export class NouvelleCommandeClientVenteComponent implements OnInit {
   }
 
 
-  // private preparerCommande(): any {
-  //   const idEnt = this.connectedUser?.entreprise?.id;
-  //   // Utiliser l'ID général récupéré lors du ngOnInit (idCommande)
-  //   const currentId = this.idCommandeClient;
-  //
-  //   // On détermine l'état :
-  //   // Si c'est une nouvelle commande (id null), on met PRO_FORMAT.
-  //   // Si c'est une modif, on garde l'état actuel (qui pourrait être déjà CONFIRMEE).
-  //   const etatActuel =  this.commandeClientDto.etatCommande  ;// Attention ici, vérifiez bien vos noms de variables (votre code mélangeait Dto client/fournisseur)
-  //
-  //
-  //   const lignesPourBackend = this.listeLignesCommande.map(ligne => {
-  //     return {
-  //       id: ligne.id || null, // CRITIQUE : Garder l'ID de la ligne existante
-  //       article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
-  //       quantite: ligne.quantite,
-  //       // On affecte le bon prix selon le contexte
-  //       prixVenteUnitaireTtc: (this.origin === 'client') ? ligne.prixVenteUnitaireTtc : undefined,
-  //       prixUnitaireTtc: (this.origin === 'fournisseur') ? ligne.prixUnitaireTtc : undefined,
-  //       idEntreprise: idEnt
-  //     };
-  //   });
-  //
-  //   return {
-  //     id: currentId, // Si présent, Hibernate fera un UPDATE // CRITIQUE : L'ID de la commande pour déclencher l'UPDATE au lieu du INSERT
-  //     [this.origin]: this.clientFournisseur,
-  //     // client: { id: this.selectedClientFournisseur?.id },
-  //     code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
-  //     dateCommande: new Date().toISOString(), // Utiliser ISOString pour la stabilité
-  //     etatCommande: currentId ? (etatActuel || 'PRO_FORMAT') : 'PRO_FORMAT',
-  //     idEntreprise: idEnt,
-  //     [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
-  //   };
-  // }
-
-
   cancelClick(): void {
     this.router.navigate(['commandesclient']);
   }
@@ -428,3 +373,62 @@ export class NouvelleCommandeClientVenteComponent implements OnInit {
   }
 
 }
+
+
+
+
+// enregistrerCommande(): void {
+//   const commande = this.preparerCommande();
+//   if (this.origin === 'client') {
+//     this.commandeClientFournisseurService.enregistrerCommandeClient(commande).subscribe({
+//       next:() =>{
+//         this.router.navigate(['commandesclient']);
+//       },
+//       error: (e) => this.handleError(e)
+//     });
+//   } else if (this.origin === 'fournisseur') {
+//     this.commandeClientFournisseurService.enregistrerCommandeFournisseur(commande).subscribe({
+//       next: () => {
+//         this.router.navigate(['commandesfournisseur'])
+//       },
+//       error: (e) => this.handleError(e)
+//     });
+//   }
+// }
+
+
+
+// private preparerCommande(): any {
+//   const idEnt = this.connectedUser?.entreprise?.id;
+//   // Utiliser l'ID général récupéré lors du ngOnInit (idCommande)
+//   const currentId = this.idCommandeClient;
+//
+//   // On détermine l'état :
+//   // Si c'est une nouvelle commande (id null), on met PRO_FORMAT.
+//   // Si c'est une modif, on garde l'état actuel (qui pourrait être déjà CONFIRMEE).
+//   const etatActuel =  this.commandeClientDto.etatCommande  ;// Attention ici, vérifiez bien vos noms de variables (votre code mélangeait Dto client/fournisseur)
+//
+//
+//   const lignesPourBackend = this.listeLignesCommande.map(ligne => {
+//     return {
+//       id: ligne.id || null, // CRITIQUE : Garder l'ID de la ligne existante
+//       article: { id: ligne.article?.id }, // Envoyer seulement l'ID article pour éviter les conflits
+//       quantite: ligne.quantite,
+//       // On affecte le bon prix selon le contexte
+//       prixVenteUnitaireTtc: (this.origin === 'client') ? ligne.prixVenteUnitaireTtc : undefined,
+//       prixUnitaireTtc: (this.origin === 'fournisseur') ? ligne.prixUnitaireTtc : undefined,
+//       idEntreprise: idEnt
+//     };
+//   });
+//
+//   return {
+//     id: currentId, // Si présent, Hibernate fera un UPDATE // CRITIQUE : L'ID de la commande pour déclencher l'UPDATE au lieu du INSERT
+//     [this.origin]: this.clientFournisseur,
+//     // client: { id: this.selectedClientFournisseur?.id },
+//     code: (this.origin === 'client') ? this.codeCommandeClient : this.codeCommandeFournisseur,
+//     dateCommande: new Date().toISOString(), // Utiliser ISOString pour la stabilité
+//     etatCommande: currentId ? (etatActuel || 'PRO_FORMAT') : 'PRO_FORMAT',
+//     idEntreprise: idEnt,
+//     [this.origin === 'client' ? 'ligneCommandeClients' : 'ligneCommandeFournisseurs']: lignesPourBackend
+//   };
+// }

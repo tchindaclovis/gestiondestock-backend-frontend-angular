@@ -182,6 +182,13 @@ public class MvtStockServiceImpl implements MvtStockService {
     }
 
 
+    @Override
+    public MvtStockDto sortieStockVteCMD(MvtStockDto dto) {
+
+        return saveMvtStockNeg(dto, ETypeMvtStock.SORTIE_VTE_CMD, ESourceMvtStock.VENTE_CMD);
+    }
+
+
     /*
      * ================================
      * CORRECTION POSITIVE
@@ -204,6 +211,13 @@ public class MvtStockServiceImpl implements MvtStockService {
     public MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto) {
 
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE);
+    }
+
+
+    @Override
+    public MvtStockDto correctionStockPosVenteRed1CMD(MvtStockDto dto) {
+
+        return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE_CMD);
     }
 
 
@@ -243,6 +257,13 @@ public class MvtStockServiceImpl implements MvtStockService {
     public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
 
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG, ESourceMvtStock.VENTE);
+    }
+
+
+    @Override
+    public MvtStockDto correctionStockNegVenteAugCMD(MvtStockDto dto) {
+
+        return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG, ESourceMvtStock.VENTE_CMD);
     }
 
 

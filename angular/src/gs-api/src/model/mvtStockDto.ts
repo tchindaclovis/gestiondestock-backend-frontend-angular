@@ -29,6 +29,7 @@ export namespace MvtStockDto {
         Entree: 'ENTREE',
         Sortie: 'SORTIE',
         SortieVte: 'SORTIE_VTE',
+        SortieVteCmd: 'SORTIE_VTE_CMD',
         CorrectionPos: 'CORRECTION_POS',
         CorrectionNeg: 'CORRECTION_NEG',
         CorrectionPosVenteRed: 'CORRECTION_POS_VENTE_RED',
@@ -51,6 +52,7 @@ export namespace MvtStockDto {
         CommandeClient: 'COMMANDE_CLIENT',
         CommandeFournisseur: 'COMMANDE_FOURNISSEUR',
         Vente: 'VENTE',
+        VenteCmd: 'VENTE_CMD',
         CorrectionStock: 'CORRECTION_STOCK'
     } as const;
     export type SourceMvtEnum = typeof SourceMvtEnum[keyof typeof SourceMvtEnum];

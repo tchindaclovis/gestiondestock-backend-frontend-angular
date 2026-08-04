@@ -290,6 +290,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         return CommandeClientDto.fromEntity(savedCommandeClient);
     }
 
+
     // Méthode utilitaire pour nettoyer le code principal
     private void checkArticlesExistence(CommandeClientDto dto) {
         List<String> articleErrors = new ArrayList<>();

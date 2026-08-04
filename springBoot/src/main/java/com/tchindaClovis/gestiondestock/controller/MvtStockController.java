@@ -69,6 +69,11 @@ public class MvtStockController implements MvtStockApi {
     }
 
     @Override
+    public MvtStockDto sortieStockVteCMD(MvtStockDto dto) {
+        return mvtStockService.sortieStockVteCMD(dto);
+    }
+
+    @Override
     public MvtStockDto correctionStockPos(MvtStockDto dto) {
             return mvtStockService.correctionStockPos(dto);
     }
@@ -81,6 +86,11 @@ public class MvtStockController implements MvtStockApi {
     @Override
     public MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto) {
         return mvtStockService.correctionStockPosVenteRed1(dto);
+    }
+
+    @Override
+    public MvtStockDto correctionStockPosVenteRed1CMD(MvtStockDto dto) {
+        return mvtStockService.correctionStockPosVenteRed1CMD(dto);
     }
 
     @Override
@@ -106,6 +116,11 @@ public class MvtStockController implements MvtStockApi {
     @Override
     public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
         return mvtStockService.correctionStockNegVenteAug(dto);
+    }
+
+    @Override
+    public MvtStockDto correctionStockNegVenteAugCMD(MvtStockDto dto) {
+        return mvtStockService.correctionStockNegVenteAugCMD(dto);
     }
 
     @Override

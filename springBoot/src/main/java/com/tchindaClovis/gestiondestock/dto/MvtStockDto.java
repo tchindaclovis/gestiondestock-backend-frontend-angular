@@ -11,27 +11,16 @@ import java.time.Instant;
 public class MvtStockDto {
 
     private Integer id;
-
     private Instant dateMvt;
-
     private BigDecimal quantite;
-
     private Integer idEntreprise;
-
     private ArticleDto article;
-
     private ETypeMvtStock typeMvt;
-
     private ETypeDocument type;
-
     private ESourceMvtStock sourceMvt;
-
     private ESourceDocument source;
-
     private String codeSource;
-
     private String codeCommandeClient;
-
     private BigDecimal coutTotal;
 
     public static MvtStockDto fromEntity (MvtStock mvtStock){

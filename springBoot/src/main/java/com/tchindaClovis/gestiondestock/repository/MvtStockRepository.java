@@ -13,27 +13,23 @@ import java.util.Optional;
 public interface MvtStockRepository extends JpaRepository<MvtStock, Integer> {
 
     // 1. Calcul classique du stock réel
-    @Query("SELECT COALESCE(SUM(m.quantite), 0) FROM MvtStock m WHERE m.article.id = :idArticle")
+//    @Query("SELECT COALESCE(SUM(m.quantite), 0) FROM MvtStock m WHERE m.article.id = :idArticle")
+//    BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
+
+
+    @Query("SELECT COALESCE(SUM(m.quantite), 0) FROM MvtStock m " +
+            "WHERE m.article.id = :idArticle " +
+            "AND (m.codeCommandeClient IS NULL)"
+    )
     BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
 
-    // 2. Calcul du stock avec ajout de |quantité| pour les mouvements liés à une commande client
-    @Query("SELECT COALESCE(SUM(" +
-            "  m.quantite + " +
-            "  CASE " +
-            "    WHEN m.codeCommandeClient IS NOT NULL AND TRIM(m.codeCommandeClient) <> '' " +
-            "    THEN ABS(m.quantite) " +
-            "    ELSE 0 " +
-            "  END" +
-            "), 0) " +
-            "FROM MvtStock m " +
-            "WHERE m.article.id = :idArticle")
-    BigDecimal stockReelArticleVenteIssueDeCommande(@Param("idArticle") Integer idArticle);
 
     // 3. Vérifie si l'article possède au moins un mouvement de stock avec un codeCommandeClient
     @Query("SELECT COUNT(m) > 0 FROM MvtStock m " +
             "WHERE m.article.id = :idArticle " +
             "AND m.codeCommandeClient IS NOT NULL " +
-            "AND TRIM(m.codeCommandeClient) <> ''")
+            "AND TRIM(m.codeCommandeClient) <> ''"
+    )
     boolean existsByArticleIdAndCodeCommandeClientIsNotNull(@Param("idArticle") Integer idArticle);
 
     Optional<MvtStock> findByCodeCommandeClient(String codeCommandeClient);
@@ -54,6 +50,22 @@ public interface MvtStockRepository extends JpaRepository<MvtStock, Integer> {
 //    Optional<MvtStock> findTopByOrderByCodeCorrectionDesc();
 
 }
+
+
+
+
+//    // 2. Calcul du stock avec ajout de |quantité| pour les mouvements liés à une commande client
+//    @Query("SELECT COALESCE(SUM(" +
+//            "  m.quantite + " +
+//            "  CASE " +
+//            "    WHEN m.codeCommandeClient IS NOT NULL AND TRIM(m.codeCommandeClient) <> '' " +
+//            "    THEN ABS(m.quantite) " +
+//            "    ELSE 0 " +
+//            "  END" +
+//            "), 0) " +
+//            "FROM MvtStock m " +
+//            "WHERE m.article.id = :idArticle")
+//    BigDecimal stockReelArticleVenteIssueDeCommande(@Param("idArticle") Integer idArticle);
 
 
 

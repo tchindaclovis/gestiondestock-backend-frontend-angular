@@ -4,6 +4,7 @@ public enum ETypeMvtStock {
     ENTREE,
     SORTIE,
     SORTIE_VTE,
+    SORTIE_VTE_CMD,
     CORRECTION_POS,
     CORRECTION_NEG,
     CORRECTION_POS_VENTE_RED,
