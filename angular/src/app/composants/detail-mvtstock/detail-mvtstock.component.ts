@@ -118,41 +118,46 @@ export class DetailMvtstockComponent implements OnInit, OnChanges {
 
 
   calculerTotalMvtStock(): number {
-    if (!this.mvtStockDto || !this.mvtStockDto.quantite) {
-      return 0;
-    }
-
-    let prix = 0;
-
-    switch (this.mvtStockDto.typeMvt) {
-      case 'ENTREE':
-      case 'CORRECTION_POS':
-        prix = -(this.mvtStockDto.article?.prixUnitaireTtc || 0);
-        break;
-
-      case 'CORRECTION_NEG_RETOUR_FOURNISSEUR':
-        prix = this.mvtStockDto.article?.prixUnitaireTtc || 0;
-        break;
-
-      case 'CORRECTION_POS_VENTE_RED':
-        prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
-        break;
-
-      case 'SORTIE_VTE':
-      case 'SORTIE_VTE_CMD':
-      case 'CORRECTION_NEG_VENTE_AUG':
-        prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
-        break;
-
-      case 'SORTIE':
-      case 'CORRECTION_NEG':
-      default:
-        prix = 0;
-        break;
-    }
-
-    return +prix * +this.mvtStockDto.quantite;
+    return this.mvtStockDto?.coutTotal || 0;
   }
+
+
+  // calculerTotalMvtStock(): number {
+  //   if (!this.mvtStockDto || !this.mvtStockDto.quantite) {
+  //     return 0;
+  //   }
+  //
+  //   let prix = 0;
+  //
+  //   switch (this.mvtStockDto.typeMvt) {
+  //     case 'ENTREE':
+  //     case 'CORRECTION_POS':
+  //       prix = -(this.mvtStockDto.article?.prixUnitaireTtc || 0);
+  //       break;
+  //
+  //     case 'CORRECTION_NEG_RETOUR_FOURNISSEUR':
+  //       prix = this.mvtStockDto.article?.prixUnitaireTtc || 0;
+  //       break;
+  //
+  //     case 'CORRECTION_POS_VENTE_RED':
+  //       prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
+  //       break;
+  //
+  //     case 'SORTIE_VTE':
+  //     case 'SORTIE_VTE_CMD':
+  //     case 'CORRECTION_NEG_VENTE_AUG':
+  //       prix = -(this.mvtStockDto.article?.prixVenteUnitaireTtc || 0);
+  //       break;
+  //
+  //     case 'SORTIE':
+  //     case 'CORRECTION_NEG':
+  //     default:
+  //       prix = 0;
+  //       break;
+  //   }
+  //
+  //   return +prix * +this.mvtStockDto.quantite;
+  // }
 }
 
 

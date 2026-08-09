@@ -15,6 +15,7 @@ public class MvtStockDto {
     private BigDecimal quantite;
     private Integer idEntreprise;
     private ArticleDto article;
+    private VenteDto vente;
     private ETypeMvtStock typeMvt;
     private ETypeDocument type;
     private ESourceMvtStock sourceMvt;
@@ -40,6 +41,7 @@ public class MvtStockDto {
                 .codeCommandeClient(mvtStock.getCodeCommandeClient())
                 .coutTotal(mvtStock.getCoutTotal())
                 .article(ArticleDto.fromEntity(mvtStock.getArticle()))
+                .vente(VenteDto.fromEntity(mvtStock.getVente()))
                 .build();
     }
 
@@ -60,6 +62,7 @@ public class MvtStockDto {
         mvtStock.setCoutTotal(mvtStockDto.getCoutTotal());
         mvtStock.setIdEntreprise(mvtStockDto.getIdEntreprise());
         mvtStock.setArticle(ArticleDto.toEntity(mvtStockDto.getArticle()));
+        mvtStock.setVente(VenteDto.toEntity(mvtStockDto.getVente()));
 
         return mvtStock;
     }

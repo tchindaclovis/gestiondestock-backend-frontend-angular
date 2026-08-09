@@ -34,6 +34,9 @@ public class Vente extends Document {
     @ToString.Exclude // <--- AJOUTEZ CECI
     private List<LigneVente> ligneVentes;
 
+    @OneToMany(mappedBy = "vente")
+    private List<MvtStock> mvtStocks;
+
     @PrePersist
     @PreUpdate // Ajouté pour vérifier aussi lors des modifications
     protected void validateAndCreateDate() {

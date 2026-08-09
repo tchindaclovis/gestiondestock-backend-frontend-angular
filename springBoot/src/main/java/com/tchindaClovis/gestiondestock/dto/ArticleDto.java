@@ -8,35 +8,20 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class ArticleDto {
-
     private Integer id;
-
     private String codeArticle;
-
     private String designation;
-
     private String description;
-
     private String format;
-
     private BigDecimal prixUnitaireHt;
-
     private BigDecimal prixVenteUnitaireHt;
-
     private BigDecimal tauxTva;
-
     private BigDecimal prixUnitaireTtc;
-
     private BigDecimal prixVenteUnitaireTtc;
-
     private BigDecimal marge;
-
     private BigDecimal quantiteAlert;
-
     private String photo;
-
     private CategoryDto category;
-
     private Integer idEntreprise;
 
     //permet de faire un mapping de CategoryDto vers Category

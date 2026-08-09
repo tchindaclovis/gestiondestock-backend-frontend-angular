@@ -111,7 +111,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             );
         }
 
-
         // On met à jour les infos générales
         commandeClientToSave.setCode(dto.getCode());
         commandeClientToSave.setDateCommande(dto.getDateCommande());

@@ -5,6 +5,7 @@ package com.tchindaClovis.gestiondestock.services.impl;
  * Contient les implémentations concrètes des interfaces de services.
  * Cette classe implémente la logique métier liée aux mouvements de stock.
  */
+import com.tchindaClovis.gestiondestock.dto.ArticleDto;
 import com.tchindaClovis.gestiondestock.dto.MvtStockDto;
 import com.tchindaClovis.gestiondestock.exception.EntityNotFoundException;
 import com.tchindaClovis.gestiondestock.exception.ErrorCodes;
@@ -42,7 +43,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class MvtStockServiceImpl implements MvtStockService {
-
     /*
      * mvtStockRepository pour accéder à la base de données
      * concernant les mouvements de stock
@@ -69,7 +69,6 @@ public class MvtStockServiceImpl implements MvtStockService {
         this.commandeClientRepository = commandeClientRepository;
     }
 
-
     @Override
     public List<MvtStockDto> findAllMvtStock() {
         return mvtStockRepository.findAll().stream()
@@ -91,17 +90,8 @@ public class MvtStockServiceImpl implements MvtStockService {
                 ));
     }
 
-
-    /*
-     * ================================
-     * CALCUL DU STOCK RÉEL
-     * ================================
-     *
-     * Retourne la quantité réelle en stock d’un article.
-     */
     @Override
     public BigDecimal stockReelArticle(Integer idArticle) {
-
         // Vérification si l’ID est null
         if (idArticle == null) {
             log.warn("ID article is NULL");
@@ -111,8 +101,12 @@ public class MvtStockServiceImpl implements MvtStockService {
         // Vérifie si l’article existe (sinon exception)
         articleService.findById(idArticle);
 
-        // Appel du mvtStockRepository pour calculer le stock réel
-        return mvtStockRepository.stockReelArticle(idArticle);
+        // Vérification si un codeCommandeClient non null ET non vide existe
+        boolean isCommandeClientPresente = mvtStockRepository.isVenteIssueDeCommandeClient(idArticle);
+        if (isCommandeClientPresente) {
+            return mvtStockRepository.stockReelArticle(idArticle);
+        }
+        return mvtStockRepository.stockReelArticleCmd(idArticle);
     }
 
 
@@ -157,7 +151,6 @@ public class MvtStockServiceImpl implements MvtStockService {
      */
     @Override
     public MvtStockDto entreeStock(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.ENTREE, ESourceMvtStock.COMMANDE_FOURNISSEUR);
     }
 
@@ -170,21 +163,16 @@ public class MvtStockServiceImpl implements MvtStockService {
      */
     @Override
     public MvtStockDto sortieStock(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.SORTIE, ESourceMvtStock.COMMANDE_CLIENT);
     }
 
-
     @Override
     public MvtStockDto sortieStockVte(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.SORTIE_VTE, ESourceMvtStock.VENTE);
     }
 
-
     @Override
     public MvtStockDto sortieStockVteCMD(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.SORTIE_VTE_CMD, ESourceMvtStock.VENTE_CMD);
     }
 
@@ -197,46 +185,38 @@ public class MvtStockServiceImpl implements MvtStockService {
      */
     @Override
     public MvtStockDto correctionStockPos(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS, ESourceMvtStock.CORRECTION_STOCK);
     }
 
     @Override
     public MvtStockDto correctionStockPosVenteRed(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.CORRECTION_STOCK);
     }
 
     @Override
     public MvtStockDto correctionStockPosVenteRed1(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE);
     }
 
-
     @Override
     public MvtStockDto correctionStockPosVenteRed1CMD(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.VENTE_CMD);
     }
 
 
     @Override
     public MvtStockDto correctionStockNegRetourFournisseur(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_RETOUR_FOURNISSEUR, ESourceMvtStock.COMMANDE_FOURNISSEUR);
     }
 
     @Override
     public MvtStockDto correctionStockNegRetourFournisseur1(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_RETOUR_FOURNISSEUR, ESourceMvtStock.CORRECTION_STOCK);
     }
 
 
     @Override
     public MvtStockDto correctionStockPosVenteRed2(MvtStockDto dto) {
-
         return saveMvtStockPos(dto, ETypeMvtStock.CORRECTION_POS_VENTE_RED, ESourceMvtStock.COMMANDE_CLIENT);
     }
 
@@ -249,21 +229,43 @@ public class MvtStockServiceImpl implements MvtStockService {
      */
     @Override
     public MvtStockDto correctionStockNeg(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG, ESourceMvtStock.CORRECTION_STOCK);
     }
 
     @Override
     public MvtStockDto correctionStockNegVenteAug(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG, ESourceMvtStock.VENTE);
     }
 
 
     @Override
     public MvtStockDto correctionStockNegVenteAugCMD(MvtStockDto dto) {
-
         return saveMvtStockNeg(dto, ETypeMvtStock.CORRECTION_NEG_VENTE_AUG, ESourceMvtStock.VENTE_CMD);
+    }
+
+
+    @Override
+    public String getLastCodeCorrection() {
+        // On demande le dernier enregistrement avec la source CORRECTION_STOCK
+        // PageRequest.of(0, 1) permet de ne récupérer qu'un seul résultat (le top 1)
+        List<String> codes = mvtStockRepository.findLastCodeBySource(
+                ESourceMvtStock.CORRECTION_STOCK, PageRequest.of(0, 1)
+        );
+
+        if (codes.isEmpty()) {
+            return "CCS0000"; // Valeur par défaut si la base est vide
+        }
+        return codes.get(0);
+    }
+
+
+    @Override
+    public void delete(Integer id) {
+        if (id == null) {
+            log.error("Mouvement stock ID is null");
+            return;
+        }
+        mvtStockRepository.deleteById(id);
     }
 
 
@@ -288,6 +290,12 @@ public class MvtStockServiceImpl implements MvtStockService {
         // 2. Préparation de l'entité (Mapping Manuel Explicite)
         MvtStock entity = MvtStockDto.toEntity(dto);
 
+        // Charger l'article depuis la BDD pour disposer des vrais prix (prixUnitaireTtc / prixVenteUnitaireTtc)
+        if (dto.getArticle() != null && dto.getArticle().getId() != null) {
+            ArticleDto articleDto = articleService.findById(dto.getArticle().getId());
+            entity.setArticle(ArticleDto.toEntity(articleDto));
+        }
+
         // On s'assure que la quantité est positive pour une entrée
         entity.setQuantite(BigDecimal.valueOf(Math.abs(dto.getQuantite().doubleValue())));
 
@@ -298,6 +306,9 @@ public class MvtStockServiceImpl implements MvtStockService {
         // MAPPAGE EXPLICITE DU CODE SOURCE
         // C'est ici que l'on récupère le code envoyé par le front ou le service de vente
         entity.setCodeSource(dto.getCodeSource());
+
+        // Calcul et enregistrement du COUT TOTAL
+        entity.setCoutTotal(calculerCoutTotal(entity));
 
         // 3. Sauvegarde et retour
         return MvtStockDto.fromEntity(
@@ -328,6 +339,12 @@ public class MvtStockServiceImpl implements MvtStockService {
         // 2. Préparation de l'entité (Mapping Manuel Explicite)
         MvtStock entity = MvtStockDto.toEntity(dto);
 
+        // Charger l'article depuis la BDD pour disposer des vrais prix
+        if (dto.getArticle() != null && dto.getArticle().getId() != null) {
+            ArticleDto articleDto = articleService.findById(dto.getArticle().getId());
+            entity.setArticle(ArticleDto.toEntity(articleDto));
+        }
+
         // On s'assure que la quantité est négative pour une sortie
         entity.setQuantite(BigDecimal.valueOf(Math.abs(dto.getQuantite().doubleValue()) * -1));
 
@@ -339,6 +356,9 @@ public class MvtStockServiceImpl implements MvtStockService {
         // C'est ici que l'on récupère le code envoyé par le front ou le service de vente
         entity.setCodeSource(dto.getCodeSource());
 
+        // Calcul et enregistrement du COUT TOTAL
+        entity.setCoutTotal(calculerCoutTotal(entity));
+
         // 3. Sauvegarde et retour
         return MvtStockDto.fromEntity(
                 mvtStockRepository.save(entity)
@@ -346,35 +366,81 @@ public class MvtStockServiceImpl implements MvtStockService {
     }
 
 
-    @Override
-    public String getLastCodeCorrection() {
-        // On demande le dernier enregistrement avec la source CORRECTION_STOCK
-        // PageRequest.of(0, 1) permet de ne récupérer qu'un seul résultat (le top 1)
-        List<String> codes = mvtStockRepository.findLastCodeBySource(
-                ESourceMvtStock.CORRECTION_STOCK, PageRequest.of(0, 1)
-        );
 
-        if (codes.isEmpty()) {
-            return "CCS0000"; // Valeur par défaut si la base est vide
+    private BigDecimal calculerCoutTotal(MvtStock entity) {
+        if (entity == null || entity.getQuantite() == null || entity.getArticle() == null) {
+            return BigDecimal.ZERO;
         }
-        return codes.get(0);
+
+        BigDecimal prix = BigDecimal.ZERO;
+        Article article = entity.getArticle();
+        ETypeMvtStock typeMvt = entity.getTypeMvt();
+
+        if (typeMvt != null) {
+            switch (typeMvt) {
+                case ENTREE:
+                case CORRECTION_POS:
+                    BigDecimal prixAchat = article.getPrixUnitaireTtc() != null
+                            ? article.getPrixUnitaireTtc()
+                            : BigDecimal.ZERO;
+                    prix = prixAchat.negate(); // Equivalent de -(prixUnitaireTtc)
+                    break;
+
+                case CORRECTION_NEG_RETOUR_FOURNISSEUR:
+                    prix = article.getPrixUnitaireTtc() != null
+                            ? article.getPrixUnitaireTtc()
+                            : BigDecimal.ZERO;
+                    break;
+
+                case CORRECTION_POS_VENTE_RED:
+                case SORTIE_VTE:
+                case SORTIE_VTE_CMD:
+                case CORRECTION_NEG_VENTE_AUG:
+                    BigDecimal prixVente = article.getPrixVenteUnitaireTtc() != null
+                            ? article.getPrixVenteUnitaireTtc()
+                            : BigDecimal.ZERO;
+                    prix = prixVente.negate(); // Equivalent de -(prixVenteUnitaireTtc)
+                    break;
+
+                case SORTIE:
+                case CORRECTION_NEG:
+                default:
+                    prix = BigDecimal.ZERO;
+                    break;
+            }
+        }
+
+        // Multiplication : prix * quantite
+        return prix.multiply(entity.getQuantite());
     }
 
-
-    @Override
-    public void delete(Integer id) {
-        if (id == null) {
-            log.error("Mouvement stock ID is null");
-            return;
-        }
-        mvtStockRepository.deleteById(id);
-    }
 }
 
 
 
 
-
+/*
+ * ================================
+ * CALCUL DU STOCK RÉEL
+ * ================================
+ *
+ * Retourne la quantité réelle en stock d’un article.
+ */
+//    @Override
+//    public BigDecimal stockReelArticle(Integer idArticle) {
+//
+//        // Vérification si l’ID est null
+//        if (idArticle == null) {
+//            log.warn("ID article is NULL");
+//            return BigDecimal.valueOf(-1);
+//        }
+//
+//        // Vérifie si l’article existe (sinon exception)
+//        articleService.findById(idArticle);
+//
+//        // Appel du mvtStockRepository pour calculer le stock réel
+//        return mvtStockRepository.stockReelArticle(idArticle);
+//    }
 
 
 

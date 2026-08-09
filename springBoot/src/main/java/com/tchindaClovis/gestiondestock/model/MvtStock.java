@@ -44,4 +44,8 @@ public class MvtStock extends Document {
     @JoinColumn(name = "article")
     private Article article;
 
+    @ManyToOne
+    @JoinColumn(name = "vente")
+    private Vente vente;
+
 }

@@ -9,26 +9,17 @@ import java.util.List;
 @Data
 @Builder
 public class VenteDto {
-
     private Integer id;
-
     private String code;
-
     private String codeCommandeClient;
-
     private Instant dateVente;
-
     private Instant creationDate;
-
     private Instant lastModifiedDate;
-
     private EPaymentType paymentType;
-
     private ClientDto client;
-
     private Integer idEntreprise;
-
     private List<LigneVenteDto> ligneVentes;
+    private List<MvtStockDto> MvtStocks;
 
     public static VenteDto fromEntity (Vente vente){  //permet de faire un mapping de l'entité vers le DTO
         if(vente == null){
